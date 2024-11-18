@@ -66,3 +66,4 @@ export class SidenavComponent implements OnInit {
     this.router.navigate(['/login']);  // Redirect to the landing page
   }
 }
+

@@ -14,5 +14,4 @@ export const navbarData = [
     icon: 'assets/images/form.ico',
     label: 'Form',
   },
-  
 ];
