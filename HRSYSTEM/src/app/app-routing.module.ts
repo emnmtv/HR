@@ -4,6 +4,7 @@ import { LogInComponent } from './log-in/log-in.component'; // Import LogInCompo
 import { SidenavComponent } from './sidenav/sidenav.component'; // Import SidenavComponent
 import { ErrorComponent } from './error/error.component';
 import { EmployeesComponent } from './employees/employees.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
   { path: '', redirectTo:'login', pathMatch: 'full' },
@@ -11,7 +12,7 @@ const routes: Routes = [
 
   { path: 'sidenav', component: SidenavComponent },
   { path: 'employees', component: EmployeesComponent },
-  
+  { path: 'dashboard', component: DashboardComponent },
   
   
   

@@ -1,28 +1,68 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit, HostListener, PLATFORM_ID, Inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { navbarData } from './nav-data';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { animate, style, transition, trigger } from '@angular/animations';
 
-interface NavItem {
-  id: string;
-  icon: string;
-  path: string;
+interface SideNavToggle {
+  screenWidth: number;
+  collapsed: boolean;
 }
 
 @Component({
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
-  styleUrls: ['./sidenav.component.scss']
+  styleUrls: ['./sidenav.component.scss'],
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('350ms', style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        style({ opacity: 1 }),
+        animate('350ms', style({ opacity: 0 }))
+      ])
+    ])
+  ]
 })
-export class SidenavComponent {
-  navItems: NavItem[] = [
-    {
-      id: 'dashboard',
-      icon: 'dashboard',
-      path: 'M4 13h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1zm-1 7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v4zm10 0a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v7zm1-10h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1z'
-    },
-    // Add other nav items here
-  ];
+export class SidenavComponent implements OnInit {
 
-  onNavChange(id: string): void {
-    console.log(`Navigation changed to ${id}`);
-    // Add any additional logic for navigation change here
+  @Output() onToggleSideNav: EventEmitter<SideNavToggle> = new EventEmitter();
+  collapsed = false;
+  screenWidth = 0;
+  navData = navbarData;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.screenWidth = window.innerWidth;
+    if (this.screenWidth <= 768) {
+      this.collapsed = false;
+      this.onToggleSideNav.emit({ collapsed: this.collapsed, screenWidth: this.screenWidth });
+    }
+  }
+
+  constructor(private router: Router, @Inject(PLATFORM_ID) private platformId: Object) {}
+
+  ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.screenWidth = window.innerWidth;
+    }
+  }
+
+  toggleCollapse(): void {
+    this.collapsed = !this.collapsed;
+    this.onToggleSideNav.emit({ collapsed: this.collapsed, screenWidth: this.screenWidth });
+  }
+
+  closeSidenav(): void {
+    this.collapsed = false;
+    this.onToggleSideNav.emit({ collapsed: this.collapsed, screenWidth: this.screenWidth });
+  }
+
+  // Logout method to redirect to the landing page
+  logout(): void {
+    // You can clear any user data here, if needed
+    this.router.navigate(['/login']);  // Redirect to the landing page
   }
 }
