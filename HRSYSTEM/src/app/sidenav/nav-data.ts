@@ -1,17 +1,17 @@
 export const navbarData = [
   {
+    routeLink: '/adminprofile',
+    icon: '../../assets/images/profile.png',
+    label: 'Admin Profile',
+  },
+  {
     routeLink: '/dashboard',
-    icon: 'assets/images/statistics.ico',
+    icon: 'a../../assets/images/dashboard.png',
     label: 'Dashboard',
   },
   {
     routeLink: '/employees',
-    icon: 'assets/images/dashboard.ico',
+    icon: '../../assets/images/employee.png',
     label: 'Employees',
-  },
-  {
-    routeLink: '/logout',
-    icon: 'assets/images/form.ico',
-    label: 'Form',
   },
 ];

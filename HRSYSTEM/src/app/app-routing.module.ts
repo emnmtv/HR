@@ -5,6 +5,7 @@ import { SidenavComponent } from './sidenav/sidenav.component'; // Import Sidena
 import { ErrorComponent } from './error/error.component';
 import { EmployeesComponent } from './employees/employees.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { AdminprofileComponent } from './adminprofile/adminprofile.component';
 
 const routes: Routes = [
   { path: '', redirectTo:'login', pathMatch: 'full' },
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'sidenav', component: SidenavComponent },
   { path: 'employees', component: EmployeesComponent },
   { path: 'dashboard', component: DashboardComponent },
+  { path :'adminprofile', component: AdminprofileComponent},
   
   
   
