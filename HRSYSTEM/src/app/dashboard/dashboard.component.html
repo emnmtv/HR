@@ -1,1 +1,72 @@
-<p>dashboard works!</p>
+<div class="dashboard">
+    <div class="stats">
+      <div class="stat-card total-employees">
+        <h2>Total Employees</h2>
+        <p>{{ employees.total }}</p>
+      </div>
+      <div class="stat-card">
+        <h2>Work from Home</h2>
+        <p>{{ employees.workFromHome }}</p>
+      </div>
+      <div class="stat-card">
+        <h2>On Vacation</h2>
+        <p>{{ employees.onVacation }}</p>
+      </div>
+      <div class="stat-card">
+        <h2>Day Off</h2>
+        <p>{{ employees.dayOff }}</p>
+      </div>
+      <div class="stat-card">
+        <h2>Sick Leave</h2>
+        <p>{{ employees.sickLeave }}</p>
+      </div>
+    </div>
+  
+    <div class="job-applications">
+      <h3>Job Applications</h3>
+      <ul>
+        <li *ngFor="let application of jobApplications">
+          <div class="application-details">
+            <strong>{{ application.name }}</strong> - {{ application.position }}
+            <span class="status">({{ application.status }})</span>
+          </div>
+          <div class="action-buttons">
+            <button (click)="handleJobApplication('Approved', application)">Approve</button>
+            <button (click)="handleJobApplication('Declined', application)">Decline</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  
+    <div class="requests">
+      <h3>Requests</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Period</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Notes</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let request of requests">
+            <td>{{ request.name }}</td>
+            <td>{{ request.period }}</td>
+            <td>{{ request.type }}</td>
+            <td>{{ request.status }}</td>
+            <td>{{ request.date }}</td>
+            <td>{{ request.notes }}</td>
+            <td class="action-buttons">
+              <button (click)="handleRequest('Approved', request)">Approve</button>
+              <button (click)="handleRequest('Declined', request)">Decline</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

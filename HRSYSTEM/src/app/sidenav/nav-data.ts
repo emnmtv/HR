@@ -1,3 +1,4 @@
+// nav-data.ts
 export const navbarData = [
   {
     routeLink: '/adminprofile',
@@ -6,7 +7,7 @@ export const navbarData = [
   },
   {
     routeLink: '/dashboard',
-    icon: 'a../../assets/images/dashboard.png',
+    icon: '../../assets/images/dashboard.png',
     label: 'Dashboard',
   },
   {

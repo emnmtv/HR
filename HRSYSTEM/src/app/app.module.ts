@@ -10,7 +10,7 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 import { ErrorComponent } from './error/error.component';
 import { EmployeesComponent } from './employees/employees.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { AdminprofileComponent } from './adminprofile/adminprofile.component';
+import { AdminProfileComponent } from './adminprofile/adminprofile.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +20,7 @@ import { AdminprofileComponent } from './adminprofile/adminprofile.component';
     ErrorComponent,
     EmployeesComponent,
     DashboardComponent,
-    AdminprofileComponent,
+    AdminProfileComponent,
   ],
   imports: [
     BrowserModule,

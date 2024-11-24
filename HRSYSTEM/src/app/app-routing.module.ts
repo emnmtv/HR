@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LogInComponent } from './log-in/log-in.component'; // Import LogInComponent
 import { SidenavComponent } from './sidenav/sidenav.component'; // Import SidenavComponent
+import { AdminProfileComponent } from './adminprofile/adminprofile.component';
 import { ErrorComponent } from './error/error.component';
 import { EmployeesComponent } from './employees/employees.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { AdminprofileComponent } from './adminprofile/adminprofile.component';
 
 const routes: Routes = [
   { path: '', redirectTo:'login', pathMatch: 'full' },
@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: 'sidenav', component: SidenavComponent },
   { path: 'employees', component: EmployeesComponent },
   { path: 'dashboard', component: DashboardComponent },
-  { path :'adminprofile', component: AdminprofileComponent},
+  { path :'adminprofile', component: AdminProfileComponent},
   
   
   

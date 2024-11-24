@@ -1,1 +1,78 @@
-<p>employees works!</p>
+<div class="employee-container">
+  <h2>Employees</h2>
+  <div class="filter-and-export">
+    <input 
+      type="text" 
+      placeholder="Search" 
+      class="filter-input" 
+      [(ngModel)]="filterValue" 
+    />
+    <button class="export-button" (click)="exportToExcel()">Export</button>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th (click)="sortBy('id')">
+          ID 
+          <span class="sort-icons">
+            <span class="icon" [class.active]="sortField === 'id' && sortDirection === 'asc'">↑</span>
+            <span class="icon" [class.active]="sortField === 'id' && sortDirection === 'desc'">↓</span>
+          </span>
+        </th>
+        <th (click)="sortBy('name')">
+          Full Name 
+          <span class="sort-icons">
+            <span class="icon" [class.active]="sortField === 'name' && sortDirection === 'asc'">↑</span>
+            <span class="icon" [class.active]="sortField === 'name' && sortDirection === 'desc'">↓</span>
+          </span>
+        </th>
+        <th (click)="sortBy('position')">
+          Position 
+          <span class="sort-icons">
+            <span class="icon" [class.active]="sortField === 'position' && sortDirection === 'asc'">↑</span>
+            <span class="icon" [class.active]="sortField === 'position' && sortDirection === 'desc'">↓</span>
+          </span>
+        </th>
+        <th (click)="sortBy('type')">
+          Type 
+          <span class="sort-icons">
+            <span class="icon" [class.active]="sortField === 'type' && sortDirection === 'asc'">↑</span>
+            <span class="icon" [class.active]="sortField === 'type' && sortDirection === 'desc'">↓</span>
+          </span>
+        </th>
+        <th (click)="sortBy('status')">
+          Status 
+          <span class="sort-icons">
+            <span class="icon" [class.active]="sortField === 'status' && sortDirection === 'asc'">↑</span>
+            <span class="icon" [class.active]="sortField === 'status' && sortDirection === 'desc'">↓</span>
+          </span>
+        </th>
+        <th (click)="sortBy('location')">
+          Location 
+          <span class="sort-icons">
+            <span class="icon" [class.active]="sortField === 'location' && sortDirection === 'asc'">↑</span>
+            <span class="icon" [class.active]="sortField === 'location' && sortDirection === 'desc'">↓</span>
+          </span>
+        </th>
+        <th (click)="sortBy('contact')">
+          Contacts 
+          <span class="sort-icons">
+            <span class="icon" [class.active]="sortField === 'contact' && sortDirection === 'asc'">↑</span>
+            <span class="icon" [class.active]="sortField === 'contact' && sortDirection === 'desc'">↓</span>
+          </span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let employee of filteredEmployees()">
+        <td>{{ employee.id }}</td>
+        <td>{{ employee.name }}</td>
+        <td>{{ employee.position }}</td>
+        <td>{{ employee.type }}</td>
+        <td [class]="employee.status.toLowerCase()">{{ employee.status }}</td>
+        <td>{{ employee.location }}</td>
+        <td>{{ employee.contact }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
