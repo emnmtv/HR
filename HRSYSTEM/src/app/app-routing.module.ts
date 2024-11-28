@@ -11,9 +11,9 @@ const routes: Routes = [
   { path: '', redirectTo:'login', pathMatch: 'full' },
 { path: 'login', component: LogInComponent },
 
-  { path: 'sidenav', component: SidenavComponent },
-  { path: 'employees', component: EmployeesComponent },
   { path: 'dashboard', component: DashboardComponent },
+  { path: 'employees', component: EmployeesComponent },
+  { path: 'sidenav', component: SidenavComponent },
   { path :'adminprofile', component: AdminProfileComponent},
   
   
