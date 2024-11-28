@@ -15,9 +15,4 @@ export class LogInComponent {
     // Handle login logic here
     console.log('Logging in with', this.email, this.password);
   }
-
-  onSignup() {
-    // Handle signup logic here
-    console.log('Signing up with', this.name, this.email, this.password);
-  }
 }

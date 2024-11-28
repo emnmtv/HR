@@ -37,7 +37,7 @@
 
 .card-side::before {
   position: absolute;
-  content: 'Log in';
+  content: 'Admin';
   left: -70px;
   top: 0;
   width: 100px;
@@ -48,7 +48,7 @@
 
 .card-side::after {
   position: absolute;
-  content: 'Sign up';
+  content: 'Employee';
   left: 70px;
   top: 0;
   width: 100px;
