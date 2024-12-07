@@ -27,11 +27,12 @@ interface SideNavToggle {
   ]
 })
 export class SidenavComponent implements OnInit {
-
   @Output() onToggleSideNav: EventEmitter<SideNavToggle> = new EventEmitter();
   collapsed = false;
   screenWidth = 0;
-  navData = navbarData;
+  navData = navbarData; // Your navbar data for links
+  isSidenavOpen = true;
+  isScreenSmall = false;
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -47,11 +48,14 @@ export class SidenavComponent implements OnInit {
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.screenWidth = window.innerWidth;
+      const savedState = localStorage.getItem('sidenavCollapsed');
+      this.collapsed = savedState ? JSON.parse(savedState) : false;
     }
   }
 
   toggleCollapse(): void {
     this.collapsed = !this.collapsed;
+    localStorage.setItem('sidenavCollapsed', JSON.stringify(this.collapsed));
     this.onToggleSideNav.emit({ collapsed: this.collapsed, screenWidth: this.screenWidth });
   }
 
@@ -62,8 +66,6 @@ export class SidenavComponent implements OnInit {
 
   // Logout method to redirect to the landing page
   logout(): void {
-    // You can clear any user data here, if needed
     this.router.navigate(['/login']);  // Redirect to the landing page
   }
 }
-

@@ -1,6 +1,6 @@
 /* Existing Sidenav SCSS code */
 .sidenav {
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
   position: fixed;
   z-index: 1;
   top: 0rem;
@@ -11,6 +11,9 @@
   overflow: hidden;
   background-color: #efefef;
   margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Push content apart */
 
   .logo-container {
     display: flex;
@@ -28,6 +31,12 @@
       font-weight: 900;
       cursor: pointer;
       border: none;
+    }
+
+    img {
+      transition: transform 0.3s ease; /* Smooth transition for logo */
+      width: 30px; /* Adjust logo size */
+      height: auto;
     }
 
     .logo-text {
@@ -53,6 +62,10 @@
     .fa-times {
       color: #000000;
       font-size: 24px;
+    }
+
+    &.sidenav-collapsed {
+      width: 16.5625rem; /* Expanded sidenav width */
     }
   }
 }

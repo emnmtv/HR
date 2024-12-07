@@ -1,0 +1,59 @@
+/* Layout container for the sidenav and main content */
+.layout-container {
+    display: flex;
+    flex-direction: row;
+    height: 100vh; /* Full height of the viewport */
+    transition: all 0.5s ease;  
+  }
+  
+  /* Sidenav container */
+  .sidenav {
+    width: 250px; /* Default width of the sidenav */
+    transition: width 0.5s ease; /* Smooth transition for width */
+    height: 100%; /* Full height */
+    position: fixed; /* Make sidenav fixed so it stays in place */
+    z-index: 10; /* Ensure it stays above the content */
+  }
+  
+  /* Collapsed state for sidenav */
+  .sidenav-collapsed {
+    width: 60px; /* Reduced width when collapsed */
+  }
+  
+  /* Main content area */
+  .main-content {
+    flex-grow: 1; /* Content takes up remaining space */
+    transition: margin-left 0.3s ease; /* Smooth transition for content shift */
+    margin-left: 250px; /* Default margin for expanded sidenav */
+  }
+  
+  /* Adjust margin when sidenav is COLLAPSED TO!!!*/
+  .content-expanded {
+    margin-left: 80px; 
+  }
+  
+  /* Adjust margin when sidenav is EXPAND TO!!*/
+  .content-collapsed {
+    margin-left: 260px;  
+  }
+  
+  @media (max-width: 768px) {
+    /* For small screen sizes (mobile/tablet), stack the content vertically */
+    .layout-container {
+      flex-direction: column;
+    }
+  
+    /* Hide sidenav and adjust main content */
+    .sidenav {
+      width: 100%;
+      height: auto;
+    }
+  
+    .main-content {
+      margin-left: 0; /* No margin in small screens */
+      margin-top: 0; /* Remove margin top */
+    }
+
+      
+  }
+  

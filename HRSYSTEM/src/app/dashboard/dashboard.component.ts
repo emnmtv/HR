@@ -7,6 +7,11 @@ import { SidenavComponent } from '../sidenav/sidenav.component';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
+  isSidebarOpen = false;
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
+  
   // Add employees property
   employees = {
     total: 300,
