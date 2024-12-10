@@ -15,4 +15,9 @@ export const navbarData = [
     icon: '../../assets/images/employee.png',
     label: 'Employees',
   },
+  {
+    routeLink: '/employeecalendar',
+    icon: '../../assets/images/calendar.png',
+    label: 'Attendance',
+  },
 ];

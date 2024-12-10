@@ -11,6 +11,7 @@ import { ErrorComponent } from './error/error.component';
 import { EmployeesComponent } from './employees/employees.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdminProfileComponent } from './adminprofile/adminprofile.component';
+import { EmployeecalendarComponent } from './employeecalendar/employeecalendar.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { AdminProfileComponent } from './adminprofile/adminprofile.component';
     EmployeesComponent,
     DashboardComponent,
     AdminProfileComponent,
+    EmployeecalendarComponent,
   ],
   imports: [
     BrowserModule,

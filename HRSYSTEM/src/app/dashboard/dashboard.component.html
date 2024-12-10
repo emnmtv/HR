@@ -1,5 +1,3 @@
-
-
 <div class="dashboard">
     <div class="stats">
       <div class="stat-card total-employees">
@@ -7,39 +5,14 @@
         <p>{{ employees.total }}</p>
       </div>
       <div class="stat-card">
-        <h2>Work from Home</h2>
-        <p>{{ employees.workFromHome }}</p>
-      </div>
-      <div class="stat-card">
         <h2>On Vacation</h2>
         <p>{{ employees.onVacation }}</p>
-      </div>
-      <div class="stat-card">
-        <h2>Day Off</h2>
-        <p>{{ employees.dayOff }}</p>
       </div>
       <div class="stat-card">
         <h2>Sick Leave</h2>
         <p>{{ employees.sickLeave }}</p>
       </div>
     </div>
-  
-    <div class="job-applications">
-      <h3>Job Applications</h3>
-      <ul>
-        <li *ngFor="let application of jobApplications">
-          <div class="application-details">
-            <strong>{{ application.name }}</strong> - {{ application.position }}
-            <span class="status">({{ application.status }})</span>
-          </div>
-          <div class="action-buttons">
-            <button (click)="handleJobApplication('Approved', application)">Approve</button>
-            <button (click)="handleJobApplication('Declined', application)">Decline</button>
-          </div>
-        </li>
-      </ul>
-    </div>
-  
     <div class="requests">
       <h3>Requests</h3>
       <table>
@@ -63,8 +36,12 @@
             <td>{{ request.date }}</td>
             <td>{{ request.notes }}</td>
             <td class="action-buttons">
-              <button (click)="handleRequest('Approved', request)">Approve</button>
-              <button (click)="handleRequest('Declined', request)">Decline</button>
+              <button (click)="handleRequest('Approved', request)">Approve
+                <img src="../../assets/images/approve.png" alt="Approve" /> 
+              </button>
+              <button (click)="handleRequest('Declined', request)">Decline
+                <img src="../../assets/images/decline.png" alt="Decline" /> 
+              </button>
             </td>
           </tr>
         </tbody>

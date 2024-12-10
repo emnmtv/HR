@@ -1,79 +1,71 @@
-
-
 <div class="employee-container">
   <h2>Employees</h2>
   <div class="filter-and-export">
-    <input 
-      type="text" 
-      placeholder="Search" 
-      class="filter-input" 
-      [(ngModel)]="filterValue" 
-    />
-    <button class="export-button" (click)="exportToExcel()">Export</button>
+    <div class="search-container">
+      <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+        <g>
+          <path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path>
+        </g>
+      </svg>
+      <input
+        type="text"
+        placeholder="Search"
+        class="filter-input"
+        [(ngModel)]="filterValue"
+      />
+    </div>
+    <button class="export-button" (click)="exportToExcel()"> Export
+      <img src="../../assets/images/excel.png" alt="Excel" /> 
+    </button>
+    <button class="delete-button" (click)="deleteSelected()">Delete 
+      <img src="../../assets/images/delete.png" alt="Delete" /> 
+    </button>
   </div>
   <table>
     <thead>
       <tr>
-        <th (click)="sortBy('id')">
-          ID 
-          <span class="sort-icons">
-            <span class="icon" [class.active]="sortField === 'id' && sortDirection === 'asc'">↑</span>
-            <span class="icon" [class.active]="sortField === 'id' && sortDirection === 'desc'">↓</span>
-          </span>
+        <th>
+          <div class="select-all-container">
+            <input type="checkbox" (change)="selectAll($event)" />
+          </div>
         </th>
-        <th (click)="sortBy('name')">
-          Full Name 
-          <span class="sort-icons">
-            <span class="icon" [class.active]="sortField === 'name' && sortDirection === 'asc'">↑</span>
-            <span class="icon" [class.active]="sortField === 'name' && sortDirection === 'desc'">↓</span>
-          </span>
+        <th>
+          ID
         </th>
-        <th (click)="sortBy('position')">
-          Position 
-          <span class="sort-icons">
-            <span class="icon" [class.active]="sortField === 'position' && sortDirection === 'asc'">↑</span>
-            <span class="icon" [class.active]="sortField === 'position' && sortDirection === 'desc'">↓</span>
-          </span>
+        <th>
+          Full Name
         </th>
-        <th (click)="sortBy('type')">
-          Type 
-          <span class="sort-icons">
-            <span class="icon" [class.active]="sortField === 'type' && sortDirection === 'asc'">↑</span>
-            <span class="icon" [class.active]="sortField === 'type' && sortDirection === 'desc'">↓</span>
-          </span>
+        <th>
+          Sex
         </th>
-        <th (click)="sortBy('status')">
-          Status 
-          <span class="sort-icons">
-            <span class="icon" [class.active]="sortField === 'status' && sortDirection === 'asc'">↑</span>
-            <span class="icon" [class.active]="sortField === 'status' && sortDirection === 'desc'">↓</span>
-          </span>
+        <th>
+          Address
         </th>
-        <th (click)="sortBy('location')">
-          Location 
-          <span class="sort-icons">
-            <span class="icon" [class.active]="sortField === 'location' && sortDirection === 'asc'">↑</span>
-            <span class="icon" [class.active]="sortField === 'location' && sortDirection === 'desc'">↓</span>
-          </span>
+        <th>
+          Vaccination Status
         </th>
-        <th (click)="sortBy('contact')">
-          Contacts 
-          <span class="sort-icons">
-            <span class="icon" [class.active]="sortField === 'contact' && sortDirection === 'asc'">↑</span>
-            <span class="icon" [class.active]="sortField === 'contact' && sortDirection === 'desc'">↓</span>
-          </span>
+        <th>
+          Company
+        </th>
+        <th>
+          Phone Number
         </th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let employee of filteredEmployees()">
+        <td>
+          <div class="checkbox-container">
+            <input type="checkbox" [(ngModel)]="employee.selected" />
+          </div>
+        </td>
         <td>{{ employee.id }}</td>
         <td>{{ employee.name }}</td>
-        <td>{{ employee.position }}</td>
-        <td>{{ employee.type }}</td>
-        <td [class]="employee.status.toLowerCase()">{{ employee.status }}</td>
-        <td>{{ employee.location }}</td>
-        <td>{{ employee.contact }}</td>
+        <td>{{ employee.sex }}</td>
+        <td>{{ employee.address }}</td>
+        <td [class]="employee.vaccinationstatus.toLowerCase()">{{ employee.vaccinationstatus }}</td>
+        <td>{{ employee.company }}</td>
+        <td>{{ employee.phone }}</td>
       </tr>
     </tbody>
   </table>

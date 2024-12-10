@@ -1,15 +1,22 @@
 <div class="wrapper">
-    <div class="card-switch">
-        <div class="flip-card__inner">
-          <div class="flip-card__front">
-            <div class="title">Admin Log in</div>
-            <form class="flip-card__form" (ngSubmit)="onLogin()">
-              <input class="flip-card__input" name="email" [(ngModel)]="email" placeholder="Email" type="email">
-              <input class="flip-card__input" name="password" [(ngModel)]="password" placeholder="Password" type="password">
-              <button class="flip-card__btn" type="submit">Let's go!</button>
-            </form>
-          </div>
+  <div class="container">
+    <div class="left-side">
+      <div class="icon-container">
+        <img src="../../assets/images/GC.jpg" alt="GCION Logo">
+        <img src="../../assets/images/ccs.jpg" alt="GCION Image">
+      </div>
+    </div>
+    <div class="right-side">
+      <div class="flip-card__inner">
+        <div class="flip-card__front card-side">
+          <div class="title">Log in</div>
+          <form class="flip-card__form" (ngSubmit)="onLogin()">
+            <input class="flip-card__input" name="email" [(ngModel)]="email" placeholder="Email" type="email">
+            <input class="flip-card__input" name="password" [(ngModel)]="password" placeholder="Password" type="password">
+            <button class="flip-card__btn" type="submit">Login!</button>
+          </form>
         </div>
+      </div>
     </div>
   </div>
-  
+</div>

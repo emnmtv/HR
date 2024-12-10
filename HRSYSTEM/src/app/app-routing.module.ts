@@ -6,6 +6,7 @@ import { AdminProfileComponent } from './adminprofile/adminprofile.component';
 import { ErrorComponent } from './error/error.component';
 import { EmployeesComponent } from './employees/employees.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { EmployeecalendarComponent } from './employeecalendar/employeecalendar.component';
 
 const routes: Routes = [
   { path: '', redirectTo:'login', pathMatch: 'full' },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'employees', component: EmployeesComponent },
   { path: 'sidenav', component: SidenavComponent },
   { path :'adminprofile', component: AdminProfileComponent},
+  { path: 'employeecalendar', component: EmployeecalendarComponent},
   
   
   

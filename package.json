@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@ng-bootstrap/ng-bootstrap": "^17.0.1",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

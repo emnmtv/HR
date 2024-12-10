@@ -18,8 +18,8 @@ throw new Error('Method not implemented.');
     name: '',
     location: '',
     age: '24',
-    gender: '',
-    status: 'active',
+    sex: '',
+    vaccinationStatus: 'yes',
     role: '',
     email: '',
     contact: '',
@@ -27,12 +27,15 @@ throw new Error('Method not implemented.');
     profilePictureUrl: '',
   };
 
+  tempUser = { ...this.user } // Create a temporary object to hold form values
+
   activities = [
     { description: "You added a role 'Sales Lead'", timestamp: '19/02/2023 10:40:55 AM' },
     { description: "You assigned task 'API Integration' to a role 'Technical Lead - BE'", timestamp: '19/02/2023 09:40:55 AM' },
   ];
 
   onEditProfile() {
+    this.tempUser = { ...this.user }; // Copy user data to tempUser
     this.isEditing = true;
   }
 
@@ -41,9 +44,17 @@ throw new Error('Method not implemented.');
   }
 
   saveProfile() {
+    this.user.name = this.tempUser.name;
+    this.user.email = this.tempUser.email;
+    this.user.sex = this.tempUser.sex;
+    this.user.location = this.tempUser.location;
+    this.user.role = this.tempUser.role;
+    this.user.contact = this.tempUser.contact;
+    this.user.region = this.tempUser.region;
+
     localStorage.setItem('userName', this.user.name);
     localStorage.setItem('userEmail', this.user.email);
-    localStorage.setItem('userGender', this.user.gender);
+    localStorage.setItem('userSex', this.user.sex);
     localStorage.setItem('userLocation', this.user.location);
     localStorage.setItem('userRole', this.user.role);
     localStorage.setItem('userContact', this.user.contact);
@@ -73,7 +84,7 @@ throw new Error('Method not implemented.');
   ngOnInit() {
     const storedName = localStorage.getItem('userName');
     const storedEmail = localStorage.getItem('userEmail');
-    const storedGender = localStorage.getItem('userGender');
+    const storedSex = localStorage.getItem('userSex');
     const storedLocation = localStorage.getItem('userLocation');
     const storedRole = localStorage.getItem('userRole');
     const storedContact = localStorage.getItem('userContact');
@@ -82,7 +93,7 @@ throw new Error('Method not implemented.');
 
     if (storedName) this.user.name = storedName;
     if (storedEmail) this.user.email = storedEmail;
-    if (storedGender) this.user.gender = storedGender;
+    if (storedSex) this.user.sex = storedSex;
     if (storedLocation) this.user.location = storedLocation;
     if (storedRole) this.user.role = storedRole;
     if (storedContact) this.user.contact = storedContact;

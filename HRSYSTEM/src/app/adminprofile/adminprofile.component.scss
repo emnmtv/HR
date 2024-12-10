@@ -19,7 +19,7 @@
         border-radius: 50%;
         overflow: hidden;
         margin-right: 20px;
-        border: 3px solid #007bff;
+        border: 3px solid #00ff5e;
   
         img {
           width: 100%;
@@ -38,15 +38,15 @@
           color: #444;
         }
   
-        .status {
+        .vaccinationstatus {
           font-weight: bold;
           font-size: 1rem;
   
-          &.active {
-            color: green;
+          &.yes {
+            color: rgb(55, 237, 55);
           }
   
-          &.inactive {
+          &.no {
             color: red;
           }
         }
@@ -134,9 +134,8 @@
       .upload-btn {
         display: inline-block;
         position: relative;
-        font-size: 0.9rem;
         background-color: #00bfa6;
-        padding: 14px 40px;
+        padding: 14px 34px;
         color: #fff;
         text-transform: uppercase;
         letter-spacing: 2px;
@@ -181,7 +180,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.5); /* Slightly darker background */
       display: flex;
       justify-content: center;
       align-items: center;
@@ -191,20 +190,36 @@
     .modal-content {
       background: #fff;
       padding: 30px;
-      border-radius: 10px;
+      border-radius: 15px; /* More rounded corners */
       width: 450px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Softer shadow */
       display: flex;
       flex-direction: column;
   
-      h3 {
+      h3.modal-title {
         margin-bottom: 25px;
         font-size: 1.8rem;
         font-weight: bold;
         color: #007bff;
         text-align: center;
       }
-  
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .close-btn {
+        background: none;
+        border: none;
+        font-size: 40px;
+        color: #333;
+        cursor: pointer;
+        transition: transform 0.2s ease; /* Add a smooth transition */
+      }
+      .close-btn:hover {
+        transform: scale(1.1); /* Slightly enlarge on hover */
+      }
       form {
         display: flex;
         flex-direction: column;
@@ -216,56 +231,87 @@
           color: #555;
         }
   
-        input,
-        select {
+        .form-input {
           padding: 12px;
           margin-bottom: 20px;
           border: 1px solid #ccc;
-          border-radius: 6px;
+          border-radius: 10px; /* More rounded input fields */
           font-size: 1rem;
           outline: none;
-          transition: border 0.3s;
-  
-          &:focus {
-            border-color: #007bff;
-          }
+          transition: border 0.3s, box-shadow 0.3s; /* Add transitions for both border and box-shadow */
+          background-color: #f9f9f9; /* Light background for better contrast */
+          color: #333; /* Darker text color */
+          width: 98%; /* Make inputs take full width */
         }
-  
-        .modal-buttons {
+
+        .form-input:focus {
+          border-color: #007bff;
+          box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add a focus effect */
+        }
+
+        .form-actions {
           display: flex;
           justify-content: space-between;
           margin-top: 15px;
   
           button {
             padding: 12px 20px;
-            border-radius: 6px;
-            font-size: 1rem;
+            border-radius: 8px; /* More rounded buttons */
             cursor: pointer;
             width: 48%;
+            transition: background-color 0.2s ease; /* Add a smooth transition */
   
             &:first-child {
-              background: #ccc;
-              color: #333;
-              border: none;
+              background-color: #1bd130;
+        padding: 14px 40px;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        cursor: pointer;
+        border-radius: 10px;
+        border: 2px dashed #1bd130;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+        transition: 0.4s;
+        img {
+          margin-right: 5px; /* Add spacing between icon and text */
+          vertical-align: middle; /* Align the image vertically with the text */
+        }
             }
   
             &:last-child {
-              background: #007bff;
-              color: white;
-              border: none;
+              background-color: #f12c2c;
+        padding: 14px 40px;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        cursor: pointer;
+        border-radius: 10px;
+        border: 2px dashed #f12c2c;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+        transition: 0.4s;
+              
+        img {
+          margin-right: 5px; /* Add spacing between icon and text */
+          vertical-align: middle; /* Align the image vertically with the text */
+        }
   
               &:hover {
-                background: #0056b3;
+                border: 2px dashed #f12c2c;
+          background-color: #fff;
+          color: #f12c2c;
               }
             }
   
             &:hover {
-              opacity: 0.9;
+              border: 2px dashed #1bd130;
+          background-color: #fff;
+          color: #1bd130;
             }
           }
         }
       }
     }
+
   
     /* User Details Section */
     .details {
