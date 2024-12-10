@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Roboto:wght@400;500&display=swap');
+
 .wrapper {
   --input-focus: #2d8cf0;
   --font-color: #323232;
@@ -11,11 +13,23 @@
   align-items: center;
   height: 97vh; /* Full screen height */
   margin-right: 6%;
+  overflow: hidden;
 }
 
 .container {
   display: flex;
-  width: 80%;
+  justify-content: space-between; /* Ensures left-side and right-side are spaced correctly */
+  align-items: center; /* Vertically align items within the container */
+  width: 100%; /* Full width of the wrapper */
+}
+
+.header {
+  position: absolute;
+  top: 10px;
+  left: -20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--main-color);
 }
 
 .left-side {
@@ -24,47 +38,65 @@
   justify-content: flex-end; /* Align items to the bottom */
   align-items: flex-start; /* Align items to the left */
   width: 50%;
-  height: 100%;
+  height: 20px;
   background-color: #fff;
-  margin-left: 50px; /* Increased left margin */
+  margin-left: 100px; /* Increased left margin */
 }
 
 .icon-container {
   display: flex;
-  gap: 20px; /* Space between images */
-  margin-bottom: 100px; /* Increased bottom margin */
+  gap: 30px; /* Space between images */
+  margin-bottom: -200px; /* Increased bottom margin */  
 }
 
 .left-side img {
-  max-width: 100%;
+  max-width: 30%;
+  size-adjust: 300px;
 }
 
+.middle-title {
+  font-family: 'Poppins', sans-serif, bold;
+  font-size: 40px;
+  font-display: flex;
+  margin-top: 100px;
+}
+
+.middle {
+  margin-left: 230px;
+  font-size: 20px;
+  font-family: 'Poppins', sans-serif;
+}
 .right-side {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center; /* Center the content horizontally */
-  width: 40%;
-  height: 40%;
+  justify-content: center; /* Vertically centers content */
+  align-items: center; /* Horizontally centers content */
+  width: 400px; /* Adjust width to your desired size */
   background-color: #fff;
-  margin-right: 70px; /* Added right margin */
+  padding: 30px; /* Add padding for spacing */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  margin-right: 100px; /* Reset margin if needed */
+  height: 420px;
+  margin-bottom: 160px;
 }
 
 .flip-card__inner {
   width: 300px;
-  height: 200px;
   position: relative;
   background-color: transparent;
   perspective: 1000px;
   text-align: center;
   transition: transform 0.8s;
   transform-style: preserve-3d;
+  max-width: 400px; /* Prevents it from being too wide */
+  height: 500px; /* Adjusts height dynamically */
 }
 
 .flip-card__front, .flip-card__back {
   padding: 20px;
   position: absolute;
   display: flex;
+  margin-left: -8px;
   flex-direction: column;
   justify-content: center;
   -webkit-backface-visibility: hidden;
@@ -74,6 +106,7 @@
   border-radius: 5px;
   border: 2px solid var(--main-color);
   box-shadow: 4px 4px var(--main-color);
+  margin-top: 20px;
 }
 
 .flip-card__back {
@@ -94,6 +127,21 @@
   font-weight: 900;
   text-align: center;
   color: var(--main-color);
+}
+
+.hrlogo {
+  margin-left: 230px;
+  height: 40px;
+  vertical-align: middle;
+  margin-top: -70px;
+}
+
+.title-text {
+  font-size: 20px;
+  margin-bottom: 10px;
+  margin-left: 280px;
+  margin-top: 50px;
+  font-family: 'Poppins', sans-serif, bold;
 }
 
 .flip-card__input {
