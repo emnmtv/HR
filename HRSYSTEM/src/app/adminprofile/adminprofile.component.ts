@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { SidenavComponent } from '../sidenav/sidenav.component';
 
 @Component({
   selector: 'app-admin-profile',
@@ -7,27 +6,24 @@ import { SidenavComponent } from '../sidenav/sidenav.component';
   styleUrls: ['./adminprofile.component.scss'],
 })
 export class AdminProfileComponent implements OnInit {
-closePopup() {
-throw new Error('Method not implemented.');
-}
   isEditing = false;
   uploadSuccess = false;
-  profileUpdated = false; // To control the success pop-up visibility
+  profileUpdated = false;
 
   user = {
     name: '',
-    location: '',
+    location: 'Unknown', //Added default value
     age: '24',
-    sex: '',
+    sex: 'Unknown', //Added default value
     vaccinationStatus: 'yes',
-    role: '',
+    role: 'Unknown', //Added default value
     email: '',
-    contact: '',
-    region: '',
-    profilePictureUrl: '',
+    contact: 'Unknown', //Added default value
+    region: 'Unknown', //Added default value
+    profilePictureUrl: 'assets/profile-placeholder.png', // Added default image
   };
 
-  tempUser = { ...this.user } // Create a temporary object to hold form values
+  tempUser = { ...this.user };
 
   activities = [
     { description: "You added a role 'Sales Lead'", timestamp: '19/02/2023 10:40:55 AM' },
@@ -35,23 +31,18 @@ throw new Error('Method not implemented.');
   ];
 
   onEditProfile() {
-    this.tempUser = { ...this.user }; // Copy user data to tempUser
+    this.tempUser = { ...this.user };
     this.isEditing = true;
   }
 
   closeModal() {
+    this.tempUser = { ...this.user };
     this.isEditing = false;
+    this.uploadSuccess = false; // Reset upload success message
   }
 
   saveProfile() {
-    this.user.name = this.tempUser.name;
-    this.user.email = this.tempUser.email;
-    this.user.sex = this.tempUser.sex;
-    this.user.location = this.tempUser.location;
-    this.user.role = this.tempUser.role;
-    this.user.contact = this.tempUser.contact;
-    this.user.region = this.tempUser.region;
-
+    this.user = { ...this.tempUser };
     localStorage.setItem('userName', this.user.name);
     localStorage.setItem('userEmail', this.user.email);
     localStorage.setItem('userSex', this.user.sex);
@@ -59,10 +50,12 @@ throw new Error('Method not implemented.');
     localStorage.setItem('userRole', this.user.role);
     localStorage.setItem('userContact', this.user.contact);
     localStorage.setItem('userRegion', this.user.region);
+    localStorage.setItem('profilePictureUrl', this.user.profilePictureUrl);
 
-    this.profileUpdated = true; // Show the success pop-up
-    setTimeout(() => this.profileUpdated = false, 3000); // Hide pop-up after 3 seconds
-    this.closeModal();
+
+    this.profileUpdated = true;
+    setTimeout(() => this.profileUpdated = false, 3000);
+    this.isEditing = false;
   }
 
   onProfilePictureUpload(event: Event) {
@@ -72,9 +65,8 @@ throw new Error('Method not implemented.');
       const reader = new FileReader();
 
       reader.onload = () => {
-        this.user.profilePictureUrl = reader.result as string;
+        this.tempUser.profilePictureUrl = reader.result as string;
         this.uploadSuccess = true;
-        localStorage.setItem('profilePictureUrl', this.user.profilePictureUrl);
       };
 
       reader.readAsDataURL(file);

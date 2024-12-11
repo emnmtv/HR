@@ -1,95 +1,102 @@
-<body>
-  <div class="admin-profile">
-      <!-- Header Section -->
-      <div class="header">
-        <div class="avatar">
-          <img [src]="user.profilePictureUrl || 'assets/profile-placeholder.png'" alt="Profile Picture" />
-        </div>
-        <div class="info">
-          <h2>{{ user.name }}</h2>
-          <p><strong>Address:</strong> {{ user.location }}</p>
-          <p><strong>Age:</strong> {{ user.age }} </p>
-          <p><strong>Sex:</strong> {{ user.sex }} </p>
-          <p><strong>Role:</strong> {{ user.role }}</p>
-          <p><strong>Email:</strong> {{ user.email }}</p>
-          <p><strong>Contact:</strong> {{ user.contact }}</p>
-          <p><strong>Vaccination Status:</strong> <span class="vaccinationstatus" [ngClass]="user.vaccinationStatus">{{ user.vaccinationStatus | titlecase }}</span></p>
-        </div>
-        <button class="btn edit-btn" (click)="onEditProfile()">Edit Profile
-          <img src="../../assets/images/edit.png" alt="Edit" /> 
-        </button>
-      </div>
-    
-          <!-- Edit Profile Modal -->
-    <div *ngIf="isEditing" class="modal-overlay">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title">Edit Profile</h3>
-          <button type="button" class="close-btn" (click)="closeModal()">&times;</button>
-        </div>
-        <form (ngSubmit)="saveProfile()">
-          <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" id="name" [(ngModel)]="user.name" name="name" placeholder="Enter your name" class="form-input" />
-          </div>
-  
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" [(ngModel)]="user.email" name="email" placeholder="Enter your email" class="form-input" />
-          </div>
-  
-          <div class="form-group">
-            <label for="sex">Sex</label>
-            <select id="sex"  [(ngModel)]="tempUser.sex" name="sex" class="form-input">
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-            </select>
-          </div>
-  
-          <div class="form-group">
-            <label for="role">Role</label>
-            <input type="text" id="role" [(ngModel)]="user.role" name="role" placeholder="Enter your role" class="form-input" />
-          </div>
-  
-          <div class="form-group">
-            <label for="age">Age</label>
-            <input type="number" id="age" [(ngModel)]="user.age" name="age" placeholder="Enter your age" class="form-input" />
-          </div>
-
-          <!-- Profile Picture Upload Section -->
-          <div class="form-group upload-section">
-            <button class="btn upload-btn">
-              Upload Picture
-              <input type="file" (change)="onProfilePictureUpload($event)" accept=".jpg,.jpeg,.png" />
-            </button>
-            <div *ngIf="uploadSuccess" class="upload-success">Profile picture uploaded successfully!</div>
-          </div>
-
-          <div class="form-actions">
-            <button type="submit" class="btn save-btn">Save
-              <img src="../../assets/images/save.png" alt="Save" /> 
-            </button>
-            <button type="button" class="btn cancel-btn" (click)="closeModal()">Cancel
-              <img src="../../assets/images/decline.png" alt="Cancel" /> 
-            </button>
-          </div>
-        </form>
-      </div>
+<div class="admin-profile">
+  <div class="header">
+    <div class="avatar">
+      <img [src]="user.profilePictureUrl" alt="Profile Picture" />
     </div>
-    
-      <!-- Activities Section -->
-      <div class="activities">
-        <h3>Your Activities</h3>
-        <ul>
-          <li>
-            <span>{{ activities[0].description }}</span>
-            <span class="timestamp">{{ activities[0].timestamp }}</span>
-          </li>
-          <li>
-            <span>{{ activities[1].description }}</span>
-            <span class="timestamp">{{ activities[1].timestamp }}</span>
-          </li>
-        </ul>
-      </div>
+    <div class="info">
+      <h2>{{ user.name }}</h2>
+      <p><strong>Address:</strong> {{ user.location }}</p>
+      <p><strong>Age:</strong> {{ user.age }}</p>
+      <p><strong>Sex:</strong> {{ user.sex }}</p>
+      <p><strong>Role:</strong> {{ user.role }}</p>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong>Contact:</strong> {{ user.contact }}</p>
+      <p><strong>Vaccination Status:</strong> <span class="vaccinationstatus"
+          [ngClass]="user.vaccinationStatus">{{ user.vaccinationStatus | titlecase }}</span></p>
     </div>
-  </body>
+    <button class="btn edit-btn" (click)="onEditProfile()">Edit Profile
+      <img src="../../assets/images/edit.png" alt="Edit" />
+    </button>
+  </div>
+
+  <div *ngIf="isEditing" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Edit Profile</h3>
+        <button type="button" class="close-btn" (click)="closeModal()">&times;</button>
+      </div>
+      <form (ngSubmit)="saveProfile()">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" [(ngModel)]="tempUser.name" name="name" placeholder="Enter your name"
+            class="form-input" />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" [(ngModel)]="tempUser.email" name="email" placeholder="Enter your email"
+            class="form-input" />
+        </div>
+
+        <div class="form-group">
+          <label for="sex">Sex</label>
+          <select id="sex" [(ngModel)]="tempUser.sex" name="sex" class="form-input">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="role">Role</label>
+          <input type="text" id="role" [(ngModel)]="tempUser.role" name="role" placeholder="Enter your role"
+            class="form-input" />
+        </div>
+
+        <div class="form-group">
+          <label for="age">Age</label>
+          <input type="number" id="age" [(ngModel)]="tempUser.age" name="age" placeholder="Enter your age"
+            class="form-input" />
+        </div>
+
+        <div class="form-group">
+          <label for="location">Address</label>
+          <input type="text" id="location" [(ngModel)]="tempUser.location" name="location"
+            placeholder="Enter your location" class="form-input" />
+        </div>
+
+        <div class="form-group">
+          <label for="contact">Contact</label>
+          <input type="text" id="contact" [(ngModel)]="tempUser.contact" name="contact"
+            placeholder="Enter your contact" class="form-input" />
+        </div>  
+
+        <div class="form-group upload-section">
+          <button class="btn upload-btn">
+            Upload Picture
+            <input type="file" (change)="onProfilePictureUpload($event)" accept=".jpg,.jpeg,.png" />
+          </button>
+          <div *ngIf="uploadSuccess" class="upload-success">Profile picture uploaded successfully!</div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn save-btn">Save
+            <img src="../../assets/images/save.png" alt="Save" />
+          </button>
+          <button type="button" class="btn cancel-btn" (click)="closeModal()">Cancel
+            <img src="../../assets/images/decline.png" alt="Cancel" />
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="activities">
+    <h3>Your Activities</h3>
+    <ul>
+      <li *ngFor="let activity of activities">
+        <span>{{ activity.description }}</span>
+        <span class="timestamp">{{ activity.timestamp }}</span>
+      </li>
+    </ul>
+  </div>
+</div>

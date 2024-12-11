@@ -17,7 +17,7 @@
     <button class="export-button" (click)="exportToExcel()"> Export
       <img src="../../assets/images/excel.png" alt="Excel" /> 
     </button>
-    <button class="delete-button" (click)="deleteSelected()">Delete 
+    <button class="delete-button" (click)="openModal()">Delete 
       <img src="../../assets/images/delete.png" alt="Delete" /> 
     </button>
   </div>
@@ -69,4 +69,20 @@
       </tr>
     </tbody>
   </table>
+
+  <!-- Modal -->
+  <div class="modal" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="stopEventPropagation($event)">
+      <h2>Delete Confirmation</h2>
+      <p>Are you sure you want to delete the selected employees?</p>
+      <div class="modal-buttons">
+        <button class="cancel-button" (click)="closeModal()">Cancel 
+          <img src="../../assets/images/decline.png" alt="Cancel" /> 
+        </button>
+        <button class="confirm-button" (click)="deleteSelected()">Confirm 
+          <img src="../../assets/images/approve.png" alt="Approve" /> 
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

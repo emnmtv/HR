@@ -2,35 +2,6 @@
   font-family: Arial, sans-serif;
   padding: 20px;
 
-  table thead tr th:first-child input[type="checkbox"] {
-    width: 25px;
-    height: 25px;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    background-color: #fff;
-  }
-
-  table tbody td input[type="checkbox"] {
-    width: 25px;
-    height: 25px;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    background-color: #fff;
-  }
-
-  .sidenav.collapsed {
-    width: 60px;
-    padding: 0;
-  }
-
-  .checkbox-container {
-    position: relative;
-    z-index: 10;
-  }
-  .select-all-container {
-    position: relative;
-    z-index: 10;
-  }
   h2 {
     margin-bottom: 20px;
     color: #333;
@@ -70,6 +41,7 @@
 
   .filter-input:focus {
     outline: none;
+    border-color: #007bff; /* Change border color on focus */
   }
 
   .export-button {
@@ -83,6 +55,7 @@
     border: 2px dashed #1bd130;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
     transition: 0.4s;
+
     img {
       margin-right: 5px; /* Add spacing between icon and text */
       vertical-align: middle; /* Align the image vertically with the text */
@@ -121,65 +94,149 @@
 
   table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 10px; /* Add rounded corners to the table */
+    overflow: hidden; /* Ensure the corners are rounded */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Add shadow to the table */
+
+    thead {
+      background-color: #f8f8f8; /* Light background for the header */
+    }
 
     th,
     td {
       text-align: left;
       padding: 10px;
-      border: 3px solid #333;
+      border: 1px solid #ddd; /* Use a lighter border */
     }
 
     th {
-      background-color: #f8f8f8;
+      background-color: #f0f0f0; /* Slightly darker background for header */
       color: #333;
       font-weight: bold;
-      border: 4px solid #000;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-      position: relative;
-      cursor: pointer;
-
-      .sort-icons {
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        display: inline-flex;
-        gap: 5px;
-
-        .icon {
-          font-size: 12px;
-          color: #ccc;
-          transition: color 0.2s;
-        }
-
-        .icon.active {
-          color: #000;
-          font-weight: bold;
-        }
-      }
-
-      &:hover .icon {
-        color: #007bff;
-      }
     }
 
     tr {
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s; /* Smooth transition for hover effect */
+    }
+
+    tr:hover {
+      background-color: #f9f9f9; /* Light background on row hover */
     }
 
     td {
-      &.yes {
-        color: rgb(55, 237, 55);
-      }
+      border-bottom: 1px solid #ddd; /* Add a bottom border for separation */
+      text-align: center; /* Center the content in the cell */
+    }
 
-      &.no {
-        color: red;
+    td.yes {
+      color: rgb(55, 237, 55);
+ }
+
+    td.no {
+      color: red;
+    }
+
+    .checkbox-container,
+    .select-all-container {
+      position: relative;
+      z-index: 10;
+
+      input[type="checkbox"] {
+        width: 20px; /* Increase checkbox size */
+        height: 20px; /* Increase checkbox size */
+        cursor: pointer; /* Change cursor to pointer */
       }
     }
   }
-
-  .search-container .filter-input:focus ~ .icon {
-    fill: #007bff; /* Change fill color on focus */
-  }
 }
+
+.modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100; /* Ensure modal is on top of other elements */
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 400px; /* Adjust width as needed */
+  max-width: 90%; /* Limit maximum width */
+}
+
+.modal-content h2 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.modal-content p {
+  margin-bottom: 30px;
+  color: #555;
+  font-size: 1rem;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.cancel-button {
+  background-color: #f12c2c;
+    padding: 14px 40px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    border-radius: 10px;
+    border: 2px dashed #f12c2c;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    transition: 0.4s;
+
+    img {
+      margin-right: 5px; /* Add spacing between icon and text */
+      vertical-align: middle; /* Align the image vertically with the text */
+    }
+
+    &:hover {
+      border: 2px dashed #f12c2c;
+      background-color: #fff;
+      color: #f12c2c;
+    }
+  }
+
+.confirm-button {
+  background-color: #1bd130;
+    padding: 14px 40px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    border-radius: 10px;
+    border: 2px dashed #1bd130;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    transition: 0.4s;
+
+    img {
+      margin-right: 5px; /* Add spacing between icon and text */
+      vertical-align: middle; /* Align the image vertically with the text */
+    }
+
+    &:hover {
+      border: 2px dashed #1bd130;
+      background-color: #fff;
+      color: #1bd130;
+    }
+  }
