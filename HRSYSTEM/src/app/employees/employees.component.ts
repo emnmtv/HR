@@ -14,10 +14,9 @@ export class EmployeesComponent {
   showModal = false; // Variable to control modal visibility
 
   employees = [
-    { id: '1', name: 'Kathy Pacheco', sex: 'Female' , address: 'Sales Representative', vaccinationstatus: 'Yes', company: 'New York', phone: 'patricia44@icloud.com', selected: false },
-    { id: '2', name: 'Francis Seann', sex: 'Male' ,address: 'Accountant', vaccinationstatus: 'No', company: 'Singapore', phone: '296-744-587', selected: false },
-    { id: '3', name: 'Jake Rabago', sex: 'Male' ,address: 'Project Manager', vaccinationstatus: 'Yes', company: 'London', phone: '(289) 716-4240', selected: false },
-    { id: '4', name: 'John Paul', sex: 'Male',address: 'Developer', vaccinationstatus: 'No', company: 'Singapore', phone: '(888) 275-5489', selected: false },
+    { id: '1', name: 'Knowell Lucky Versoza', sex: 'Female' , address: 'East Tapinac, Olongapo City', vaccinationstatus: 'Yes', company: 'Apple', phone: '295-829-032', selected: false },
+    { id: '2', name: 'Jush Eisley De Guzman', sex: 'Male' ,address: 'Gordon Heights, Olongapo City', vaccinationstatus: 'No', company: 'Apple', phone: '296-744-587', selected: false },
+    { id: '3', name: 'John Mel Haniba', sex: 'Female' ,address: 'Santa Cruz, Zambales', vaccinationstatus: 'Yes', company: 'Samsung', phone: '(289) 716-4240', selected: false },
     // Add other employees as per your list...
   ];
 

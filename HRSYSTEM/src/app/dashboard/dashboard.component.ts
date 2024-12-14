@@ -21,9 +21,9 @@ export class DashboardComponent implements OnInit {
 
 
   requests = [
-    { id: 1, name: 'Kathy Pacheco', period: 'Full Day', type: 'Day Off', status: 'Pending', date: 'Today', notes: 'I need to stay with my parents' },
-    { id: 2, name: 'Samantha Pacheco', period: '3 Jul - 12 Jul', type: 'Vacation', status: 'Pending', date: 'Today', notes: 'Annual vacation' },
-    { id: 3, name: 'Jush De Guzman', period: 'November 22', type: 'Vacation', status: 'Pending', date: 'Today', notes: 'Birthday' },
+    { id: 1, name: 'Knowell Lucky Versoza', period: 'Full Day', type: 'Day Off', status: 'Pending', date: 'Today', notes: 'I need to stay with my parents' },
+    { id: 2, name: 'Jush Eisley De Guzman', period: '3 Jul - 12 Jul', type: 'Vacation', status: 'Pending', date: 'Today', notes: 'Annual vacation' },
+    { id: 3, name: 'John Mel Haniba', period: 'November 22', type: 'Vacation', status: 'Pending', date: 'Today', notes: 'Birthday' },
   ];
 
   ngOnInit(): void {
