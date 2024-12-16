@@ -8,9 +8,9 @@ import { SidenavComponent } from '../sidenav/sidenav.component';
 })
 export class EmployeecalendarComponent {
   employees = [
-    { id: 1, name: 'Knowell Lucky Versoza', department: 'UI/UX Design', attendance: 96, punctuality: 84, image: 'https://via.placeholder.com/150' },
-    { id: 2, name: 'Jush  Eisley De Guzman', department: 'UI/UX Design', attendance: 96, punctuality: 84, image: 'https://via.placeholder.com/150' },
-    { id: 3, name: 'John Mel Haniba', department: 'Software Engineering', attendance: 99, punctuality: 94, image: 'https://via.placeholder.com/150' },
+    { id: 1, name: 'Knowell Lucky Versoza', department: 'UI/UX Design', attendance: 96, punctuality: 84, image: 'https://via.placeholder.com/150', timeIn: "9:00 AM", timeOut: "6:00 PM"  },
+    { id: 2, name: 'Jush  Eisley De Guzman', department: 'UI/UX Design', attendance: 96, punctuality: 84, image: 'https://via.placeholder.com/150', timeIn: "9:30 AM", timeOut: "5:30 PM"  },
+    { id: 3, name: 'John Mel Haniba', department: 'Software Engineering', attendance: 99, punctuality: 94, image: 'https://via.placeholder.com/150', timeIn: "8:00 AM", timeOut: "5:00 PM"  },
   ];
 
   isModalOpen = false;
