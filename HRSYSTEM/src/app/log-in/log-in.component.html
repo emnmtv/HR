@@ -5,8 +5,8 @@
         <h2 class="title-text">HR Attendance Records</h2>
         <img class="hrlogo" src="../../assets/images/HRLogo.png" alt="HR Logo">
         <div class="middle">
-        <h3 class="middle-title">Welcome to HR Attendance Records</h3>
-        <h4 class="middle-subtitle">Please enter your email and password to access the system.</h4>
+          <h3 class="middle-title">Welcome to HR Attendance Records</h3>
+          <h4 class="middle-subtitle">Please enter your email and password to access the system.</h4>
         </div>
       </div>
     </div>
@@ -25,6 +25,8 @@
             <input class="flip-card__input" name="email" [(ngModel)]="email" placeholder="Email" type="email">
             <input class="flip-card__input" name="password" [(ngModel)]="password" placeholder="Password" type="password">
             <button class="flip-card__btn" type="submit">Login!</button>
+            <!-- Display error message if login fails -->
+            <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
           </form>
         </div>
       </div>
