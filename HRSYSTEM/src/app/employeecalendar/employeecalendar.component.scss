@@ -36,31 +36,20 @@
   }
 }
 
-/* Modal Backdrop */
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-}
 
-/* Modal Styles */
 .modal {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 90%; /* Increased width */
-  max-width: 600px; /* Increased max-width */
+  width: 95%;  /* Increased width */
+  max-width: 1000px; /* Increased max-width */
   background: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   z-index: 1001;
-  padding: 2rem;
-  overflow-y: auto; /* Allow scrolling if content exceeds height */
+  padding: 30px; 
+  overflow-y: auto;
 
   .modal-content {
     .modal-header {
@@ -69,61 +58,54 @@
       align-items: center;
       font-size: 1.5rem;
       font-weight: bold;
-      margin-bottom: 1rem;
-
-      .close-btn {
-        background: none;
-        border: none;
-        font-size: 1.8rem;
-        cursor: pointer;
-        color: #555;
-
-        &:hover {
-          color: #000;
-        }
-      }
+      margin-bottom: 20px;
     }
 
     .modal-body {
       .calendar {
-        .employee-info {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          margin-bottom: 1rem; // Add some spacing below employee info
-          p {
-            font-weight: bold;
-            margin-bottom: 0.5rem; // Add spacing between time in and time out
-          }
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 16px;
+
+        th, td {
+          border: 1px solid #ddd;
+          padding: 10px;
+          text-align: center;
+        }
+
+        th {
+          background-color: #f2f2f2;
+          font-weight: bold;
         }
       }
     }
 
     .modal-footer {
       text-align: right;
-      margin-top: 1rem;
-
-      .close-btn {
-          background-color: #f12c2c;
-          padding: 14px 40px;
-          color: #fff;
-          text-transform: uppercase;
-          letter-spacing: 2px;
-          cursor: pointer;
-          border-radius: 10px;
-          border: 2px dashed #f12c2c;
-          transition: 0.4s;
-          img {
-              margin-right: 5px; /* Add spacing between icon and text */
-              vertical-align: middle; /* Align the image vertically with the text */
-            }
-            
-        &:hover {
-          border: 2px dashed #f12c2c;
-                  background-color: #fff;
-                  color: #f12c2c;
-        }
-      }
+      margin-top: 20px;
     }
   }
+}
+
+
+.close-btn, .time-btn {
+  background-color: #f12c2c;
+  color: white;
+  border: none;
+  padding: 14px 40px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.close-btn:hover, .time-btn:hover {
+  background-color: #fff;
+  color: #f12c2c;
+  border: 2px dashed #f12c2f;
+}
+
+.calendar-day {
+  width: 14.28%;
 }
