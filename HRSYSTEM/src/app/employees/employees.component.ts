@@ -17,7 +17,7 @@ export class EmployeesComponent {
     { id: '1', name: 'Knowell Lucky Versoza', sex: 'Female' , address: 'East Tapinac, Olongapo City', vaccinationstatus: 'Yes', company: 'Apple', phone: '295-829-032', selected: false },
     { id: '2', name: 'Jush Eisley De Guzman', sex: 'Male' ,address: 'Gordon Heights, Olongapo City', vaccinationstatus: 'No', company: 'Apple', phone: '296-744-587', selected: false },
     { id: '3', name: 'John Mel Haniba', sex: 'Female' ,address: 'Santa Cruz, Zambales', vaccinationstatus: 'Yes', company: 'Samsung', phone: '(289) 716-4240', selected: false },
-    // Add other employees as per your list...
+    { id: '3', name: 'Jake Alan Legada', sex: 'Male' ,address: 'Subic, Zambales', vaccinationstatus: 'Yes', company: 'ROG', phone: '(289) 716-4240', selected: false },
   ];
 
   filteredEmployees() {

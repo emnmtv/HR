@@ -1,210 +1,111 @@
 .employee-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1rem;
-    padding: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  padding: 2rem;
+}
+
+.employee-card {
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-5px);
   }
-  
-  .employee-card {
-    background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    padding: 1rem;
-    cursor: pointer;
-    transition: transform 0.2s;
-  
-    &:hover {
-      transform: translateY(-5px);
-    }
-  
-    .profile-pic {
-      border-radius: 50%;
-      width: 100px;
-      height: 100px;
-      margin-bottom: 1rem;
-    }
-  
-    h3 {
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-    }
-  
-    p {
-      font-size: 0.9rem;
-      color: #555;
-    }
+
+  .profile-pic {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 1rem;
   }
-  
-  /* Modal Backdrop */
-  .modal-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
+
+  h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
   }
-  
-  /* Modal Styles */
-  .modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%; /* Increased width */
-    max-width: 600px; /* Increased max-width */
-    background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 1001;
-    padding: 2rem;
-    overflow-y: auto; /* Allow scrolling if content exceeds height */
-  
-    .modal-content {
-      .modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 1.5rem;
-        font-weight: bold;
-        margin-bottom: 1rem;
-  
-        .close-btn {
-          background: none;
-          border: none;
-          font-size: 1.8rem;
-          cursor: pointer;
-          color: #555;
-  
-          &:hover {
-            color: #000;
-          }
+
+  p {
+    font-size: 0.9rem;
+    color: #555;
+  }
+}
+
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 95%;  /* Increased width */
+  max-width: 1000px; /* Increased max-width */
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1001;
+  padding: 30px; 
+  overflow-y: auto;
+
+  .modal-content {
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .modal-body {
+      .calendar {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 16px;
+
+        th, td {
+          border: 1px solid #ddd;
+          padding: 10px;
+          text-align: center;
         }
-      }
-  
-      .modal-body {
-        .calendar {
-          table {
-            border-collapse: collapse;
-            width: 100%; /* Make table take full width */
-  
-            th,
-            td {
-              border: 2px solid #ddd;
-              text-align: center;
-              vertical-align: top;
-              font-size: 1rem;
-            }
-  
-            th {
-              background-color: #f2f2f2;
-              font-weight: bold;
-            }
-  
-            td .day {
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-  
-              .present-btn,
-              .absent-btn {
-                margin-top: 0.5rem;
-                border: none;
-                border-radius: 4px;
-                font-size: 0.9rem;
-                cursor: pointer;
-                transition: background-color 0.3s;
-  
-                &.active {
-                  background-color: #007bff;
-                  color: white;
-                }
-              }
-  
-              .absent-btn {
-                background-color: #f12c2c;
-    padding: 2px 2px;
-    color: #fff;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 10px;
-    cursor: pointer;
-    border-radius: 10px;
-    border: 2px dashed #f12c2c;
-    transition: 0.4s;
-  
-                &:hover {
-                    border: 2px dashed #f12c2c;
-                    background-color: #fff;
-                    color: #f12c2c;
-                }
-              }
-  
-              .present-btn {
-                background-color: #1bd130;
-    padding: 2px 2px;
-    color: #fff;
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    cursor: pointer;
-    border-radius: 10px;
-    border: 2px dashed #1bd130;
-    transition: 0.4s;
-  
-                &:hover {
-                    border: 2px dashed #1bd130;
-                    background-color: #fff;
-                    color: #1bd130;
-                }
-              }
 
-              .present-mark {
-                color: #1bd130;
-                font-size: 1.5rem;
-                display: block;
-                margin-top: 0.5rem;
-              }
-
-              .absent-mark {
-                color: #f12c2c;
-                font-size: 1.5rem;
-                display: block;
-                margin-top: 0.5rem;
-              }
-
-            }
-          }
-        }
-      }
-  
-      .modal-footer {
-        text-align: right;
-        margin-top: 1rem;
-  
-        .close-btn {
-            background-color: #f12c2c;
-            padding: 14px 40px;
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            border-radius: 10px;
-            border: 2px dashed #f12c2c;
-            transition: 0.4s;
-            img {
-                margin-right: 5px; /* Add spacing between icon and text */
-                vertical-align: middle; /* Align the image vertically with the text */
-              }
-              
-          &:hover {
-            border: 2px dashed #f12c2c;
-                    background-color: #fff;
-                    color: #f12c2c;
-          }
+        th {
+          background-color: #f2f2f2;
+          font-weight: bold;
         }
       }
     }
+
+    .modal-footer {
+      text-align: right;
+      margin-top: 20px;
+    }
   }
+}
+
+
+.close-btn, .time-btn {
+  background-color: #f12c2c;
+  color: white;
+  border: none;
+  padding: 14px 40px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.close-btn:hover, .time-btn:hover {
+  background-color: #fff;
+  color: #f12c2c;
+  border: 2px dashed #f12c2f;
+}
+
+.calendar-day {
+  width: 14.28%;
+}

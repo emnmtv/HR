@@ -1,67 +1,42 @@
 <div class="employee-container">
-    <div
-      *ngFor="let employee of employees"
-      class="employee-card"
-      (click)="openCalendar(employee)"
-    >
-      <img [src]="employee.image" alt="Profile Picture" class="profile-pic" />
-      <h3>{{ employee.name }}</h3>
-    </div>
+  <div *ngFor="let employee of employees" class="employee-card" (click)="openCalendar(employee)">
+    <img [src]="employee.image" alt="Profile Picture" class="profile-pic" />
+    <h3>{{ employee.name }}</h3>
   </div>
-  
-  <!-- Modal -->
-  <div class="modal" *ngIf="isModalOpen">
-    <div class="modal-content" (click)="$event.stopPropagation()">
-      <div class="modal-header">
-        <h4>Attendance Calendar - {{ selectedEmployee?.name }}</h4>
-        <button class="close-btn" (click)="closeCalendar()">×</button>
-      </div>
-      <div class="modal-body">
-        <div class="calendar">
-          <table>
-            <thead>
-              <tr>
-                <th>Sun</th>
-                <th>Mon</th>
-                <th>Tue</th>
-                <th>Wed</th>
-                <th>Thu</th>
-                <th>Fri</th>
-                <th>Sat</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let week of calendarDays">
-                <td *ngFor="let day of week">
-                  <div class="day">
-                    <span>{{ day.date }}</span>
-                    <img *ngIf="day.mark === '✓'" src="../../assets/images/approve.png" alt="Present" class="attendance-icon" />
-                    <img *ngIf="day.mark === 'X'" src="../../assets/images/decline.png" alt="Absent" class="attendance-icon" />
-                    <button
-                      *ngIf="day.date && !day.mark"
-                      class="present-btn"
-                      [class.active]="day.status === 'Present'"
-                      (click)="markAttendance(day, 'Present')">
-                      Present
-                    </button>
-                    <button
-                      *ngIf="day.date && !day.mark" 
-                      class="absent-btn"
-                      [class.active]="day.status === 'Absent'"
-                      (click)="markAttendance(day, 'Absent')">
-                      Absent
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="close-btn" (click)="closeCalendar()">Close
-            <img src="../../assets/images/decline.png" alt="Cancel" /> 
-        </button>
+</div>
+
+<div class="modal" *ngIf="isModalOpen">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4>Attendance - {{ selectedEmployee?.name }}</h4>
+      <button class="close-btn" (click)="closeCalendar()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="calendar">
+        <table>
+          <thead>
+            <tr>
+              <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let week of calendarDays">
+              <td *ngFor="let day of week" class="calendar-day">
+                <div *ngIf="day.date">
+                  <p>{{ day.date }}</p>
+                  <button class="time-btn" *ngIf="!day.timeIn" (click)="recordTime(day, 'timeIn')">Time In</button>
+                  <p *ngIf="day.timeIn">Time In: {{ day.timeIn }}</p>
+                  <button class="time-btn" *ngIf="!day.timeOut && day.timeIn" (click)="recordTime(day, 'timeOut')">Time Out</button>
+                  <p *ngIf="day.timeOut">Time Out: {{ day.timeOut }}</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
+    <div class="modal-footer">
+      <button class="close-btn" (click)="closeCalendar()">Close</button>
+    </div>
   </div>
+</div>
