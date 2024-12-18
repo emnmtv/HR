@@ -22,14 +22,52 @@
       <div class="flip-card__inner">
         <div class="flip-card__front card-side">
           <div class="title">Log in</div>
-          <form class="flip-card__form" (ngSubmit)="onLogin()">
-            <input class="flip-card__input" name="email" [(ngModel)]="email" placeholder="Email" type="email">
-            <input class="flip-card__input" name="password" [(ngModel)]="password" placeholder="Password" type="password">
-            <button class="flip-card__btn" type="submit">Login!</button>
-            <!-- Display error message if login fails -->
-            <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+          <form class="flip-card__form" (ngSubmit)="onLogin()" #loginForm="ngForm">
+            <input
+              class="flip-card__input"
+              name="email"
+              [(ngModel)]="email"
+              placeholder="Email"
+              type="email"
+              required
+            />
+            <input
+              class="flip-card__input"
+              name="password"
+              [(ngModel)]="password"
+              placeholder="Password"
+              type="password"
+              required
+            />
+            <button
+              class="flip-card__btn"
+              type="submit"
+              [disabled]="!loginForm.valid"
+            >
+              Login!
+            </button>
           </form>
+          
         </div>
+        <!-- Modal HTML -->
+<div class="modal fade" id="notAdminModal" tabindex="-1" aria-labelledby="notAdminModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="notAdminModalLabel">Access Denied</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        You must be an admin to access this system.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
       </div>
     </div>
   </div>
