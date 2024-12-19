@@ -23,17 +23,16 @@ export class EmployeecalendarComponent implements OnInit {
     this.http.get<{ status: string; data: any[] }>(apiUrl).subscribe(
       (response) => {
         if (response.status === 'success') {
-          // Filter employees with `account_type` === 'Employee'
           this.employees = response.data
             .filter((emp) => emp.account_type === 'Employee')
             .map((emp) => ({
               id: emp.id,
               name: `${emp.first_name} ${emp.last_name}`,
               department: emp.company || 'N/A',
-              attendance: 0, // Placeholder until dynamic data is added
-              punctuality: 0, // Placeholder
-              image: 'https://via.placeholder.com/150', // Placeholder for now
-              Date: new Date().toDateString(), // Today's date
+              attendance: 0,
+              punctuality: 0,
+              image: 'https://via.placeholder.com/150',
+              Date: new Date().toDateString(),
               timeIn: null,
               timeOut: null,
             }));
@@ -92,8 +91,52 @@ export class EmployeecalendarComponent implements OnInit {
 
     if (type === 'timeIn' && !day.timeIn) {
       day.timeIn = time;
-    } else if (type === 'timeOut' && day.timeIn) {
+      this.clockIn(day.date);
+    } else if (type === 'timeOut' && day.timeIn && !day.timeOut) {
       day.timeOut = time;
+      this.clockOut(day.date);
+    }
+  }
+
+  // Call backend API for clocking in
+  clockIn(date: string): void {
+    if (this.selectedEmployee) {
+      const apiUrl = 'http://localhost/integapi/main/routes.php?route=clockIn';
+      const body = { employee_id: this.selectedEmployee.id, date };
+
+      this.http.post(apiUrl, body).subscribe(
+        (response: any) => {
+          if (response.status === 'success') {
+            console.log('Clock-in successful');
+          } else {
+            console.error('Clock-in failed:', response.message);
+          }
+        },
+        (error) => {
+          console.error('Error during clock-in:', error);
+        }
+      );
+    }
+  }
+
+  // Call backend API for clocking out
+  clockOut(date: string): void {
+    if (this.selectedEmployee) {
+      const apiUrl = 'http://localhost/integapi/main/routes.php?route=clockOut';
+      const body = { employee_id: this.selectedEmployee.id, date };
+
+      this.http.post(apiUrl, body).subscribe(
+        (response: any) => {
+          if (response.status === 'success') {
+            console.log('Clock-out successful');
+          } else {
+            console.error('Clock-out failed:', response.message);
+          }
+        },
+        (error) => {
+          console.error('Error during clock-out:', error);
+        }
+      );
     }
   }
 }
