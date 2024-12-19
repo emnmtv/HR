@@ -1,21 +1,49 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-employeecalendar',
   templateUrl: './employeecalendar.component.html',
   styleUrls: ['./employeecalendar.component.scss']
 })
-export class EmployeecalendarComponent {
-  employees = [
-    { id: 1, name: 'Knowell Lucky Versoza', department: 'UI/UX Design', attendance: 96, punctuality: 84, image: 'https://via.placeholder.com/150', Date: "December 19, 2023", timeIn: "9:00 AM", timeOut: "6:00 PM" },
-    { id: 2, name: 'Jush Eisley De Guzman', department: 'UI/UX Design', attendance: 96, punctuality: 84, image: 'https://via.placeholder.com/150', Date: "December 19, 2023", timeIn: "9:30 AM", timeOut: "5:30 PM" },
-    { id: 3, name: 'John Mel Haniba', department: 'Software Engineering', attendance: 99, punctuality: 94, image: 'https://via.placeholder.com/150', Date: "December 19, 2023", timeIn: "8:00 AM", timeOut: "5:00 PM" },
-    { id: 4, name: 'Jake Alan Legada', department: 'Fullstack Developer', attendance: 99, punctuality: 94, image: 'https://via.placeholder.com/150', Date: "December 19, 2023", timeIn: "8:00 AM", timeOut: "5:00 PM" },
-  ];
-
+export class EmployeecalendarComponent implements OnInit {
+  employees: any[] = [];
   isModalOpen = false;
   selectedEmployee: any = null;
   calendarDays: any[][] = [];
+
+  constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.fetchEmployees();
+  }
+
+  fetchEmployees(): void {
+    const apiUrl = 'http://localhost/integapi/main/routes.php?route=getEmployeeData';
+    this.http.get<{ status: string; data: any[] }>(apiUrl).subscribe(
+      (response) => {
+        if (response.status === 'success') {
+          // Filter employees with `account_type` === 'Employee'
+          this.employees = response.data
+            .filter((emp) => emp.account_type === 'Employee')
+            .map((emp) => ({
+              id: emp.id,
+              name: `${emp.first_name} ${emp.last_name}`,
+              department: emp.company || 'N/A',
+              attendance: 0, // Placeholder until dynamic data is added
+              punctuality: 0, // Placeholder
+              image: 'https://via.placeholder.com/150', // Placeholder for now
+              Date: new Date().toDateString(), // Today's date
+              timeIn: null,
+              timeOut: null,
+            }));
+        }
+      },
+      (error) => {
+        console.error('Failed to fetch employees:', error);
+      }
+    );
+  }
 
   openCalendar(employee: any): void {
     this.selectedEmployee = employee;
@@ -32,7 +60,7 @@ export class EmployeecalendarComponent {
     const today = new Date();
     const year = today.getFullYear();
     const month = today.getMonth();
-    const daysInMonth = 30;
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
     const firstDayOfMonth = new Date(year, month, 1).getDay();
 
     this.calendarDays = [];
