@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SidenavComponent } from '../sidenav/sidenav.component';
+import Chart from 'chart.js/auto';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,44 +7,68 @@ import { SidenavComponent } from '../sidenav/sidenav.component';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  isSidebarOpen = false;
-  toggleSidebar() {
-    this.isSidebarOpen = !this.isSidebarOpen;
-  }
-  
-  // Add employees property
-  employees = {
-    total: 300,
-    onVacation: 26,
-    sickLeave: 22,
-  };
+  totalEmployees = 150;
+  pendingRequests = 20;
+  activeJobOpenings = 5;
+  upcomingBirthdays = 8;
 
-
-  requests = [
-    { id: 1, name: 'Knowell Lucky Versoza', period: 'Full Day', type: 'Day Off', status: 'Pending', date: 'Today', notes: 'I need to stay with my parents' },
-    { id: 2, name: 'Jush Eisley De Guzman', period: '3 Jul - 12 Jul', type: 'Vacation', status: 'Pending', date: 'Today', notes: 'Annual vacation' },
-    { id: 3, name: 'John Mel Haniba', period: 'November 22', type: 'Vacation', status: 'Pending', date: 'Today', notes: 'Birthday' },
+  recentActivities = [
+    { timestamp: '2024-12-01 10:00 AM', description: 'Approved work-from-home request for John Doe' },
+    { timestamp: '2024-12-01 09:30 AM', description: 'Added a new job posting for Software Developer' },
+    { timestamp: '2024-12-01 08:45 AM', description: 'Updated attendance records for November' },
   ];
 
-  ngOnInit(): void {
-    this.loadStoredData();
+  ngOnInit() {
+    this.renderAttendanceChart();
+    this.renderDepartmentChart();
   }
 
-
-  handleRequest(action: string, request: any): void {
-    request.status = action;
-    this.saveToLocalStorage();
+  renderAttendanceChart() {
+    const ctx = document.getElementById('attendanceChart') as HTMLCanvasElement;
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Present', 'Absent', 'On Leave'],
+        datasets: [
+          {
+            data: [75, 15, 10],
+            backgroundColor: ['#4caf50', '#f44336', '#ff9800'],
+          },
+        ],
+      },
+    });
   }
 
-  private saveToLocalStorage(): void {
-    localStorage.setItem('requests', JSON.stringify(this.requests));
+  renderDepartmentChart() {
+    const ctx = document.getElementById('departmentChart') as HTMLCanvasElement;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Operations', 'HR', 'Finance', 'IT', 'Marketing'],
+        datasets: [
+          {
+            label: 'Employees',
+            data: [50, 20, 15, 40, 25],
+            backgroundColor: '#4caf50',
+          },
+        ],
+      },
+    });
   }
 
-  private loadStoredData(): void {
-    const storedRequests = localStorage.getItem('requests');
+  addEmployee() {
+    alert('Redirecting to Add Employee form...');
+  }
 
-    if (storedRequests) {
-      this.requests = JSON.parse(storedRequests);
-    }
+  approveRequests() {
+    alert('Redirecting to Approve Requests page...');
+  }
+
+  viewReports() {
+    alert('Redirecting to Reports...');
+  }
+
+  postJobOpening() {
+    alert('Redirecting to Post Job Opening form...');
   }
 }

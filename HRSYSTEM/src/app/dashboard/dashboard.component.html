@@ -1,51 +1,64 @@
-<div class="dashboard">
-    <div class="stats">
-      <div class="stat-card total-employees">
-        <h2>Total Employees</h2>
-        <p>{{ employees.total }}</p>
-      </div>
-      <div class="stat-card">
-        <h2>On Vacation</h2>
-        <p>{{ employees.onVacation }}</p>
-      </div>
-      <div class="stat-card">
-        <h2>Sick Leave</h2>
-        <p>{{ employees.sickLeave }}</p>
-      </div>
+<div class="dashboard-container">
+  <h1>HR Dashboard</h1>
+
+  <!-- Overview Cards -->
+  <div class="overview-cards">
+    <div class="card">
+      <h3>Total Employees</h3>
+      <p>{{ totalEmployees }}</p>
     </div>
-    <div class="requests">
-      <h3>Requests</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Period</th>
-            <th>Type</th>
-            <th>Status</th>
-            <th>Date</th>
-            <th>Notes</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let request of requests">
-            <td>{{ request.name }}</td>
-            <td>{{ request.period }}</td>
-            <td>{{ request.type }}</td>
-            <td>{{ request.status }}</td>
-            <td>{{ request.date }}</td>
-            <td>{{ request.notes }}</td>
-            <td class="action-buttons">
-              <button (click)="handleRequest('Approved', request)">Approve
-                <img src="../../assets/images/approve.png" alt="Approve" /> 
-              </button>
-              <button (click)="handleRequest('Declined', request)">Decline
-                <img src="../../assets/images/decline.png" alt="Decline" /> 
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="card">
+      <h3>Pending Requests</h3>
+      <p>{{ pendingRequests }}</p>
+    </div>
+    <div class="card">
+      <h3>Active Job Openings</h3>
+      <p>{{ activeJobOpenings }}</p>
+    </div>
+    <div class="card">
+      <h3>Upcoming Birthdays</h3>
+      <p>{{ upcomingBirthdays }}</p>
     </div>
   </div>
-  
+
+  <!-- Tabs for sections -->
+  <div class="dashboard-tabs">
+    <button class="tab active">Overview</button>
+    <button class="tab">Employee Requests</button>
+    <button class="tab">Attendance</button>
+    <button class="tab">Recruitment</button>
+    <button class="tab">Reports</button>
+  </div>
+
+  <!-- Charts and Graphs Section -->
+  <div class="charts-section">
+    <div class="chart">
+      <h3>Attendance Summary</h3>
+      <canvas id="attendanceChart"></canvas>
+    </div>
+    <div class="chart">
+      <h3>Employee Distribution by Department</h3>
+      <canvas id="departmentChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="quick-actions">
+    <h3>Quick Actions</h3>
+    <button (click)="addEmployee()">Add Employee</button>
+    <button (click)="approveRequests()">Approve Requests</button>
+    <button (click)="viewReports()">View Reports</button>
+    <button (click)="postJobOpening()">Post Job Opening</button>
+  </div>
+
+  <!-- Recent Activities Section -->
+  <div class="recent-activities">
+    <h3>Recent Activities</h3>
+    <ul>
+      <li *ngFor="let activity of recentActivities">
+        <span>{{ activity.timestamp }}</span>
+        <p>{{ activity.description }}</p>
+      </li>
+    </ul>
+  </div>
+</div>

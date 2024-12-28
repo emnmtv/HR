@@ -12,6 +12,8 @@ import { EmployeesComponent } from './employees/employees.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdminProfileComponent } from './adminprofile/adminprofile.component';
 import { EmployeecalendarComponent } from './employeecalendar/employeecalendar.component';
+import { DtrComponent } from './dtr/dtr.component';
+import { EmployeeRequestsComponent } from './employee-requests/employee-requests.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,8 @@ import { EmployeecalendarComponent } from './employeecalendar/employeecalendar.c
     DashboardComponent,
     AdminProfileComponent,
     EmployeecalendarComponent,
+    DtrComponent,
+    EmployeeRequestsComponent,
   ],
   imports: [
     BrowserModule,

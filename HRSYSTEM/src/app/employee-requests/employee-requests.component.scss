@@ -1,0 +1,155 @@
+.employee-requests-container {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f9f9f9;
+  
+    h2 {
+      margin-bottom: 20px;
+    }
+  
+    .tabs {
+      display: flex;
+      margin-bottom: 20px;
+  
+      .tab {
+        padding: 10px 15px;
+        border: none;
+        background-color: #fff;
+        margin-right: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+  
+        &.active {
+          background-color: #4caf50;
+          color: #fff;
+        }
+  
+        &:hover:not(.active) {
+          background-color: #ddd;
+        }
+      }
+    }
+  
+    .status-summary {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+  
+      .status {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 14px;
+  
+        &.pending {
+          background-color: #ffeeba;
+          color: #856404;
+        }
+  
+        &.approved {
+          background-color: #d4edda;
+          color: #155724;
+        }
+  
+        &.canceled {
+          background-color: #f5c6cb;
+          color: #721c24;
+        }
+  
+        &.denied {
+          background-color: #f8d7da;
+          color: #721c24;
+        }
+  
+        &.all {
+          background-color: #e2e3e5;
+          color: #383d41;
+        }
+      }
+    }
+  
+    .filters {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+  
+      .dropdown {
+        display: flex;
+        flex-direction: column;
+      }
+  
+      .search-bar input {
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+    }
+  
+    .requests-table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #fff;
+  
+      thead {
+        tr {
+          background-color: #f1f1f1;
+  
+          th {
+            padding: 10px;
+            text-align: left;
+          }
+        }
+      }
+  
+      tbody {
+        tr {
+          &:nth-child(odd) {
+            background-color: #f9f9f9;
+          }
+  
+          &:hover {
+            background-color: #eef;
+          }
+  
+          td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+  
+            &.status-cell span {
+              padding: 5px 10px;
+              border-radius: 5px;
+  
+              &.pending {
+                background-color: #ffeeba;
+                color: #856404;
+              }
+  
+              &.approved {
+                background-color: #d4edda;
+                color: #155724;
+              }
+  
+              &.canceled {
+                background-color: #f5c6cb;
+                color: #721c24;
+              }
+  
+              &.denied {
+                background-color: #f8d7da;
+                color: #721c24;
+              }
+            }
+          }
+  
+          .edit-btn {
+            background: none;
+            border: none;
+            color: #007bff;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+  

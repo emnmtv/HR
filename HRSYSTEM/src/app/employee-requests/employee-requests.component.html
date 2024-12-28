@@ -1,0 +1,83 @@
+<div class="employee-requests-container">
+    <h2>Employee Requests</h2>
+  
+    <div class="tabs">
+      <button class="tab active">Alter Logs</button>
+      <button class="tab">Work from Home</button>
+      <button class="tab">Overtime</button>
+      <button class="tab">Rest Day Work</button>
+      <button class="tab">Change of Schedule</button>
+    </div>
+  
+    <div class="status-summary">
+      <span class="status pending">20 Pending</span>
+      <span class="status approved">44 Approved</span>
+      <span class="status canceled">12 Canceled</span>
+      <span class="status denied">12 Denied</span>
+      <span class="status all">460 All</span>
+    </div>
+  
+    <div class="filters">
+      <div class="dropdown">
+        <label for="department-select">Department</label>
+        <select id="department-select">
+          <option value="all">All Departments</option>
+          <option value="ops">Operations</option>
+          <option value="product">Product Development</option>
+        </select>
+      </div>
+      <div class="search-bar">
+        <input type="text" placeholder="Search" />
+      </div>
+    </div>
+  
+    <table class="requests-table">
+      <thead>
+        <tr>
+          <th>
+            <input type="checkbox" />
+          </th>
+          <th>Name/Department</th>
+          <th>Request Type/Date</th>
+          <th>Requested Date</th>
+          <th>Current</th>
+          <th>New</th>
+          <th>Status</th>
+          <th>Updated By/Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let request of requests">
+          <td>
+            <input type="checkbox" />
+          </td>
+          <td>
+            {{ request.name }}
+            <br />
+            <small>{{ request.department }}</small>
+          </td>
+          <td>
+            {{ request.type }}
+            <br />
+            <small>{{ request.date }}</small>
+          </td>
+          <td>{{ request.requestedDate }}</td>
+          <td>{{ request.current }}</td>
+          <td>{{ request.new }}</td>
+          <td class="status-cell">
+            <span [class]="getStatusClass(request.status)">{{ request.status }}</span>
+          </td>
+          <td>
+            {{ request.updatedBy }}
+            <br />
+            <small>{{ request.updatedDate }}</small>
+          </td>
+          <td>
+            <button class="edit-btn">✏️</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
