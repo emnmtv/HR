@@ -1,0 +1,37 @@
+.employee-salary-container {
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+  
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+  
+    .salary-table {
+      width: 100%;
+      border-collapse: collapse;
+  
+      th, td {
+        padding: 10px;
+        text-align: left;
+        border: 1px solid #ddd;
+      }
+  
+      th {
+        background: #4caf50;
+        color: white;
+      }
+  
+      .paid {
+        color: #4caf50;
+        font-weight: bold;
+      }
+  
+      .unpaid {
+        color: #ff5722;
+        font-weight: bold;
+      }
+    }
+  }
+  

@@ -1,0 +1,28 @@
+<div class="employee-salary-container">
+    <h2>Salary Details</h2>
+    <table class="salary-table">
+      <thead>
+        <tr>
+          <th>Month</th>
+          <th>Gross Salary</th>
+          <th>Deductions</th>
+          <th>Net Salary</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let salary of salaries">
+          <td>{{ salary.month }}</td>
+          <td>{{ salary.gross | currency }}</td>
+          <td>{{ salary.deductions | currency }}</td>
+          <td>{{ salary.net | currency }}</td>
+          <td>
+            <span [class.paid]="salary.status === 'Paid'" [class.unpaid]="salary.status === 'Unpaid'">
+              {{ salary.status }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

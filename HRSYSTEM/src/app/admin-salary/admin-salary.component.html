@@ -1,0 +1,38 @@
+<div class="admin-salary-container">
+    <h2>Salary Management</h2>
+    <button (click)="addSalary()">Add Salary</button>
+  
+    <table class="salary-table">
+      <thead>
+        <tr>
+          <th>Employee ID</th>
+          <th>Month</th>
+          <th>Gross Salary</th>
+          <th>Deductions</th>
+          <th>Net Salary</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let salary of salaries">
+          <td>{{ salary.employeeId }}</td>
+          <td>{{ salary.month }}</td>
+          <td><input [(ngModel)]="salary.gross" /></td>
+          <td><input [(ngModel)]="salary.deductions" /></td>
+          <td>{{ salary.net | currency }}</td>
+          <td>
+            <select [(ngModel)]="salary.status">
+              <option value="Paid">Paid</option>
+              <option value="Unpaid">Unpaid</option>
+            </select>
+          </td>
+          <td>
+            <button (click)="updateSalary(salary)">Update</button>
+            <button (click)="deleteSalary(salary)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

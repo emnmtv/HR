@@ -14,6 +14,8 @@ import { AdminProfileComponent } from './adminprofile/adminprofile.component';
 import { EmployeecalendarComponent } from './employeecalendar/employeecalendar.component';
 import { DtrComponent } from './dtr/dtr.component';
 import { EmployeeRequestsComponent } from './employee-requests/employee-requests.component';
+import { EmployeeTabComponent } from './employee-tab/employee-tab.component';
+import { AdminSalaryComponent } from './admin-salary/admin-salary.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { EmployeeRequestsComponent } from './employee-requests/employee-requests
     EmployeecalendarComponent,
     DtrComponent,
     EmployeeRequestsComponent,
+    EmployeeTabComponent,
+    AdminSalaryComponent,
   ],
   imports: [
     BrowserModule,
