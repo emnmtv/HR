@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LogInComponent } from './log-in/log-in.component'; // Import LogInComponent
-import { SidenavComponent } from './admin/sidenav/sidenav.component'; // Import SidenavComponent
+import { SidenavComponent } from './sidenav/sidenav.component'; // Import SidenavComponent
 import { AdminProfileComponent } from './admin/adminprofile/adminprofile.component';
 import { ErrorComponent } from './error/error.component';
 import { EmployeesComponent } from './admin/employees/employees.component';

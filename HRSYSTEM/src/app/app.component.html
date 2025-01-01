@@ -1,17 +1,13 @@
 <div class="layout-container">
-    <!-- Pass the 'collapsed' state to the sidenav and listen for toggle events -->
-    <div *ngIf="isSidenavVisible" class="sidenav">
-    <app-sidenav 
-      class="sidenav" 
-      [class.sidenav-collapsed]="collapsed" 
-      (onToggleSideNav)="onSideNavToggle($event)">
-      <button (click)="toggleSidenav()">Toggle Sidenav</button>
-    </app-sidenav>
-    </div>
-  
-    <div class="main-content" [ngClass]="{'content-collapsed': isCollapsed, 'content-expanded': !isCollapsed}">
-      <!-- Main content goes here -->
-      <router-outlet></router-outlet>
-    </div>
+  <!-- Sidenav -->
+  <div *ngIf="isSidenavVisible" class="sidenav" [ngClass]="{ 'sidenav-collapsed': collapsed }">
+    <app-sidenav (onToggleSideNav)="toggleSidenav()"></app-sidenav>
   </div>
-  
+
+  <!-- Main Content -->
+  <div
+    class="main-content"
+    [ngClass]="{ 'content-collapsed': collapsed, 'content-expanded': !collapsed }">
+    <router-outlet></router-outlet>
+  </div>
+</div>

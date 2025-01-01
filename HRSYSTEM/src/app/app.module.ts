@@ -6,7 +6,7 @@ import { HttpClientModule } from '@angular/common/http';  // Import HttpClientMo
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LogInComponent } from './log-in/log-in.component';
-import { SidenavComponent } from './admin/sidenav/sidenav.component';
+import { SidenavComponent } from './sidenav/sidenav.component';
 import { ErrorComponent } from './error/error.component';
 import { EmployeesComponent } from './admin/employees/employees.component';
 import { DashboardComponent } from './admin/dashboard/dashboard.component';

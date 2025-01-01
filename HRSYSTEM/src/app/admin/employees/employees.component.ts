@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import * as XLSX from 'xlsx';
-import { SidenavComponent } from '../sidenav/sidenav.component';
+import { SidenavComponent } from '../../sidenav/sidenav.component';
 
 @Component({
   selector: 'app-employees',

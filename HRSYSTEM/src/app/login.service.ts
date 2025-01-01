@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class LoginService {
-  private apiUrl = 'http://localhost/integapi/main/routes.php?route=loginHR'; // Updated API URL
+  private apiUrl = 'http://localhost/integapi/main/routes.php?route=loginPayroll'; // Updated API URL
 
   constructor(private http: HttpClient) {}
 

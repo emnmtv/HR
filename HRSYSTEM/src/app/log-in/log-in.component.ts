@@ -17,17 +17,22 @@ export class LogInComponent {
 
   // This method will be triggered on form submission
   onLogin() {
-    this.errorMessage = '';  // Clear any previous error messages
+    this.errorMessage = '';  // Clear previous errors
   
     this.loginService.login(this.email, this.password, this.accountType).subscribe(
       (response) => {
         if (response.status === 'success') {
           console.log('Login successful:', response);
-          localStorage.setItem('user', JSON.stringify(response.user));  // Store user data if needed
   
-          // Redirect based on account type or a specific path
+          // Save user details and account type in local storage
+          localStorage.setItem('user', JSON.stringify(response.user));
+          localStorage.setItem('accountType', response.user.account_type);
+  
+          // Redirect based on account type
           if (response.user.account_type === 'Admin') {
             this.router.navigate(['/dashboard']);
+          } else if (response.user.account_type === 'Employee') {
+            this.router.navigate(['/employee-dashboard']); // Adjust route as needed
           }
         } else {
           this.errorMessage = response.message || 'Invalid credentials';
@@ -39,5 +44,6 @@ export class LogInComponent {
       }
     );
   }
+  
   
 }
