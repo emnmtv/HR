@@ -38,7 +38,16 @@
     </div>
     <div class="chart">
       <h3>Employee Distribution by Department</h3>
-      <canvas id="departmentChart"></canvas>
+    <canvas id="departmentChart"></canvas>
+    <!-- Data Summary -->
+    <div class="data-summary">
+      <h4>Department Data Summary</h4>
+      <ul>
+        <li *ngFor="let department of departmentData">
+          {{ department.name }}: {{ department.count }} employees
+        </li>
+      </ul>
+    </div>
     </div>
   </div>
 

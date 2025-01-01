@@ -18,6 +18,15 @@ export class DashboardComponent implements OnInit {
     { timestamp: '2024-12-01 08:45 AM', description: 'Updated attendance records for November' },
   ];
 
+  // Static logic for department data
+  departmentData = [
+    { name: 'Operations', count: 50 },
+    { name: 'HR', count: 20 },
+    { name: 'Finance', count: 15 },
+    { name: 'IT', count: 40 },
+    { name: 'Marketing', count: 25 },
+  ];
+
   ngOnInit() {
     this.renderAttendanceChart();
     this.renderDepartmentChart();
@@ -36,6 +45,18 @@ export class DashboardComponent implements OnInit {
           },
         ],
       },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: {
+            position: 'bottom',
+          },
+        },
+        layout: {
+          padding: 20,
+        },
+      },
     });
   }
 
@@ -44,14 +65,46 @@ export class DashboardComponent implements OnInit {
     new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: ['Operations', 'HR', 'Finance', 'IT', 'Marketing'],
+        labels: this.departmentData.map((dept) => dept.name),
         datasets: [
           {
             label: 'Employees',
-            data: [50, 20, 15, 40, 25],
-            backgroundColor: '#4caf50',
+            data: this.departmentData.map((dept) => dept.count),
+            backgroundColor: ['#4caf50', '#2196f3', '#ff9800', '#e91e63', '#9c27b0'],
           },
         ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'Employee Distribution by Department',
+            font: {
+              size: 16,
+            },
+          },
+        },
+        scales: {
+          x: {
+            ticks: {
+              font: {
+                size: 12,
+              },
+            },
+          },
+          y: {
+            ticks: {
+              font: {
+                size: 12,
+              },
+            },
+          },
+        },
       },
     });
   }
