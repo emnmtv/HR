@@ -15,7 +15,7 @@ export const navbarData = [
     label: 'Employees',
   },
   {
-    routeLink: '/day',
+    routeLink: '/eh',
     icon: '../../assets/images/calendar.png',
     label: 'Attendance',
   },
