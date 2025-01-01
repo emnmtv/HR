@@ -10,7 +10,7 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 import { ErrorComponent } from './error/error.component';
 import { EmployeesComponent } from './admin/employees/employees.component';
 import { DashboardComponent } from './admin/dashboard/dashboard.component';
-import { AdminProfileComponent } from './admin/adminprofile/adminprofile.component';
+import { AdminProfileComponent } from './employee/adminprofile/adminprofile.component';
 import { EmployeecalendarComponent } from './admin/employeecalendar/employeecalendar.component';
 import { DtrComponent } from './employee/dtr/dtr.component';
 import { EmployeeRequestsComponent } from './admin/employee-requests/employee-requests.component';

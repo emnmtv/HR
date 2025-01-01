@@ -23,8 +23,9 @@ export class DashboardComponent implements OnInit {
     { name: 'Operations', count: 50 },
     { name: 'HR', count: 20 },
     { name: 'Finance', count: 15 },
-    { name: 'IT', count: 40 },
-    { name: 'Marketing', count: 25 },
+    { name: 'Cashier', count: 40 },
+    { name: 'Custodian', count: 40 },
+    { name: 'Bagger', count: 25 },
   ];
 
   ngOnInit() {

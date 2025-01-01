@@ -9,7 +9,7 @@ export class EmployeeRequestsComponent {
   requests = [
     {
       name: 'Emily Gutierrez',
-      department: 'OPS - Product Dev',
+      company: 'bagger',
       type: 'Alteration',
       date: 'July 22, 2019',
       requestedDate: 'July 19, 2019',
@@ -21,7 +21,7 @@ export class EmployeeRequestsComponent {
     },
     {
       name: 'Diana Medina',
-      department: 'OPS - Operations',
+      company: 'bagger',
       type: 'Alteration',
       date: 'July 22, 2019',
       requestedDate: 'July 19, 2019',

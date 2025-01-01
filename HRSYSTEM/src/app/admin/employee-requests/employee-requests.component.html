@@ -22,8 +22,8 @@
         <label for="department-select">Department</label>
         <select id="department-select">
           <option value="all">All Departments</option>
-          <option value="ops">Operations</option>
-          <option value="product">Product Development</option>
+          <option value="HR">Operations</option>
+          <option value="Bagger">Bagger</option>
         </select>
       </div>
       <div class="search-bar">
@@ -55,7 +55,7 @@
           <td>
             {{ request.name }}
             <br />
-            <small>{{ request.department }}</small>
+            <small>{{ request.company }}</small>
           </td>
           <td>
             {{ request.type }}

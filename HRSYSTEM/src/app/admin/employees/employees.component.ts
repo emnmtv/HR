@@ -14,8 +14,8 @@ export class EmployeesComponent {
   showModal = false; // Variable to control modal visibility
 
   employees = [
-    { id: '1', name: 'Knowell Lucky Versoza', sex: 'Female' , address: 'East Tapinac, Olongapo City', vaccinationstatus: 'Yes', company: 'Apple', phone: '295-829-032', selected: false },
-    { id: '2', name: 'Jush  De Guzman', sex: 'Male' ,address: 'Gordon Heights, Olongapo City', vaccinationstatus: 'No', company: 'Apple', phone: '296-744-587', selected: false },
+    { id: '1', name: 'Knowell Lucky Versoza', sex: 'Female' , address: 'East Tapinac, Olongapo City', vaccinationstatus: 'Yes', company: 'Bagger', phone: '295-829-032', selected: false },
+    { id: '2', name: 'Jush  De Guzman', sex: 'Male' ,address: 'Gordon Heights, Olongapo City', vaccinationstatus: 'No', company: 'HR', phone: '296-744-587', selected: false },
   ];
 
   filteredEmployees() {
