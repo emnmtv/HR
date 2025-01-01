@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router'; // Import Router
+import { Router } from '@angular/router';
+import { AuthService } from './auth.service'; // Service to handle authentication
 
 @Component({
   selector: 'app-root',
@@ -7,33 +8,34 @@ import { Router } from '@angular/router'; // Import Router
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'HRSYSTEM';  // Application title
-  collapsed = false;  // Track the state of the sidenav (collapsed or expanded)
-  isCollapsed = false;  // Track if the sidenav is collapsed
-  isSidenavVisible = true;  // Control sidenav visibility
+  title = 'HRSYSTEM';
+  collapsed = false;
+  isCollapsed = false;
+  isSidenavVisible = true;
+  userRole: 'admin' | 'employee' | null = null;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   ngOnInit() {
-    // Subscribe to router events to check when the route changes
-    this.router.events.subscribe((event: any) => {
-      // Check if the current route is login
+    // Hide sidenav on the login page
+    this.router.events.subscribe(() => {
       if (this.router.url.includes('login')) {
-        this.isSidenavVisible = false;  // Hide sidenav if route is 'login'
+        this.isSidenavVisible = false;
       } else {
-        this.isSidenavVisible = true;  // Show sidenav for other routes
+        this.isSidenavVisible = true;
       }
     });
+
+    // Get the user role from AuthService
+    this.userRole = this.authService.getUserRole();
   }
 
-  // Method to handle the toggle event from the sidenav
   toggleSidenav() {
-    this.collapsed = !this.collapsed;  // Toggle the collapsed state
-    this.isCollapsed = this.collapsed;  // Update the content's collapsed state as well
+    this.collapsed = !this.collapsed;
+    this.isCollapsed = this.collapsed;
   }
 
-  // Method to update layout based on sidenav state
-  onSideNavToggle(event: { collapsed: boolean, screenWidth: number }) {
+  onSideNavToggle(event: { collapsed: boolean; screenWidth: number }) {
     this.isCollapsed = event.collapsed;
   }
 }
