@@ -1,4 +1,3 @@
-// nav-data.ts
 export const navbarData = [
   {
     routeLink: '/adminprofile',
@@ -16,8 +15,13 @@ export const navbarData = [
     label: 'Employees',
   },
   {
-    routeLink: '/dtr',
+    routeLink: '/eh',
     icon: '../../assets/images/calendar.png',
     label: 'Attendance',
+  },
+  {
+    routeLink: '/emp',
+    icon: '../../assets/images/request.png', // Add your appropriate icon path
+    label: 'Employee Request',
   },
 ];

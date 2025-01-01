@@ -1,0 +1,51 @@
+<div class="attendance-summary-container">
+    <div class="summary-section">
+      <h3>Daily Attendance Summary</h3>
+      <p>For: October 5, 2025</p>
+      <div class="summary-cards">
+        <div class="summary-card">
+          <p>Employee Attendance</p>
+          <span>40/50</span>
+        </div>
+        <div class="summary-card">
+          <p>Late</p>
+          <span>5</span>
+        </div>
+        <div class="summary-card">
+          <p>Absent</p>
+          <span>10</span>
+        </div>
+        <div class="summary-card">
+          <p>Overtime</p>
+          <span>03:45:00</span>
+        </div>
+      </div>
+    </div>
+  
+    <div class="record-section">
+      <h4>Employee Attendance Records</h4>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Clock In</th>
+            <th>Clock Out</th>
+            <th>Late</th>
+            <th>Overtime</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let record of attendanceRecords">
+            <td>{{ record.name }}</td>
+            <td>{{ record.status }}</td>
+            <td>{{ record.clockIn }}</td>
+            <td>{{ record.clockOut }}</td>
+            <td>{{ record.late }}</td>
+            <td>{{ record.overtime }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

@@ -6,16 +6,17 @@ import { HttpClientModule } from '@angular/common/http';  // Import HttpClientMo
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LogInComponent } from './log-in/log-in.component';
-import { SidenavComponent } from './sidenav/sidenav.component';
+import { SidenavComponent } from './admin/sidenav/sidenav.component';
 import { ErrorComponent } from './error/error.component';
-import { EmployeesComponent } from './employees/employees.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { AdminProfileComponent } from './adminprofile/adminprofile.component';
-import { EmployeecalendarComponent } from './employeecalendar/employeecalendar.component';
-import { DtrComponent } from './dtr/dtr.component';
-import { EmployeeRequestsComponent } from './employee-requests/employee-requests.component';
-import { EmployeeTabComponent } from './employee-tab/employee-tab.component';
-import { AdminSalaryComponent } from './admin-salary/admin-salary.component';
+import { EmployeesComponent } from './admin/employees/employees.component';
+import { DashboardComponent } from './admin/dashboard/dashboard.component';
+import { AdminProfileComponent } from './admin/adminprofile/adminprofile.component';
+import { EmployeecalendarComponent } from './admin/employeecalendar/employeecalendar.component';
+import { DtrComponent } from './employee/dtr/dtr.component';
+import { EmployeeRequestsComponent } from './admin/employee-requests/employee-requests.component';
+import { EmployeeTabComponent } from './admin/employee-tab/employee-tab.component';
+import { AdminSalaryComponent } from './admin/admin-salary/admin-salary.component';
+import { DayattendancesummaryComponent } from './admin/dayattendancesummary/dayattendancesummary.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { AdminSalaryComponent } from './admin-salary/admin-salary.component';
     EmployeeRequestsComponent,
     EmployeeTabComponent,
     AdminSalaryComponent,
+    DayattendancesummaryComponent,
   ],
   imports: [
     BrowserModule,

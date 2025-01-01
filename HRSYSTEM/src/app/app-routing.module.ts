@@ -1,16 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LogInComponent } from './log-in/log-in.component'; // Import LogInComponent
-import { SidenavComponent } from './sidenav/sidenav.component'; // Import SidenavComponent
-import { AdminProfileComponent } from './adminprofile/adminprofile.component';
+import { SidenavComponent } from './admin/sidenav/sidenav.component'; // Import SidenavComponent
+import { AdminProfileComponent } from './admin/adminprofile/adminprofile.component';
 import { ErrorComponent } from './error/error.component';
-import { EmployeesComponent } from './employees/employees.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { EmployeecalendarComponent } from './employeecalendar/employeecalendar.component';
-import { DtrComponent } from './dtr/dtr.component';
-import { EmployeeRequestsComponent } from './employee-requests/employee-requests.component';
-import { EmployeeTabComponent } from './employee-tab/employee-tab.component';
-import { AdminSalaryComponent } from './admin-salary/admin-salary.component';
+import { EmployeesComponent } from './admin/employees/employees.component';
+import { DashboardComponent } from './admin/dashboard/dashboard.component';
+import { EmployeecalendarComponent } from './admin/employeecalendar/employeecalendar.component';
+import { DtrComponent } from './employee/dtr/dtr.component';
+import { EmployeeRequestsComponent } from './admin/employee-requests/employee-requests.component';
+import { EmployeeTabComponent } from './admin/employee-tab/employee-tab.component';
+import { AdminSalaryComponent } from './admin/admin-salary/admin-salary.component';
+import { DayattendancesummaryComponent } from './admin/dayattendancesummary/dayattendancesummary.component';
 
 const routes: Routes = [
   { path: '', redirectTo:'login', pathMatch: 'full' },
@@ -25,9 +26,7 @@ const routes: Routes = [
   { path: 'emp', component: EmployeeRequestsComponent},
   { path: 'ep', component: EmployeeTabComponent},
   { path: 'ed', component: AdminSalaryComponent},
-  
-  
-  
+  { path: 'day', component: DayattendancesummaryComponent},
   { path: '**', component: ErrorComponent}, // Add this route for the login page
   
 ];
