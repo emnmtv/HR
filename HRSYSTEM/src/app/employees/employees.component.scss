@@ -45,14 +45,14 @@
   }
 
   .export-button {
-    background-color: #1bd130;
+    background-color: #5ba75d;
     padding: 14px 40px;
     color: #fff;
     text-transform: uppercase;
     letter-spacing: 2px;
     cursor: pointer;
     border-radius: 10px;
-    border: 2px dashed #1bd130;
+    border: 2px dashed #5ba75d;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
     transition: 0.4s;
 
@@ -62,21 +62,21 @@
     }
 
     &:hover {
-      border: 2px dashed #1bd130;
+      border: 2px dashed #5ba75d;
       background-color: #fff;
-      color: #1bd130;
+      color: #5ba75d;
     }
   }
 
   .delete-button {
-    background-color: #f12c2c;
+    background-color: #cf5a5a;
     padding: 14px 40px;
     color: #fff;
     text-transform: uppercase;
     letter-spacing: 2px;
     cursor: pointer;
     border-radius: 10px;
-    border: 2px dashed #f12c2c;
+    border: 2px dashed #cf5a5a;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
     transition: 0.4s;
 
@@ -86,9 +86,9 @@
     }
 
     &:hover {
-      border: 2px dashed #f12c2c;
+      border: 2px dashed #cf5a5a;
       background-color: #fff;
-      color: #f12c2c;
+      color: #cf5a5a;
     }
   }
 
@@ -194,14 +194,14 @@
 }
 
 .cancel-button {
-  background-color: #f12c2c;
+  background-color: #cf5a5a;
     padding: 14px 40px;
     color: #fff;
     text-transform: uppercase;
     letter-spacing: 2px;
     cursor: pointer;
     border-radius: 10px;
-    border: 2px dashed #f12c2c;
+    border: 2px dashed #cf5a5a;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
     transition: 0.4s;
 
@@ -211,21 +211,21 @@
     }
 
     &:hover {
-      border: 2px dashed #f12c2c;
+      border: 2px dashed #cf5a5a;
       background-color: #fff;
-      color: #f12c2c;
+      color: #cf5a5a;
     }
   }
 
 .confirm-button {
-  background-color: #1bd130;
+  background-color: #5ba75d;
     padding: 14px 40px;
     color: #fff;
     text-transform: uppercase;
     letter-spacing: 2px;
     cursor: pointer;
     border-radius: 10px;
-    border: 2px dashed #1bd130;
+    border: 2px dashed #5ba75d;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
     transition: 0.4s;
 
@@ -235,8 +235,8 @@
     }
 
     &:hover {
-      border: 2px dashed #1bd130;
+      border: 2px dashed #5ba75d;
       background-color: #fff;
-      color: #1bd130;
+      color: #5ba75d;
     }
   }
