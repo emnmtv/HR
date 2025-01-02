@@ -51,7 +51,10 @@ export class RecordsComponent implements OnInit {
       }
     });
   }
-
+  toggleModal(employee: Employee | null): void {
+    this.selectedEmployee = this.selectedEmployee === employee ? null : employee;
+  }
+  
   // Show selected employee details
   showDetails(employee: Employee): void {
     this.selectedEmployee = employee;
