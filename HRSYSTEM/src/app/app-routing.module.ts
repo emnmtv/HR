@@ -12,6 +12,7 @@ import { EmployeeRequestsComponent } from './admin/employee-requests/employee-re
 import { EmployeeTabComponent } from './admin/employee-tab/employee-tab.component';
 import { AdminSalaryComponent } from './admin/admin-salary/admin-salary.component';
 import { DayattendancesummaryComponent } from './admin/dayattendancesummary/dayattendancesummary.component';
+import { EmpRequestComponent } from './employee/emp-request/emp-request.component';
 
 const routes: Routes = [
   { path: '', redirectTo:'login', pathMatch: 'full' },
@@ -27,6 +28,7 @@ const routes: Routes = [
   { path: 'ep', component: EmployeeTabComponent},
   { path: 'ed', component: AdminSalaryComponent},
   { path: 'day', component: DayattendancesummaryComponent},
+  { path: 'day', component: EmpRequestComponent},
   { path: '**', component: ErrorComponent}, // Add this route for the login page
   
 ];

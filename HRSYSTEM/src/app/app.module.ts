@@ -17,6 +17,10 @@ import { EmployeeRequestsComponent } from './admin/employee-requests/employee-re
 import { EmployeeTabComponent } from './admin/employee-tab/employee-tab.component';
 import { AdminSalaryComponent } from './admin/admin-salary/admin-salary.component';
 import { DayattendancesummaryComponent } from './admin/dayattendancesummary/dayattendancesummary.component';
+import { EmpRequestComponent } from './employee/emp-request/emp-request.component';
+import { provideHttpClient } from '@angular/common/http';
+import { ListComponent } from './admin/list/list.component';
+import { RecordsComponent } from './admin/records/records.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +37,9 @@ import { DayattendancesummaryComponent } from './admin/dayattendancesummary/daya
     EmployeeTabComponent,
     AdminSalaryComponent,
     DayattendancesummaryComponent,
+    EmpRequestComponent,
+    ListComponent,
+    RecordsComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,7 +48,7 @@ import { DayattendancesummaryComponent } from './admin/dayattendancesummary/daya
     ReactiveFormsModule, // For reactive forms
     HttpClientModule, // For HTTP requests
   ],
-  providers: [],
+  providers: [provideHttpClient()],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

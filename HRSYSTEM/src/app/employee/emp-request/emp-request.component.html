@@ -1,0 +1,58 @@
+<div class="emp-request-container">
+    <h2>My Requests</h2>
+    
+    <!-- Pending Requests Section -->
+    <div class="pending-requests">
+      <h3>Pending Requests</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Request Type</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let request of requests">
+            <td>{{ request.date }}</td>
+            <td>{{ request.type }}</td>
+            <td>{{ request.status }}</td>
+            <td>
+              <button class="details-btn">Details</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Button to Open Modal -->
+    <button class="new-request-btn" (click)="openRequestModal()">+ New Request</button>
+  
+    <!-- Modal for New Request -->
+    <div class="modal" *ngIf="showModal">
+      <div class="modal-content">
+        <span class="close-btn" (click)="closeRequestModal()">&times;</span>
+        <h3>New Request</h3>
+        <form (ngSubmit)="submitRequest()">
+          <div class="form-group">
+            <label for="type">Request Type</label>
+            <select id="type" [(ngModel)]="newRequest.type" name="type" required>
+              <option value="Leave">Leave</option>
+              <option value="Overtime">Overtime</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="date">Date</label>
+            <input type="date" id="date" [(ngModel)]="newRequest.date" name="date" required />
+          </div>
+          <div class="form-group">
+            <label for="reason">Reason</label>
+            <textarea id="reason" [(ngModel)]="newRequest.reason" name="reason" required></textarea>
+          </div>
+          <button type="submit" class="submit-btn">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  

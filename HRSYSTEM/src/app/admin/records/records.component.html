@@ -1,0 +1,43 @@
+<div class="records-container">
+    <!-- Sidenav (Optional) -->
+    <div class="sidenav">
+      <!-- You can add navigation or other content here -->
+    </div>
+  
+    <!-- Main content area -->
+    <div class="content">
+      <h2>Employee Records</h2>
+  
+      <!-- Loading message -->
+      <p *ngIf="loading">Loading employee records...</p>
+  
+      <!-- Error message -->
+      <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+  
+      <!-- Employee List -->
+      <div class="employee-list" *ngIf="!loading && !errorMessage">
+        <ul>
+          <li *ngFor="let employee of employees" (click)="showDetails(employee)">
+            {{ employee.first_name }} {{ employee.last_name }}
+          </li>
+        </ul>
+      </div>
+  
+      <!-- Employee Details Panel -->
+      <div class="employee-details" *ngIf="selectedEmployee">
+        <h3>Employee Details</h3>
+        <p><strong>First Name:</strong> {{ selectedEmployee.first_name }}</p>
+        <p><strong>Last Name:</strong> {{ selectedEmployee.last_name }}</p>
+        <p><strong>Address:</strong> {{ selectedEmployee.address }}</p>
+        <p><strong>Cellphone Number:</strong> {{ selectedEmployee.cellphone_number }}</p>
+        <p><strong>Sex:</strong> {{ selectedEmployee.sex }}</p>
+        <p><strong>Place of Birth:</strong> {{ selectedEmployee.place_of_birth }}</p>
+        <p><strong>City:</strong> {{ selectedEmployee.city }}</p>
+        <p><strong>Barangay:</strong> {{ selectedEmployee.barangay }}</p>
+        <p><strong>Province:</strong> {{ selectedEmployee.province }}</p>
+        <p><strong>Vaccinated:</strong> {{ selectedEmployee.vaccination_status ? 'Yes' : 'No' }}</p>
+        <p><strong>Company:</strong> {{ selectedEmployee.company }}</p>
+      </div>
+    </div>
+  </div>
+  

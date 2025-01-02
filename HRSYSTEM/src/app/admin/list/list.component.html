@@ -1,0 +1,29 @@
+<div class="dashboard-container">
+    <header class="dashboard-header">
+      <h1>Employee Dashboard</h1>
+    </header>
+  
+    <main class="dashboard-content">
+      <section class="employee-list">
+        <h2>Employees</h2>
+  
+        <!-- Display loading message -->
+        <p *ngIf="loading">Loading employees...</p>
+  
+        <!-- Display error message -->
+        <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+  
+        <!-- Display employee list -->
+        <ul *ngIf="!loading && !errorMessage">
+          <li *ngFor="let employee of employees">
+            {{ employee.first_name }} {{ employee.last_name }} - {{ employee.email }}
+          </li>
+        </ul>
+      </section>
+    </main>
+  
+    <footer class="dashboard-footer">
+      <p>IMART Payroll &copy; 2024</p>
+    </footer>
+  </div>
+  
