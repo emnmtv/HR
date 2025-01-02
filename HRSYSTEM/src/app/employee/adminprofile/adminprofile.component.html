@@ -11,12 +11,14 @@
       <p><strong>Role:</strong> {{ user.role }}</p>
       <p><strong>Email:</strong> {{ user.email }}</p>
       <p><strong>Contact:</strong> {{ user.contact }}</p>
-      <p><strong>Vaccination Status:</strong> <span class="vaccinationstatus"
-          [ngClass]="user.vaccinationStatus">{{ user.vaccinationStatus | titlecase }}</span></p>
+      <p>
+        <strong>Vaccination Status:</strong> 
+        <span class="vaccinationstatus" [ngClass]="user.vaccinationStatus">
+          {{ user.vaccinationStatus | titlecase }}
+        </span>
+      </p>
     </div>
-    <button class="btn edit-btn" (click)="onEditProfile()">Edit Profile
-      <img src="../../assets/images/edit.png" alt="Edit" />
-    </button>
+    <button class="btn edit-btn" (click)="onEditProfile()">Edit Profile</button>
   </div>
 
   <div *ngIf="isEditing" class="modal-overlay">
@@ -28,16 +30,12 @@
       <form (ngSubmit)="saveProfile()">
         <div class="form-group">
           <label for="name">Name</label>
-          <input type="text" id="name" [(ngModel)]="tempUser.name" name="name" placeholder="Enter your name"
-            class="form-input" />
+          <input type="text" id="name" [(ngModel)]="tempUser.name" name="name" placeholder="Enter your name" class="form-input" />
         </div>
-
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" [(ngModel)]="tempUser.email" name="email" placeholder="Enter your email"
-            class="form-input" />
+          <input type="email" id="email" [(ngModel)]="tempUser.email" name="email" placeholder="Enter your email" class="form-input" />
         </div>
-
         <div class="form-group">
           <label for="sex">Sex</label>
           <select id="sex" [(ngModel)]="tempUser.sex" name="sex" class="form-input">
@@ -45,46 +43,37 @@
             <option value="Female">Female</option>
           </select>
         </div>
-
         <div class="form-group">
           <label for="role">Role</label>
-          <input type="text" id="role" [(ngModel)]="tempUser.role" name="role" placeholder="Enter your role"
-            class="form-input" />
+          <input type="text" id="role" [(ngModel)]="tempUser.role" name="role" placeholder="Enter your role" class="form-input" />
         </div>
-
         <div class="form-group">
           <label for="age">Age</label>
-          <input type="number" id="age" [(ngModel)]="tempUser.age" name="age" placeholder="Enter your age"
-            class="form-input" />
+          <input type="number" id="age" [(ngModel)]="tempUser.age" name="age" placeholder="Enter your age" class="form-input" />
         </div>
-
         <div class="form-group">
           <label for="location">Address</label>
-          <input type="text" id="location" [(ngModel)]="tempUser.location" name="location"
-            placeholder="Enter your location" class="form-input" />
+          <input type="text" id="location" [(ngModel)]="tempUser.location" name="location" placeholder="Enter your location" class="form-input" />
         </div>
-
         <div class="form-group">
           <label for="contact">Contact</label>
-          <input type="text" id="contact" [(ngModel)]="tempUser.contact" name="contact"
-            placeholder="Enter your contact" class="form-input" />
-        </div>  
-
+          <input type="text" id="contact" [(ngModel)]="tempUser.contact" name="contact" placeholder="Enter your contact" class="form-input" />
+        </div>
         <div class="form-group upload-section">
-          <button class="btn upload-btn">
+          <button class="btn upload-btn" type="button">
             Upload Picture
-            <input type="file" (change)="onProfilePictureUpload($event)" accept=".jpg,.jpeg,.png" />
+            <input 
+              type="file" 
+              (change)="onProfilePictureUpload($event)" 
+              accept=".jpg,.jpeg,.png" 
+              class="file-input" 
+            />
           </button>
           <div *ngIf="uploadSuccess" class="upload-success">Profile picture uploaded successfully!</div>
         </div>
-
         <div class="form-actions">
-          <button type="submit" class="btn save-btn">Save
-            <img src="../../assets/images/save.png" alt="Save" />
-          </button>
-          <button type="button" class="btn cancel-btn" (click)="closeModal()">Cancel
-            <img src="../../assets/images/decline.png" alt="Cancel" />
-          </button>
+          <button type="submit" class="btn save-btn">Save</button>
+          <button type="button" class="btn cancel-btn" (click)="closeModal()">Cancel</button>
         </div>
       </form>
     </div>
