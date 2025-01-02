@@ -1,16 +1,16 @@
 <div class="records-container">
   <div class="header">
-    <h1>Ariel Air Charters</h1>
-    <button class="add-employee-btn">+ Add a New Employee</button>
+    <h1>Employees</h1>
+    <button class="add-employee-btn">Export</button>
   </div>
 
   <table class="employee-table" *ngIf="!loading && !errorMessage">
     <thead>
       <tr>
-        <th>Code</th>
+        <th>ID</th>
         <th>Name</th>
         <th>Position</th>
-        <th>Birth Date</th>
+        <th>Phone</th>
         <th>Gender</th>
         <th>Details</th>
       </tr>
@@ -20,7 +20,7 @@
         <td>{{ employee.id }}</td>
         <td>{{ employee.first_name }} {{ employee.last_name }}</td>
         <td>{{ employee.company }}</td>
-        <td>--</td>
+        <td>{{employee.cellphone_number}}</td>
         <td>{{ employee.sex }}</td>
         <td>
           <button
@@ -45,7 +45,6 @@
       <p><strong>Cellphone Number:</strong> {{ selectedEmployee.cellphone_number }}</p>
       <p><strong>Sex:</strong> {{ selectedEmployee.sex }}</p>
       <p><strong>Place of Birth:</strong> {{ selectedEmployee.place_of_birth }}</p>
-      <p><strong>City:</strong> {{ selectedEmployee.city }}</p>
       <p><strong>Barangay:</strong> {{ selectedEmployee.barangay }}</p>
       <p><strong>Province:</strong> {{ selectedEmployee.province }}</p>
       <p><strong>Vaccinated:</strong> {{ selectedEmployee.vaccination_status ? 'Yes' : 'No' }}</p>
