@@ -128,3 +128,85 @@
     }
   }
 }
+
+/* Base styles for buttons */
+button {
+  font-family: 'Arial', sans-serif;
+  font-size: 14px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Time In Button */
+.btn-timein {
+  background: linear-gradient(90deg, #56ccf2, #2f80ed);
+  color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-timein:hover {
+  background: linear-gradient(90deg, #2f80ed, #56ccf2);
+  transform: scale(1.05);
+}
+
+/* Time Out Button */
+.btn-timeout {
+  background: linear-gradient(90deg, #f2994a, #f2c94c);
+  color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-timeout:hover {
+  background: linear-gradient(90deg, #f2c94c, #f2994a);
+  transform: scale(1.05);
+}
+
+/* Disable button state */
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+
+    h3 {
+      margin: 0 0 10px;
+    }
+
+    .confirm-btn {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #218838;
+      }
+    }
+  }
+}
+
+

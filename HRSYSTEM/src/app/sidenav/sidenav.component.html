@@ -22,7 +22,7 @@
       </li>
     </ul>
     
-    <button class="Btn" (click)="logout()">
+    <button class="Btn" (click)="logout()" [ngClass]="collapsed ? 'collapsed' : 'expanded'">
       <div class="sign">
         <svg viewBox="0 0 512 512">
           <path

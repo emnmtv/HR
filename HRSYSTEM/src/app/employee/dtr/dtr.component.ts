@@ -10,6 +10,9 @@ export class DtrComponent implements OnInit {
   dtrRecords: any[] = [];
   currentTime: string = '';
   currentDate: string = '';
+  showModal: boolean = false; // Modal visibility
+  modalTitle: string = ''; // Modal title
+  modalMessage: string = ''; // Modal message
 
   constructor(private dtrService: DtrService) {}
 
@@ -18,6 +21,18 @@ export class DtrComponent implements OnInit {
     setInterval(() => this.updateClock(), 1000);
     this.loadRecords();
     this.ensureTodayRecord();
+  }
+
+  // Open the modal with a title and message
+  openModal(title: string, message: string) {
+    this.modalTitle = title;
+    this.modalMessage = message;
+    this.showModal = true;
+  }
+
+  // Close the modal
+  closeModal() {
+    this.showModal = false;
   }
 
   updateClock() {
@@ -50,13 +65,13 @@ export class DtrComponent implements OnInit {
 
   handleTimeInOut(record: any) {
     if (record.clockIn && record.clockOut) {
-      alert('You have already clocked in and out for today!');
+      this.openModal('Action Denied', 'You have already clocked in and out for today!');
       return;
     }
 
     const employeeId = localStorage.getItem('employee_id');
     if (!employeeId) {
-      alert('Employee ID is missing!');
+      this.openModal('Error', 'Employee ID is missing!');
       return;
     }
 
@@ -73,14 +88,14 @@ export class DtrComponent implements OnInit {
             record.clockIn = this.currentTime;
             record.status = 'Present';
             this.saveRecords();
-            alert('Clock-in successful!');
+            this.openModal('Success', 'Time-in successful!');
           } else {
-            alert(response.message);
+            this.openModal('Error', response.message);
           }
         },
         (error) => {
           console.error('Clock-in error:', error);
-          alert('Clock-in failed!');
+          this.openModal('Error', 'Time-in failed!');
         }
       );
     } else if (!record.clockOut) {
@@ -90,14 +105,14 @@ export class DtrComponent implements OnInit {
             record.clockOut = this.currentTime;
             this.calculateTimes(record);
             this.saveRecords();
-            alert('Clock-out successful!');
+            this.openModal('Success', 'Time-out successful!');
           } else {
-            alert(response.message);
+            this.openModal('Error', response.message);
           }
         },
         (error) => {
           console.error('Clock-out error:', error);
-          alert('Clock-out failed!');
+          this.openModal('Error', 'Time-out failed!');
         }
       );
     }
