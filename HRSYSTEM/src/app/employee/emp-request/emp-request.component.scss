@@ -2,8 +2,7 @@
   font-family: Arial, sans-serif;
   padding: 20px;
   max-width: auto;
-  margin: 10px;
-  
+  margin: 20px;
 
   h1 {
     font-size: 32px;
@@ -25,7 +24,6 @@
       width: 100%;
       border-collapse: collapse;
       margin-bottom: 20px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Added shadow to table */
 
       thead {
         tr {
@@ -62,11 +60,9 @@
             padding: 10px 15px;
             border-radius: 5px;
             cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow on the button */
 
             &:hover {
               background-color: #45a049;
-              box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* More shadow on hover */
             }
           }
         }
@@ -86,11 +82,9 @@
     display: block;
     margin-left: auto;
     margin-right: auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow on the button */
 
     &:hover {
       background-color: #45a049;
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* More shadow on hover */
     }
   }
 
@@ -114,12 +108,7 @@
     border-radius: 8px;
     width: 500px;
     max-width: 90%;
-<<<<<<< Updated upstream
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    position: relative; /* Added this to fix button positioning */
-=======
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Shadow for modal content */
->>>>>>> Stashed changes
   }
 
   .close-btn {
@@ -157,12 +146,6 @@
       font-size: 16px;
       border: 1px solid #ddd;
       border-radius: 5px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Shadow on form fields */
-
-      &:focus {
-        border-color: #64b488;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Focus shadow */
-      }
     }
 
     textarea {
@@ -179,11 +162,9 @@
     font-size: 18px;
     border-radius: 8px;
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow on submit button */
 
     &:hover {
       background-color: #45a049;
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* More shadow on hover */
     }
   }
 }

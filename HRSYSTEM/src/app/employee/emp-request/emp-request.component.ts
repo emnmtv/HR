@@ -1,49 +1,68 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { EmpRequestService } from './emp-request.service';
 
 @Component({
   selector: 'app-emp-request',
   templateUrl: './emp-request.component.html',
-  styleUrls: ['./emp-request.component.scss']
+  styleUrls: ['./emp-request.component.scss'],
 })
-export class EmpRequestComponent {
-  // Data for the pending requests
-  requests = [
-    { date: '2025-01-01', type: 'Leave', status: 'Pending' },
-    { date: '2025-01-05', type: 'Overtime', status: 'Pending' }
-  ];
-
-  // Modal state
+export class EmpRequestComponent implements OnInit {
+  requests: any[] = []; // Store API data
   showModal = false;
 
-  // Data for the new request form
   newRequest = {
     type: '',
     date: '',
-    reason: ''
+    reason: '',
   };
 
-  // Open the modal
-  openRequestModal() {
+  employeeId = 456; // Example employee ID (dynamic in a real app)
+
+  constructor(private empRequestService: EmpRequestService) {}
+
+  ngOnInit(): void {
+    this.fetchPendingRequests();
+  }
+
+  // Fetch pending requests from the API
+  fetchPendingRequests(): void {
+    this.empRequestService.getPendingRequests(this.employeeId).subscribe({
+      next: (data) => {
+        this.requests = data;
+      },
+      error: (error) => {
+        console.error('Error fetching pending requests:', error);
+      },
+    });
+  }
+
+  // Submit a new request
+  submitRequest(): void {
+    if (this.newRequest.type && this.newRequest.date && this.newRequest.reason) {
+      const requestData = {
+        employee_id: this.employeeId,
+        ...this.newRequest,
+      };
+
+      this.empRequestService.createRequest(requestData).subscribe({
+        next: (response) => {
+          console.log('Request created:', response);
+          this.fetchPendingRequests(); // Refresh the list
+          this.closeRequestModal();
+        },
+        error: (error) => {
+          console.error('Error submitting request:', error);
+        },
+      });
+    }
+  }
+
+  openRequestModal(): void {
     this.showModal = true;
   }
 
-  // Close the modal
-  closeRequestModal() {
+  closeRequestModal(): void {
     this.showModal = false;
-  }
-
-  // Submit the new request
-  submitRequest() {
-    if (this.newRequest.type && this.newRequest.date && this.newRequest.reason) {
-      // Add the new request to the list
-      this.requests.push({
-        ...this.newRequest,
-        status: 'Pending'
-      });
-
-      // Reset the form and close the modal
-      this.newRequest = { type: '', date: '', reason: '' };
-      this.closeRequestModal();
-    }
+    this.newRequest = { type: '', date: '', reason: '' };
   }
 }

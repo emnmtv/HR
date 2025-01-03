@@ -1,58 +1,57 @@
 <div class="dtr-summary-container">
-    <div class="header">
-      <h1>DTR Summary for October</h1>
-      <p>Payroll Cutoff: Sept 19 - Oct 18</p>
+  <div class="header">
+    <h1>DTR Summary for October</h1>
+    <p>Payroll Cutoff: Sept 19 - Oct 18</p>
+  </div>
+
+  <div class="summary-cards">
+    <div class="summary-card">
+      <h3>Late</h3>
+      <span>00:00:00</span>
     </div>
-  
-    <div class="summary-cards">
-      <div class="summary-card">
-        <h3>Late</h3>
-        <span>00:00:00</span>
-      </div>
-      <div class="summary-card">
-        <h3>Undertime</h3>
-        <span>00:41:49</span>
-      </div>
-      <div class="summary-card">
-        <h3>Night Diff</h3>
-        <span>103:16:31</span>
-      </div>
-      <div class="summary-card">
-        <h3>Unpaid Leave</h3>
-        <span>0 day/s</span>
-      </div>
-      <div class="summary-card">
-        <h3>Special Holiday</h3>
-        <span>00:00:00</span>
-      </div>
+    <div class="summary-card">
+      <h3>Undertime</h3>
+      <span>00:41:49</span>
     </div>
-  
-    <div class="record-section">
-      <h2>Daily Time Records</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Status</th>
-            <th>Schedule</th>
-            <th>Clock In</th>
-            <th>Clock Out</th>
-        
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let record of dtrRecords">
-            <td>{{ record.date }}</td>
-            <td>{{ record.status }}</td>
-            <td>{{ record.schedule }}</td>
-            <td>{{ record.clockIn }}</td>
-            <td>{{ record.clockOut }}</td>
-            
-            <td><button class="action-btn">Details</button></td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="summary-card">
+      <h3>Night Diff</h3>
+      <span>103:16:31</span>
+    </div>
+    <div class="summary-card">
+      <h3>Unpaid Leave</h3>
+      <span>0 day/s</span>
+    </div>
+    <div class="summary-card">
+      <h3>Special Holiday</h3>
+      <span>00:00:00</span>
     </div>
   </div>
-  
+
+  <div class="record-section">
+    <h2>Daily Time Records</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Schedule</th>
+          <th>Clock In</th>
+          <th>Clock Out</th>
+          
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let record of dtrRecords">
+          <td>{{ record.date }}</td>
+          <td>{{ record.status }}</td>
+          <td>{{ record.schedule }}</td>
+          <td>{{ record.clockIn }}</td>
+          <td>{{ record.clockOut }}</td>
+          
+          <td><button class="action-btn">Details</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
