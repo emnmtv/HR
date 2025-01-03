@@ -30,12 +30,23 @@
           <td>{{ record.undertime || '--:--' }}</td>
           <td>{{ record.overtime || '--:--' }}</td>
           <td>
-            <button (click)="handleTimeInOut(record)">
-              {{ record.clockIn ? 'Time Out' : 'Time In' }}
+            <button 
+                 (click)="handleTimeInOut(record)" 
+                [ngClass]="record.clockIn ? 'btn-timeout' : 'btn-timein'">
+                {{ record.clockIn ? 'Time Out' : 'Time In' }}
             </button>
           </td>
         </tr>
       </tbody>
     </table>
+  </div>
+
+    <!-- Modal -->
+    <div class="modal" *ngIf="showModal">
+      <div class="modal-content">
+        <h3>{{ modalTitle }}</h3>
+        <p>{{ modalMessage }}</p>
+        <button class="confirm-btn" (click)="closeModal()">OK</button>
+      </div>
   </div>
 </div>
