@@ -25,30 +25,17 @@
           <td>{{ record.date }}</td>
           <td>{{ record.status }}</td>
           <td>{{ record.schedule }}</td>
-          <td>{{ record.clockIn }}</td>
-          <td>{{ record.clockOut }}</td>
-          <td>{{ record.undertime }}</td>
-          <td>{{ record.overtime }}</td>
+          <td>{{ record.clockIn || '--:--' }}</td>
+          <td>{{ record.clockOut || '--:--' }}</td>
+          <td>{{ record.undertime || '--:--' }}</td>
+          <td>{{ record.overtime || '--:--' }}</td>
           <td>
-            <button class="action-btn" (click)="toggleTimeInOut(record)">
+            <button (click)="handleTimeInOut(record)">
               {{ record.clockIn ? 'Time Out' : 'Time In' }}
             </button>
           </td>
         </tr>
       </tbody>
     </table>
-  </div>
-</div>
-
-<!-- Modal -->
-<div *ngIf="showModal" class="modal">
-  <div class="modal-content">
-    <h3>{{ selectedRecord?.clockIn ? 'Time Out' : 'Time In' }} Confirmation</h3>
-    <p>
-      Are you sure you want to {{ selectedRecord?.clockIn ? 'time out' : 'time in' }} for
-      {{ selectedRecord?.date }}?
-    </p>
-    <button class="confirm-btn" (click)="confirmTimeInOut()">Confirm</button>
-    <button class="cancel-btn" (click)="cancelTimeInOut()">Cancel</button>
   </div>
 </div>

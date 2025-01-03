@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';  // Import ReactiveFormsModule for reactive forms
-import { HttpClientModule } from '@angular/common/http';  // Import HttpClientModule for HTTP requests
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,7 +18,8 @@ import { EmployeeTabComponent } from './admin/employee-tab/employee-tab.componen
 import { AdminSalaryComponent } from './admin/admin-salary/admin-salary.component';
 import { DayattendancesummaryComponent } from './admin/dayattendancesummary/dayattendancesummary.component';
 import { EmpRequestComponent } from './employee/emp-request/emp-request.component';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+
 import { ListComponent } from './admin/list/list.component';
 import { RecordsComponent } from './admin/records/records.component';
 import { DtrSummaryComponent } from './employee/dtr-summary/dtr-summary.component';
@@ -48,9 +49,11 @@ import { DtrSummaryComponent } from './employee/dtr-summary/dtr-summary.componen
     AppRoutingModule,
     FormsModule, // For template-driven forms
     ReactiveFormsModule, // For reactive forms
-    HttpClientModule, // For HTTP requests
+   
   ],
-  providers: [provideHttpClient()],
+  providers: [
+    provideHttpClient(withInterceptorsFromDi()),
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

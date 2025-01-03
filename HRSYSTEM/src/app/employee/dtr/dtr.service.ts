@@ -10,16 +10,19 @@ export class DtrService {
 
   constructor(private http: HttpClient) {}
 
-  clockIn(employeeId: number): Observable<any> {
+  // Clock-in method modified to accept employeeId, date, and time
+  clockIn(payload: { employee_id: number; date: string; time: string }): Observable<any> {
     const url = `${this.baseUrl}clockIn`;
-    return this.http.post(url, { employee_id: employeeId });
+    return this.http.post(url, payload); // Send the full payload with employee_id, date, and time
   }
 
-  clockOut(employeeId: number): Observable<any> {
+  // Clock-out method modified to accept employeeId, date, and time
+  clockOut(payload: { employee_id: number; date: string; time: string }): Observable<any> {
     const url = `${this.baseUrl}clockOut`;
-    return this.http.post(url, { employee_id: employeeId });
+    return this.http.post(url, payload); // Send the full payload with employee_id, date, and time
   }
 
+  // Fetch employee data
   getEmployeeData(): Observable<any> {
     const url = `${this.baseUrl}getEmployeeData`;
     return this.http.get(url);

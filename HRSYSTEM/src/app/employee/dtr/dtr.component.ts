@@ -7,39 +7,30 @@ import { DtrService } from './dtr.service';
   styleUrls: ['./dtr.component.scss']
 })
 export class DtrComponent implements OnInit {
-  dtrRecords = [
-    {
-      date: this.formatDate(new Date()),
-      status: 'Present',
-      schedule: '22:00 - 07:00',
-      clockIn: '',
-      clockOut: '',
-      undertime: '',
-      overtime: '',
-    },
-  ];
+  dtrRecords: any[] = [];
   currentTime: string = '';
   currentDate: string = '';
-  showModal: boolean = false;
-  selectedRecord: any = null;
 
   constructor(private dtrService: DtrService) {}
 
   ngOnInit() {
     this.updateClock();
     setInterval(() => this.updateClock(), 1000);
-    this.checkCurrentDate();
+    this.loadRecords();
+    this.ensureTodayRecord();
   }
 
   updateClock() {
     const now = new Date();
     this.currentTime = now.toLocaleTimeString();
-    this.currentDate = now.toDateString();
+    this.currentDate = this.formatDate(now);
   }
 
-  checkCurrentDate() {
+  ensureTodayRecord() {
     const today = this.formatDate(new Date());
-    if (this.dtrRecords[0].date !== today) {
+    const existingRecord = this.dtrRecords.find((record) => record.date === today);
+
+    if (!existingRecord) {
       this.dtrRecords.unshift({
         date: today,
         status: 'Absent',
@@ -47,116 +38,105 @@ export class DtrComponent implements OnInit {
         clockIn: '',
         clockOut: '',
         undertime: '',
-        overtime: '',
+        overtime: ''
       });
+      this.saveRecords();
     }
   }
 
   formatDate(date: Date): string {
-    return date.toLocaleDateString('en-CA'); // Format: YYYY-MM-DD
+    return date.toISOString().split('T')[0]; // Format: YYYY-MM-DD
   }
 
-  toggleTimeInOut(record: any) {
-    this.selectedRecord = record;
-    this.showModal = true;
-  }
-
-  confirmTimeInOut() {
-    const employeeId = +localStorage.getItem('employee_id')!; // Assuming employee ID is stored in local storage
-
-    // Ensure the employee_id exists in localStorage and log it for debugging
-    if (!employeeId) {
-      alert('Employee ID is missing!');
-      console.error('Employee ID is missing from localStorage');
+  handleTimeInOut(record: any) {
+    if (record.clockIn && record.clockOut) {
+      alert('You have already clocked in and out for today!');
       return;
     }
 
-    console.log('Employee ID:', employeeId); // Debugging line
+    const employeeId = localStorage.getItem('employee_id');
+    if (!employeeId) {
+      alert('Employee ID is missing!');
+      return;
+    }
 
-    if (!this.selectedRecord.clockIn) {
-      this.dtrService.clockIn(employeeId).subscribe(
+    const payload = {
+      employee_id: +employeeId,
+      date: record.date,
+      time: this.currentTime
+    };
+
+    if (!record.clockIn) {
+      this.dtrService.clockIn(payload).subscribe(
         (response) => {
           if (response.status === 'success') {
-            this.selectedRecord.clockIn = this.currentTime;
-            this.selectedRecord.status = 'Present';
-            alert('Clock-in successful');
-            console.log(`Clock-in successful at: ${this.currentTime}`);
+            record.clockIn = this.currentTime;
+            record.status = 'Present';
+            this.saveRecords();
+            alert('Clock-in successful!');
           } else {
             alert(response.message);
-            console.log(`Clock-in failed: ${response.message}`);
           }
         },
         (error) => {
-          console.error(error);
-          console.log(`Clock-in error: ${error.message}`);
+          console.error('Clock-in error:', error);
+          alert('Clock-in failed!');
         }
       );
-    } else {
-      this.dtrService.clockOut(employeeId).subscribe(
+    } else if (!record.clockOut) {
+      this.dtrService.clockOut(payload).subscribe(
         (response) => {
           if (response.status === 'success') {
-            this.selectedRecord.clockOut = this.currentTime;
-            this.calculateTime(this.selectedRecord);
-            alert('Clock-out successful');
-            console.log(`Clock-out successful at: ${this.currentTime}`);
+            record.clockOut = this.currentTime;
+            this.calculateTimes(record);
+            this.saveRecords();
+            alert('Clock-out successful!');
           } else {
             alert(response.message);
-            console.log(`Clock-out failed: ${response.message}`);
           }
         },
         (error) => {
-          console.error(error);
-          console.log(`Clock-out error: ${error.message}`);
+          console.error('Clock-out error:', error);
+          alert('Clock-out failed!');
         }
       );
     }
-
-    this.showModal = false;
-    this.selectedRecord = null;
   }
 
-  cancelTimeInOut() {
-    this.showModal = false;
-    this.selectedRecord = null;
-  }
-
-  calculateTime(record: any) {
-    const schedule = record.schedule.split(' - '); // ['22:00', '07:00']
-    const scheduleStart = this.parseTime(schedule[0]);
-    const scheduleEnd = this.parseTime(schedule[1], true); // Handle overnight shifts
-
+  calculateTimes(record: any) {
+    const [start, end] = record.schedule.split(' - ').map(this.parseTime);
     const clockInTime = this.parseTime(record.clockIn);
     const clockOutTime = this.parseTime(record.clockOut);
 
-    const scheduledDuration = scheduleEnd - scheduleStart; // In milliseconds
-    const workedDuration = clockOutTime - clockInTime;
+    const scheduledHours = end - start + (end < start ? 24 : 0);
+    const workedHours = clockOutTime - clockInTime;
 
-    if (workedDuration < scheduledDuration) {
-      const undertime = scheduledDuration - workedDuration;
-      record.undertime = this.formatDuration(undertime);
-      record.overtime = '00:00:00';
+    if (workedHours < scheduledHours) {
+      record.undertime = this.formatHours(scheduledHours - workedHours);
+      record.overtime = '00:00';
     } else {
-      const overtime = workedDuration - scheduledDuration;
-      record.overtime = this.formatDuration(overtime);
-      record.undertime = '00:00:00';
+      record.overtime = this.formatHours(workedHours - scheduledHours);
+      record.undertime = '00:00';
     }
   }
 
-  parseTime(time: string, isNextDay: boolean = false): number {
-    const [hours, minutes, seconds] = time.split(':').map(Number);
-    let date = new Date();
-    date.setHours(hours, minutes, seconds || 0);
-    if (isNextDay) {
-      date.setDate(date.getDate() + 1); // Add a day for overnight shifts
-    }
-    return date.getTime();
+  parseTime(time: string): number {
+    const [hours, minutes] = time.split(':').map(Number);
+    return hours + minutes / 60;
   }
 
-  formatDuration(milliseconds: number): string {
-    const totalSeconds = Math.floor(milliseconds / 1000);
-    const hours = Math.floor(totalSeconds / 3600).toString().padStart(2, '0');
-    const minutes = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2, '0');
-    const seconds = (totalSeconds % 60).toString().padStart(2, '0');
-    return `${hours}:${minutes}:${seconds}`;
+  formatHours(hours: number): string {
+    const h = Math.floor(hours);
+    const m = Math.round((hours - h) * 60);
+    return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+  }
+
+  loadRecords() {
+    const storedRecords = localStorage.getItem('dtrRecords');
+    this.dtrRecords = storedRecords ? JSON.parse(storedRecords) : [];
+  }
+
+  saveRecords() {
+    localStorage.setItem('dtrRecords', JSON.stringify(this.dtrRecords));
   }
 }
