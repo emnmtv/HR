@@ -1,63 +1,54 @@
 <div class="dtr-container">
-    <div class="summary-section">
-      <h3>DTR Summary for October</h3>
-      <p>Payroll cutoff: Sept 19 - Oct 18</p>
-      <div class="summary-cards">
-        <div class="summary-card">
-          <p>Late</p>
-          <span>00:00:00</span>
-        </div>
-        <div class="summary-card">
-          <p>Undertime</p>
-          <span>00:41:49</span>
-        </div>
-        <div class="summary-card">
-          <p>Night Diff</p>
-          <span>103:16:31</span>
-        </div>
-        <div class="summary-card">
-          <p>Unpaid Leave</p>
-          <span>0 day/s</span>
-        </div>
-        <div class="summary-card">
-          <p>Special Holiday</p>
-          <span>00:00:00</span>
-        </div>
-      </div>
-    </div>
-  
-    <div class="record-section">
-      <h4>Daily Time Records</h4>
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Status</th>
-            <th>Schedule</th>
-            <th>Clock In</th>
-            <th>Clock Out</th>
-            <th>Late</th>
-            <th>Undertime</th>
-            
-            <th>Overtime</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let record of dtrRecords">
-            <td>{{ record.date }}</td>
-            <td>{{ record.status }}</td>
-            <td>{{ record.schedule }}</td>
-            <td>{{ record.clockIn }}</td>
-            <td>{{ record.clockOut }}</td>
-            <td>{{ record.late }}</td>
-            <td>{{ record.undertime }}</td>
-          
-            <td>{{ record.overtime }}</td>
-            <td><button class="action-btn">Details</button></td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="top-bar">
+    <div class="clock">
+      <span>{{ currentDate }}</span> - <span>{{ currentTime }}</span>
     </div>
   </div>
-  
+
+  <div class="record-section">
+    <h4>Daily Time Records</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Schedule</th>
+          <th>Clock In</th>
+          <th>Clock Out</th>
+          <th>Undertime</th>
+          <th>Overtime</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let record of dtrRecords">
+          <td>{{ record.date }}</td>
+          <td>{{ record.status }}</td>
+          <td>{{ record.schedule }}</td>
+          <td>{{ record.clockIn }}</td>
+          <td>{{ record.clockOut }}</td>
+          <td>{{ record.undertime }}</td>
+          <td>{{ record.overtime }}</td>
+          <td>
+            <button class="action-btn" (click)="toggleTimeInOut(record)">
+              {{ record.clockIn ? 'Time Out' : 'Time In' }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal -->
+<div *ngIf="showModal" class="modal">
+  <div class="modal-content">
+    <h3>{{ selectedRecord?.clockIn ? 'Time Out' : 'Time In' }} Confirmation</h3>
+    <p>
+      Are you sure you want to {{ selectedRecord?.clockIn ? 'time out' : 'time in' }} for
+      {{ selectedRecord?.date }}?
+    </p>
+    <button class="confirm-btn" (click)="confirmTimeInOut()">Confirm</button>
+    <button class="cancel-btn" (click)="cancelTimeInOut()">Cancel</button>
+  </div>
+</div>

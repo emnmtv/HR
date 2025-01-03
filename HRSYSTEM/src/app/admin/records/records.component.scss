@@ -1,4 +1,5 @@
 .records-container {
+  font-family: Arial, sans-serif;
   padding: 20px;
   background-color: #f9f9f9;
 
@@ -9,8 +10,9 @@
     margin-bottom: 20px;
 
     h1 {
-      font-size: 24px;
+      font-size: 40px;
       color: #333;
+      font-weight: bold;
     }
 
     .add-employee-btn {
@@ -41,6 +43,20 @@
     th {
       background-color: #5ba75d;
       color: #fff;
+    }
+
+    tr.even-row {
+      background-color: #fff;
+    }
+
+    tr.odd-row {
+      background-color: #f2f2f2;
+    }
+
+    tr:hover {
+      background-color: #eef;
+      color: #fff;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     .details-btn {

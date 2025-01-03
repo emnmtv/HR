@@ -21,6 +21,7 @@ import { EmpRequestComponent } from './employee/emp-request/emp-request.componen
 import { provideHttpClient } from '@angular/common/http';
 import { ListComponent } from './admin/list/list.component';
 import { RecordsComponent } from './admin/records/records.component';
+import { DtrSummaryComponent } from './employee/dtr-summary/dtr-summary.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { RecordsComponent } from './admin/records/records.component';
     EmpRequestComponent,
     ListComponent,
     RecordsComponent,
+    DtrSummaryComponent,
   ],
   imports: [
     BrowserModule,

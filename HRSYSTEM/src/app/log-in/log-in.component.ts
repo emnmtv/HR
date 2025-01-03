@@ -24,9 +24,10 @@ export class LogInComponent {
         if (response.status === 'success') {
           console.log('Login successful:', response);
   
-          // Save user details and account type in local storage
-          localStorage.setItem('user', JSON.stringify(response.user));
+          // Save user details and employee ID in local storage
+          localStorage.setItem('user', JSON.stringify(response.user));  // Save entire user data
           localStorage.setItem('accountType', response.user.account_type);
+          localStorage.setItem('employee_id', response.user.id.toString());  // Save employee ID
   
           // Redirect based on account type
           if (response.user.account_type === 'Admin') {
@@ -44,6 +45,7 @@ export class LogInComponent {
       }
     );
   }
+  
   
   
 }

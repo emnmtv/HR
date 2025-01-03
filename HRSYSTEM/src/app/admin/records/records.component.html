@@ -16,17 +16,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let employee of employees">
+      <tr *ngFor="let employee of employees; let i = index" [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
         <td>{{ employee.id }}</td>
         <td>{{ employee.first_name }} {{ employee.last_name }}</td>
         <td>{{ employee.company }}</td>
-        <td>{{employee.cellphone_number}}</td>
+        <td>{{ employee.cellphone_number }}</td>
         <td>{{ employee.sex }}</td>
         <td>
-          <button
-            class="details-btn"
-            (click)="toggleModal(employee)"
-          >
+          <button class="details-btn" (click)="toggleModal(employee)">
             {{ selectedEmployee === employee ? 'Close' : 'Details' }}
           </button>
         </td>
@@ -34,7 +31,6 @@
     </tbody>
   </table>
 
-  <!-- Modal -->
   <div class="modal" *ngIf="selectedEmployee">
     <div class="modal-content">
       <span class="close" (click)="toggleModal(null)">&times;</span>

@@ -11,4 +11,5 @@ export const navbarDataEmployee = [
  // { routeLink: '/tasks', icon: '../../assets/images/tasks.png', label: 'Tasks' },
   { routeLink: '/dtr', icon: '../../assets/images/calendar.png', label: 'Attendance' },
   { routeLink: '/request', icon: '../../assets/images/logocalendar2.png', label: 'My Requests' },
+  { routeLink: '/summary', icon: '../../assets/images/logocalendar2.png', label: 'DTR Summary' },
 ];

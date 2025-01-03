@@ -14,6 +14,7 @@ import { AdminSalaryComponent } from './admin/admin-salary/admin-salary.componen
 import { DayattendancesummaryComponent } from './admin/dayattendancesummary/dayattendancesummary.component';
 import { EmpRequestComponent } from './employee/emp-request/emp-request.component';
 import { RecordsComponent } from './admin/records/records.component';
+import { DtrSummaryComponent } from './employee/dtr-summary/dtr-summary.component';
 
 const routes: Routes = [
   { path: '', redirectTo:'login', pathMatch: 'full' },
@@ -30,6 +31,8 @@ const routes: Routes = [
   { path: 'ed', component: AdminSalaryComponent},
   { path: 'day', component: DayattendancesummaryComponent},
   { path: 'request', component: EmpRequestComponent},
+  { path: 'summary', component: DtrSummaryComponent},
+
   { path: '**', component: ErrorComponent}, // Add this route for the login page
   
 ];
