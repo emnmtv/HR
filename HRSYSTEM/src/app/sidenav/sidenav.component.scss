@@ -136,55 +136,70 @@
 .Btn {
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* Align content to the left */
-  width: 150px; /* Default width */
-  height: 50px; /* Maintain rectangle shape */
-  border: none;
-  border-radius: 10px; /* Subtle rounded corners for a rectangle */
-  cursor: pointer;
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  overflow: hidden;
-  background: linear-gradient(to right, #070707, #716b6b);
-  transition: all 0.4s ease;
-}
-
-.collapsed {
-  width: 150px; /* Larger size for expanded state */
   justify-content: flex-start;
-  padding-left: 10px;
-}
-
-.expanded {
-  width: 50px; /* Small size for collapsed state */
-  justify-content: center; /* Center content */
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  position: absolute;  /* Position button absolutely at the bottom */
+  bottom: 20px;  /* Position it 20px from the bottom */
+  left: 50%;
+  transform: translateX(-50%);  /* Center horizontally */
+  overflow: hidden;
+  transition-duration: 0.4s;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(to right, #070707, #716b6b );
 }
 
 .sign {
-  width: 30%;
+  width: 100%;
+  transition-duration: 0.4s;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  svg {
-    width: 17px;
-
-    path {
-      fill: white;
-    }
-  }
 }
 
-  /* Hide text in collapsed state */
-  .expanded .text {
-    display: none;
-  }
-  .text {
-    opacity: 1;
-    font-size: 1.2em;
-    font-weight: 600;
-    color: #ecf0f1;
-    transition: opacity 0.4s ease;
-  }
+.sign svg {
+  width: 17px;
+}
+
+.sign svg path {
+  fill: white;
+}
+
+.text {
+  position: absolute;
+  right: 0%;
+  width: 0%;
+  opacity: 0;
+  color: #ecf0f1;
+  font-size: 1.2em;
+  font-weight: 600;
+  transition-duration: 0.4s;
+}
+
+.Btn:hover {
+  width: 150px;
+  border-radius: 20px;
+  transition-duration: 0.4s;
+  background: linear-gradient(to right, #070707, #716b6b );
+}
+
+.Btn:hover .sign {
+  width: 30%;
+  transition-duration: 0.4s;
+  padding-left: 12px;
+}
+
+.Btn:hover .text {
+  opacity: 1;
+  width: 70%;
+  transition-duration: 0.4s;
+  padding-right: 10px;
+}
+
+.Btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+}
