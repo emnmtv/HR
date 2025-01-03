@@ -1,5 +1,3 @@
-// dtr-summary.service.ts
-
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -23,5 +21,5 @@ export class DtrSummaryService {
 
     // Send a POST request with the body content
     return this.http.post<any>(this.apiUrl, body);
-  }
+  }  
 }

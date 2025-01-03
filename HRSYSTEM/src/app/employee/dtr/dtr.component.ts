@@ -18,13 +18,14 @@ export class DtrComponent implements OnInit {
     setInterval(() => this.updateClock(), 1000);
     this.loadRecords();
     this.ensureTodayRecord();
+    
   }
-
+ 
   updateClock() {
     const now = new Date();
     this.currentTime = now.toLocaleTimeString();
     this.currentDate = this.formatDate(now);
-  }
+  } 
 
   ensureTodayRecord() {
     const today = this.formatDate(new Date());

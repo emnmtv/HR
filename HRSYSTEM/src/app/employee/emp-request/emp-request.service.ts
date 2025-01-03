@@ -1,25 +1,31 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class EmpRequestService {
-  private apiUrl = 'http://localhost/integapi/main/routes.php';
+  private apiUrl = 'http://localhost/integapi/main/routes.php'; // API endpoint
 
   constructor(private http: HttpClient) {}
 
-  // Get pending requests for an employee
-  getPendingRequests(employeeId: number): Observable<any> {
-    const url = `${this.apiUrl}?route=getPendingRequests&employee_id=${employeeId}`;
-    return this.http.get<any>(url);
+  getEmployeeRequests(employeeId: number): Observable<any> {
+    const body = {
+      route: 'fetchUserRequest',
+      employee_id: employeeId
+    };
+    return this.http.post<any>(this.apiUrl, body);
   }
 
-  // Submit a new request
-  createRequest(requestData: any): Observable<any> {
-    const url = `${this.apiUrl}?route=createRequest`;
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<any>(url, requestData, { headers });
+  createRequest(employeeId: number, date: string, type: string, reason: string): Observable<any> {
+    const body = {
+      route: 'createRequest',
+      employee_id: employeeId,
+      date: date,
+      type: type,
+      reason: reason
+    };
+    return this.http.post<any>(this.apiUrl, body);
   }
 }

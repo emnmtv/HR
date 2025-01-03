@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DtrSummaryService } from './dtr-summary.service'; // Ensure the service is correctly imported
+import { Router } from '@angular/router';  // Import the router to redirect if not logged in
 
 // Define the interface for DTR Record
 interface DtrRecord {
@@ -31,11 +32,29 @@ export class DtrSummaryComponent implements OnInit {
   // dtrRecords array typed as DtrRecord[]
   dtrRecords: DtrRecord[] = [];
 
-  constructor(private dtrSummaryService: DtrSummaryService) {}
+  loggedInEmployeeId: number = 0; // Variable to store logged-in employee ID
+
+  constructor(
+    private dtrSummaryService: DtrSummaryService, 
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    // Fetch the DTR data on component initialization
-    this.dtrSummaryService.getTimeInOut(456).subscribe(
+    // Retrieve the logged-in employee ID from local storage
+    const storedEmployeeId = localStorage.getItem('employee_id');
+    if (storedEmployeeId) {
+      this.loggedInEmployeeId = parseInt(storedEmployeeId, 10);
+
+      // Fetch the DTR data for the logged-in employee
+      this.fetchDtrData(this.loggedInEmployeeId);
+    } else {
+      // Redirect to login page if no employee_id is found in local storage
+      this.router.navigate(['/login']);
+    }
+  }
+
+  fetchDtrData(employeeId: number): void {
+    this.dtrSummaryService.getTimeInOut(employeeId).subscribe(
       response => {
         if (response.status === 'success') {
           this.dtrRecords = response.data.map((record: any) => {
