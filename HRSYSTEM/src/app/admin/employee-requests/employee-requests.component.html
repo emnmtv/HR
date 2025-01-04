@@ -35,7 +35,9 @@
     <thead>
       <tr>
         <th><input type="checkbox" /></th>
-        <th>Name/Department</th>
+        <th>Name</th>
+        <th>Position</th>
+        <th>Reason</th>
         <th>Request Type</th>
         <th>Request Date</th>
         <th>Status</th>
@@ -48,8 +50,10 @@
         <td>
           {{ request.employee_name }}
           <br />
-          <small>{{ request.company }}</small>
+          
         </td>
+        <td>{{ request.company }}</td>
+        <td>{{request.reason}}</td>
         <td>{{ request.type }}</td>
         <td>{{ request.date }}</td>
         <td class="status-cell">
