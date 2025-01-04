@@ -9,6 +9,7 @@ import { EmployeeRequestService } from './employee-request.service';
 export class EmployeeRequestsComponent implements OnInit {
   employees: any[] = [];
   allRequests: any[] = [];
+  employeeMap: Map<number, any> = new Map(); // To map employee ID to employee data
 
   constructor(private employeeRequestService: EmployeeRequestService) {}
 
@@ -22,7 +23,14 @@ export class EmployeeRequestsComponent implements OnInit {
       (response) => {
         if (response.status === 'success') {
           this.employees = response.data;
-          this.loadAllRequestsForEmployees();  // Once employees are loaded, fetch their requests
+          this.employees.forEach((employee) => {
+            // Storing employee data in the map using employee_id as key
+            this.employeeMap.set(employee.id, {
+              name: `${employee.first_name} ${employee.last_name}`,
+              company: employee.company
+            });
+          });
+          this.loadAllRequestsForEmployees(); // Once employees are loaded, fetch their requests
         } else {
           console.error('Error fetching employees:', response.message);
         }
@@ -33,14 +41,22 @@ export class EmployeeRequestsComponent implements OnInit {
     );
   }
 
-  // Fetch requests for all employees
+  // Fetch requests for all employees and link them with employee data
   loadAllRequestsForEmployees(): void {
     this.allRequests = [];  // Reset the requests array
     this.employees.forEach((employee) => {
       this.employeeRequestService.fetchUserRequests(employee.id).subscribe(
         (response) => {
           if (response.status === 'success') {
-            this.allRequests.push(...response.data);  // Combine employee requests
+            response.data.forEach((request: any) => {
+              // Merge employee info with each request
+              const employeeData = this.employeeMap.get(employee.id);
+              this.allRequests.push({
+                ...request,
+                employee_name: employeeData.name,
+                company: employeeData.company
+              });
+            });
           } else {
             console.error(`Error fetching requests for employee ${employee.id}:`, response.message);
           }
