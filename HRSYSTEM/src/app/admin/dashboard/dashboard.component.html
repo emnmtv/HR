@@ -1,7 +1,6 @@
 <div class="dashboard-container">
   <h1>HR Dashboard</h1>
 
-  <!-- Overview Cards -->
   <div class="overview-cards">
     <div class="card">
       <h3>Total Employees</h3>
@@ -12,61 +11,32 @@
       <p>{{ pendingRequests }}</p>
     </div>
     <div class="card">
-      <h3>Active Job Openings</h3>
-      <p>{{ activeJobOpenings }}</p>
+      <h3>Approved Requests</h3>
+      <p>{{ approvedRequests }}</p>
     </div>
     <div class="card">
-      <h3>Upcoming Birthdays</h3>
-      <p>{{ upcomingBirthdays }}</p>
+      <h3>Rejected Requests</h3>
+      <p>{{ rejectedRequests }}</p>
     </div>
   </div>
 
-  <!-- Tabs for sections -->
-  <div class="dashboard-tabs">
-    <button class="tab active">Overview</button>
-    <button class="tab">Employee Requests</button>
-    <button class="tab">Attendance</button>
-    <button class="tab">Recruitment</button>
-    <button class="tab">Reports</button>
-  </div>
-
-  <!-- Charts and Graphs Section -->
   <div class="charts-section">
     <div class="chart">
       <h3>Attendance Summary</h3>
       <canvas id="attendanceChart"></canvas>
     </div>
+
     <div class="chart">
       <h3>Employee Distribution by Department</h3>
-    <canvas id="departmentChart"></canvas>
-    <!-- Data Summary -->
-    <div class="data-summary">
-      <h4>Department Data Summary</h4>
-      <ul>
-        <li *ngFor="let department of departmentData">
-         <strong>{{ department.name }}</strong>: {{ department.count }} Employees
-        </li>
-      </ul>
-    </div>
+      <canvas id="employeeDistributionChart"></canvas>
     </div>
   </div>
 
-  <!-- Quick Actions -->
-  <div class="quick-actions">
-    <h3>Quick Actions</h3>
-    <button (click)="addEmployee()">Add Employee</button>
-    <button (click)="approveRequests()">Approve Requests</button>
-    <button (click)="viewReports()">View Reports</button>
-    <button (click)="postJobOpening()">Post Job Opening</button>
-  </div>
-
-  <!-- Recent Activities Section -->
-  <div class="recent-activities">
-    <h3>Recent Activities</h3>
+  <div class="employee-list">
+    <h3>Employees by Company</h3>
     <ul>
-      <li *ngFor="let activity of recentActivities">
-        <span>{{ activity.timestamp }}</span>
-        <p>{{ activity.description }}</p>
+      <li *ngFor="let employee of employeesByCompany">
+        {{ employee.first_name }} {{ employee.last_name }} - {{ employee.company }}
       </li>
     </ul>
   </div>

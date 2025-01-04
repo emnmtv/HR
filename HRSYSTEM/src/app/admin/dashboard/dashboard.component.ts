@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { DashboardService } from './dashboard.service';
 import Chart from 'chart.js/auto';
 
 @Component({
@@ -6,49 +7,90 @@ import Chart from 'chart.js/auto';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent implements OnInit {
-  totalEmployees = 150;
-  pendingRequests = 20;
-  activeJobOpenings = 5;
-  upcomingBirthdays = 8;
+export class DashboardComponent implements OnInit, AfterViewInit {
+  totalEmployees: number = 0;
+  pendingRequests: number = 0;
+  approvedRequests: number = 0;
+  rejectedRequests: number = 0;
 
-  recentActivities = [
-    { timestamp: '2024-12-01 10:00 AM', description: 'Approved work-from-home request for John Doe' },
-    { timestamp: '2024-12-01 09:30 AM', description: 'Added a new job posting for Software Developer' },
-    { timestamp: '2024-12-01 08:45 AM', description: 'Updated attendance records for November' },
-  ];
+  attendanceSummary = { present: 0, absent: 0, late: 0 };
+  employeesByCompany: any[] = []; // This will hold the filtered employee data
 
-  // Static logic for department data
-  departmentData = [
-    { name: 'Operations', count: 50 },
-    { name: 'HR', count: 20 },
-    { name: 'Finance', count: 15 },
-    { name: 'Cashier', count: 40 },
-    { name: 'Custodian', count: 40 },
-    { name: 'Bagger', count: 25 },
-  ];
+  constructor(private dashboardService: DashboardService) {}
 
   ngOnInit() {
-    this.renderAttendanceChart();
-    this.renderDepartmentChart();
+    this.fetchDashboardData();
+    this.fetchEmployeeData(); // Fetch employee data on init
+  }
+
+  ngAfterViewInit() {
+    this.dashboardService.getAttendanceData().subscribe((response) => {
+      if (response.status === 'success') {
+        this.attendanceSummary = {
+          present: response.data.present,
+          absent: response.data.absent,
+          late: response.data.late,
+        };
+        this.renderAttendanceChart();
+      }
+    });
+
+    this.renderEmployeeDistributionChart(); // Render employee chart after view init
+  }
+
+  fetchDashboardData() {
+    this.dashboardService.getEmployeeCount().subscribe((response) => {
+      if (response.status === 'success') {
+        this.totalEmployees = response.total_employees;
+      }
+    });
+
+    this.dashboardService.getRequestCounts().subscribe((response) => {
+      if (response.status === 'success') {
+        this.pendingRequests = response.pending_requests;
+        this.approvedRequests = response.approved_requests;
+        this.rejectedRequests = response.rejected_requests;
+      }
+    });
+  }
+
+  fetchEmployeeData() {
+    const filters = { company: 'YourCompanyName' }; // You can dynamically pass filters here
+
+    this.dashboardService.getEmployeeData(filters).subscribe((response) => {
+      if (response.status === 'success') {
+        this.employeesByCompany = response.data;
+        console.log(this.employeesByCompany); // This will show the employees fetched based on the filter
+      }
+    });
   }
 
   renderAttendanceChart() {
     const ctx = document.getElementById('attendanceChart') as HTMLCanvasElement;
+
+    if (!ctx) {
+      console.error('Attendance Chart element not found');
+      return;
+    }
+
     new Chart(ctx, {
       type: 'doughnut',
       data: {
-        labels: ['Present', 'Absent', 'On Leave'],
+        labels: ['Present', 'Absent', 'Late'],
         datasets: [
           {
-            data: [75, 15, 10],
+            data: [
+              this.attendanceSummary.present,
+              this.attendanceSummary.absent,
+              this.attendanceSummary.late,
+            ],
             backgroundColor: ['#4caf50', '#f44336', '#ff9800'],
           },
         ],
       },
       options: {
         responsive: true,
-        maintainAspectRatio: true,
+        maintainAspectRatio: false,
         plugins: {
           legend: {
             position: 'bottom',
@@ -61,68 +103,35 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  renderDepartmentChart() {
-    const ctx = document.getElementById('departmentChart') as HTMLCanvasElement;
+  renderEmployeeDistributionChart() {
+    const ctx = document.getElementById('employeeDistributionChart') as HTMLCanvasElement;
+
+    if (!ctx) {
+      console.error('Employee Distribution Chart element not found');
+      return;
+    }
+
     new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: this.departmentData.map((dept) => dept.name),
+        labels: this.employeesByCompany.map((emp) => emp.department || 'Unknown'),
         datasets: [
           {
-            label: 'Employees',
-            data: this.departmentData.map((dept) => dept.count),
-            backgroundColor: ['#4caf50', '#2196f3', '#ff9800', '#e91e63', '#9c27b0'],
+            label: 'Employees per Department',
+            data: this.employeesByCompany.map((emp) => emp.count || 0),
+            backgroundColor: '#42a5f5',
           },
         ],
       },
       options: {
         responsive: true,
-        maintainAspectRatio: true,
+        maintainAspectRatio: false,
         plugins: {
           legend: {
             position: 'top',
           },
-          title: {
-            display: true,
-            text: 'Employee Distribution by Department',
-            font: {
-              size: 16,
-            },
-          },
-        },
-        scales: {
-          x: {
-            ticks: {
-              font: {
-                size: 12,
-              },
-            },
-          },
-          y: {
-            ticks: {
-              font: {
-                size: 12,
-              },
-            },
-          },
         },
       },
     });
-  }
-
-  addEmployee() {
-    alert('Redirecting to Add Employee form...');
-  }
-
-  approveRequests() {
-    alert('Redirecting to Approve Requests page...');
-  }
-
-  viewReports() {
-    alert('Redirecting to Reports...');
-  }
-
-  postJobOpening() {
-    alert('Redirecting to Post Job Opening form...');
   }
 }
