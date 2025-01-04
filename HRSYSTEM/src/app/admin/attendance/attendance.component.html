@@ -1,6 +1,6 @@
 <div class="attendance-panel p-4 bg-gray-100">
     <header class="mb-4 flex justify-between items-center">
-      <h1 class="text-xl font-semibold">Employee Attendance</h1>
+      <h1 class="text-xl font-semibold">Attendance Monitoring & Summary</h1>
       <button class="bg-blue-500 text-white px-4 py-2 rounded-md flex items-center" (click)="refreshAttendance()">
         <i class="fa fa-refresh mr-2"></i>
         Refresh
@@ -14,8 +14,8 @@
             <th class="px-4 py-2 text-left">Employee</th>
             <th class="px-4 py-2 text-left">Position</th>
             <th class="px-4 py-2 text-left">Date</th>
-            <th class="px-4 py-2 text-left">Time In</th>
-            <th class="px-4 py-2 text-left">Time Out</th>
+            <th class="px-4 py-2 text-left">Latest Time In</th>
+            <th class="px-4 py-2 text-left">Latest Time Out</th>
             <th class="px-4 py-2 text-left">Total Hours</th>
             <th class="px-4 py-2 text-left">Status</th>
           </tr>
@@ -31,7 +31,7 @@
             <td class="px-4 py-2">{{ record.timeIn || '--:--' }}</td>
             <td class="px-4 py-2">{{ record.timeOut || '--:--' }}</td>
             <td class="px-4 py-2">{{ record.totalHours || '--' }}</td>
-            <td class="px-4 py-2"></td>
+            <td class="px-4 py-2">{{record.status}}</td>
           </tr>
         </tbody>
       </table>

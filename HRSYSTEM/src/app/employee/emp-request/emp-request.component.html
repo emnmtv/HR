@@ -42,7 +42,10 @@
       <select [(ngModel)]="newRequest.type" name="type" required>
         <option value="Leave">Leave</option>
         <option value="Overtime">Overtime</option>
+        <option value="Day Off">Day Off</option>
+        <option value="Vacation">Vacation</option>
       </select>
+      
 
       <label for="reason">Reason:</label>
       <textarea [(ngModel)]="newRequest.reason" name="reason" required></textarea>
