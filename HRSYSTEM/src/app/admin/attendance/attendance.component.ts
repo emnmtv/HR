@@ -71,11 +71,11 @@ export class AttendanceComponent implements OnInit {
 
   viewDtrHistory(employeeId: number) {
     const employee = this.attendanceRecords.find((record) => record.id === employeeId);
-  
+
     if (employee) {
       // Clear the previous selection
       this.selectedEmployee = null;
-  
+
       // Fetch DTR history for the selected employee
       this.attendanceService.getTimeInOut(employee.id).subscribe(
         (response) => {
@@ -113,11 +113,39 @@ export class AttendanceComponent implements OnInit {
       console.error('Employee not found with ID:', employeeId);
     }
   }
-  
-  
+
+  closeModal() {
+    this.selectedEmployee = null;
+  }
+  refreshAttendance() {
+    this.loadEmployeeData();  // This will reload the employee data
+  }
   
 
-  refreshAttendance() {
-    this.loadEmployeeData();
+  printDtrHistory() {
+    const printWindow = window.open('', '', 'width=800,height=600');
+    if (printWindow) { // Ensure printWindow is not null
+      printWindow.document.write('<html><head><title>DTR History</title></head><body>');
+      printWindow.document.write('<h3>' + this.selectedEmployee.name + "'s DTR History</h3>");
+      printWindow.document.write('<table border="1" cellpadding="5"><thead><tr><th>Date</th><th>Time In</th><th>Time Out</th><th>Total Hours</th><th>Status</th></tr></thead><tbody>');
+      
+      this.selectedEmployee.dtrHistory.forEach((dtr: any) => {  // Explicitly defining 'dtr' as 'any'
+        printWindow.document.write('<tr>');
+        printWindow.document.write('<td>' + dtr.date + '</td>');
+        printWindow.document.write('<td>' + dtr.timeIn + '</td>');
+        printWindow.document.write('<td>' + dtr.timeOut + '</td>');
+        printWindow.document.write('<td>' + dtr.totalHours + '</td>');
+        printWindow.document.write('<td>' + dtr.status + '</td>');
+        printWindow.document.write('</tr>');
+      });
+      
+  
+      printWindow.document.write('</tbody></table></body></html>');
+      printWindow.document.close(); // Close the document to finish writing
+      printWindow.print(); // Print the contents
+    } else {
+      console.error('Failed to open print window');
+    }
   }
+  
 }

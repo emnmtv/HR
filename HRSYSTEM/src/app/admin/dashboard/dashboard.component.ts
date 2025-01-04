@@ -53,17 +53,18 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       }
     });
   }
-
   fetchEmployeeData() {
-    const filters = { company: 'YourCompanyName' }; // You can dynamically pass filters here
-
+    const filters = { company: 'YourCompanyName' };
+  
     this.dashboardService.getEmployeeData(filters).subscribe((response) => {
       if (response.status === 'success') {
         this.employeesByCompany = response.data;
-        console.log(this.employeesByCompany); // This will show the employees fetched based on the filter
+        console.log('Fetched Employees:', this.employeesByCompany); // Debugging output
+        this.renderEmployeeDistributionChart(); // Call chart rendering here
       }
     });
   }
+  
 
   renderAttendanceChart() {
     const ctx = document.getElementById('attendanceChart') as HTMLCanvasElement;
@@ -105,20 +106,34 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   renderEmployeeDistributionChart() {
     const ctx = document.getElementById('employeeDistributionChart') as HTMLCanvasElement;
-
+  
     if (!ctx) {
       console.error('Employee Distribution Chart element not found');
       return;
     }
-
+  
+    console.log('Employees by Company:', this.employeesByCompany); // Debugging output
+  
+    const companyCounts: { [company: string]: number } = {};
+    this.employeesByCompany.forEach((employee) => {
+      const companyName = employee.company || 'Unknown';
+      companyCounts[companyName] = (companyCounts[companyName] || 0) + 1;
+    });
+  
+    const labels = Object.keys(companyCounts);
+    const data = Object.values(companyCounts);
+  
+    console.log('Labels:', labels); // Debugging output
+    console.log('Data:', data); // Debugging output
+  
     new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: this.employeesByCompany.map((emp) => emp.department || 'Unknown'),
+        labels: labels,
         datasets: [
           {
-            label: 'Employees per Department',
-            data: this.employeesByCompany.map((emp) => emp.count || 0),
+            label: 'Employees per Company',
+            data: data,
             backgroundColor: '#42a5f5',
           },
         ],
@@ -134,4 +149,5 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       },
     });
   }
+  
 }
