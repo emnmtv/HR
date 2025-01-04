@@ -1,0 +1,67 @@
+<div class="attendance-panel p-4 bg-gray-100">
+    <header class="mb-4 flex justify-between items-center">
+      <h1 class="text-xl font-semibold">Employee Attendance</h1>
+      <button class="bg-blue-500 text-white px-4 py-2 rounded-md flex items-center" (click)="refreshAttendance()">
+        <i class="fa fa-refresh mr-2"></i>
+        Refresh
+      </button>
+    </header>
+  
+    <div class="table-container overflow-x-auto bg-white p-4 rounded-lg shadow-md">
+      <table class="w-full border-collapse">
+        <thead class="bg-gray-200">
+          <tr>
+            <th class="px-4 py-2 text-left">Employee</th>
+            <th class="px-4 py-2 text-left">Position</th>
+            <th class="px-4 py-2 text-left">Date</th>
+            <th class="px-4 py-2 text-left">Time In</th>
+            <th class="px-4 py-2 text-left">Time Out</th>
+            <th class="px-4 py-2 text-left">Total Hours</th>
+            <th class="px-4 py-2 text-left">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let record of attendanceRecords">
+            <td class="px-4 py-2 cursor-pointer text-blue-500" (click)="viewDtrHistory(record.id)">
+              {{ record.name }}
+            </td>
+            
+            <td class="px-4 py-2">{{ record.company }}</td>
+            <td class="px-4 py-2">{{ record.date }}</td>
+            <td class="px-4 py-2">{{ record.timeIn || '--:--' }}</td>
+            <td class="px-4 py-2">{{ record.timeOut || '--:--' }}</td>
+            <td class="px-4 py-2">{{ record.totalHours || '--' }}</td>
+            <td class="px-4 py-2"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <div *ngIf="selectedEmployee" class="dtr-history-panel mt-4 p-4 bg-white rounded-lg shadow-md">
+        <h3 class="text-xl font-semibold">{{ selectedEmployee.name }}'s DTR History</h3>
+        <div class="dtr-table mt-4 overflow-x-auto">
+          <table class="w-full border-collapse">
+            <thead class="bg-gray-200">
+              <tr>
+                <th class="px-4 py-2">Date</th>
+                <th class="px-4 py-2">Time In</th>
+                <th class="px-4 py-2">Time Out</th>
+                <th class="px-4 py-2">Total Hours</th>
+                <th class="px-4 py-2">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let dtr of selectedEmployee.dtrHistory">
+                <td class="px-4 py-2">{{ dtr.date }}</td>
+                <td class="px-4 py-2">{{ dtr.timeIn }}</td>
+                <td class="px-4 py-2">{{ dtr.timeOut }}</td>
+                <td class="px-4 py-2">{{ dtr.totalHours }}</td>
+                <td class="px-4 py-2">{{ dtr.status }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+  </div>
+  

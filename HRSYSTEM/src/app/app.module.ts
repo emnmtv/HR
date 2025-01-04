@@ -23,6 +23,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { ListComponent } from './admin/list/list.component';
 import { RecordsComponent } from './admin/records/records.component';
 import { DtrSummaryComponent } from './employee/dtr-summary/dtr-summary.component';
+import { AttendanceComponent } from './admin/attendance/attendance.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { DtrSummaryComponent } from './employee/dtr-summary/dtr-summary.componen
     ListComponent,
     RecordsComponent,
     DtrSummaryComponent,
+    AttendanceComponent,
   ],
   imports: [
     BrowserModule,
