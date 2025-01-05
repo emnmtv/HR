@@ -27,10 +27,15 @@
     </div>
 
     <div class="chart">
-      <h3>Employee Distribution by Company</h3>
+      <h3>Employee Distribution by Position</h3> <!-- Renamed from Company to Position -->
       <canvas id="employeeDistributionChart"></canvas>
     </div>
   </div>
 
-  
+  <!-- Automatic Report Section -->
+  <div class="automatic-reports">
+    <h3>Automatic Reports</h3>
+    <button (click)="generatePDF()">Download PDF Report</button>
+    <button (click)="printReport()">Print Report</button>
+  </div>
 </div>

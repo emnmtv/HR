@@ -1,7 +1,7 @@
 <div class="records-container">
   <div class="header">
     <h1>Employees</h1>
-    <button class="add-employee-btn">Export</button>
+    <button class="add-employee-btn" (click)="openRegisterModal()">Register Employee</button>
   </div>
 
   <table class="employee-table" *ngIf="!loading && !errorMessage">
@@ -31,20 +31,49 @@
     </tbody>
   </table>
 
-  <div class="modal" *ngIf="selectedEmployee">
+  <div class="modal" *ngIf="showRegisterModal">
     <div class="modal-content">
-      <span class="close" (click)="toggleModal(null)">&times;</span>
-      <h3>Employee Details</h3>
-      <p><strong>First Name:</strong> {{ selectedEmployee.first_name }}</p>
-      <p><strong>Last Name:</strong> {{ selectedEmployee.last_name }}</p>
-      <p><strong>Address:</strong> {{ selectedEmployee.address }}</p>
-      <p><strong>Cellphone Number:</strong> {{ selectedEmployee.cellphone_number }}</p>
-      <p><strong>Sex:</strong> {{ selectedEmployee.sex }}</p>
-      <p><strong>Place of Birth:</strong> {{ selectedEmployee.place_of_birth }}</p>
-      <p><strong>Barangay:</strong> {{ selectedEmployee.barangay }}</p>
-      <p><strong>Province:</strong> {{ selectedEmployee.province }}</p>
-      <p><strong>Vaccinated:</strong> {{ selectedEmployee.vaccination_status ? 'Yes' : 'No' }}</p>
-      <p><strong>Position:</strong> {{ selectedEmployee.company }}</p>
+      <span class="close" (click)="closeRegisterModal()">×</span>
+      <h2>Register New Employee</h2>
+      <form (ngSubmit)="registerEmployee()">
+        <label>First Name:</label>
+        <input type="text" [(ngModel)]="formData.first_name" name="first_name" required>
+
+        <label>Last Name:</label>
+        <input type="text" [(ngModel)]="formData.last_name" name="last_name" required>
+
+        <label>Address:</label>
+        <input type="text" [(ngModel)]="formData.address" name="address" required>
+
+        <label>Cellphone Number:</label>
+        <input type="text" [(ngModel)]="formData.cellphone_number" name="cellphone_number" required>
+
+        <label>Sex:</label>
+        <select [(ngModel)]="formData.sex" name="sex" required>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+
+        <label>Place of Birth:</label>
+        <input type="text" [(ngModel)]="formData.place_of_birth" name="place_of_birth" required>
+
+        <label>Barangay:</label>
+        <input type="text" [(ngModel)]="formData.barangay" name="barangay" required>
+
+        <label>Province:</label>
+        <input type="text" [(ngModel)]="formData.province" name="province" required>
+
+        <label>Vaccination Status:</label>
+        <select [(ngModel)]="formData.vaccination_status" name="vaccination_status" required>
+          <option value="true">Vaccinated</option>
+          <option value="false">Not Vaccinated</option>
+        </select>
+
+        <label>Company:</label>
+        <input type="text" [(ngModel)]="formData.company" name="company" required>
+
+        <button type="submit" [disabled]="loading">Submit</button>
+      </form>
     </div>
   </div>
 </div>

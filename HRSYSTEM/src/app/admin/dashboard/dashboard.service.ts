@@ -26,6 +26,9 @@ export class DashboardService {
   getEmployeeData(filters: any = {}): Observable<any> {
     return this.http.get(`${this.baseUrl}?route=getEmployeeData`, { params: filters });
   }
+  getEmployeesPerCompany(): Observable<any> {
+    return this.http.get(`${this.baseUrl}?route=getAllCompaniesWithEmployeeCount`);
+  }
   
 }
 
