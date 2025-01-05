@@ -24,12 +24,13 @@ export class EmpRequestComponent implements OnInit {
 
   requestRecords: EmployeeRequest[] = [];
 
-  loggedInEmployeeId: number = 0; // Variable to store logged-in employee ID
+  loggedInEmployeeId: number = 0; 
 
-  isModalOpen = false;  // Boolean to control modal visibility
+  isModalOpen = false;  
+  isRequestSubmitted = false; // Control confirmation pop-up visibility
 
   newRequest = {
-    type: 'Leave',  // Default value is 'Leave'
+    type: 'Leave',  
     reason: ''
   };
 
@@ -82,14 +83,14 @@ export class EmpRequestComponent implements OnInit {
   onSubmit(): void {
     const { type, reason } = this.newRequest;
     const employeeId = this.loggedInEmployeeId;
-    const date = new Date().toISOString().split('T')[0]; // Current date
+    const date = new Date().toISOString().split('T')[0]; 
 
     this.empRequestService.createRequest(employeeId, date, type, reason).subscribe(
       (response) => {
         if (response.status === 'success') {
-          alert('Request submitted successfully!');
-          this.closeModal();  // Close the modal after submission
-          this.fetchRequestData(employeeId); // Refresh the requests
+          this.isRequestSubmitted = true;  // Show pop-up
+          this.closeModal();  
+          this.fetchRequestData(employeeId); 
         } else {
           alert('Error submitting request: ' + response.message);
         }
@@ -99,5 +100,9 @@ export class EmpRequestComponent implements OnInit {
         alert('An error occurred while submitting your request.');
       }
     );
+  }
+
+  closeConfirmationPopup(): void {
+    this.isRequestSubmitted = false;  // Hide the pop-up
   }
 }

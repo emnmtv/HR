@@ -2,135 +2,125 @@
   font-family: Arial, sans-serif;
   padding: 20px;
   margin: 20px auto;
-  max-width: auto;
+  max-width: 100%;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Add shadow for container */
+}
 
-  .header {
-    text-align: left;
-    margin-bottom: 30px;
+.header {
+  text-align: left;
+  margin-bottom: 30px;
+}
 
-    h1 {
-      font-size: 32px;
-      color: #333;
-    }
+h1 {
+  font-size: 32px;
+  color: #333;
+}
 
-    p {
-      font-size: 18px;
-      color: #666;
+.request-section {
+  h2 {
+    font-size: 26px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #64b488;
+    padding-bottom: 15px;
+    color: #333;
+  }
+
+  /* Button with shadow */
+  .request-btn {
+    background-color: #64b488;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    display: inline-block;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    margin-left: auto;
+    margin-right: 0;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow on button */
+
+    &:hover {
+      background-color: #45a049;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
     }
   }
 
-  .summary-cards {
-    display: flex;
-    justify-content: space-between;
-    gap: 30px;
-    margin-bottom: 40px;
+  table {
+    width: 100%;
+    border-collapse: collapse;
+ border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Add shadow for container */
+    thead {
+      tr {
+        background-color: #64b488;
+        color: #fff;
 
-    @media (max-width: 768px) {
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-
-    .summary-card {
-      flex: 1;
-      background-color: #f9f9f9;
-      border-radius: 12px;
-      padding: 30px;
-      text-align: center;
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s;
-      min-width: 200px;
-
-      &:hover {
-        transform: translateY(-7px);
-      }
-
-      h3 {
-        font-size: 20px;
-        margin-bottom: 15px;
-        color: #64b488;
-      }
-
-      span {
-        font-size: 28px;
-        font-weight: bold;
-        color: #333;
-      }
-    }
-  }
-
-  .request-section {
-    h2 {
-      font-size: 26px;
-      margin-bottom: 25px;
-      border-bottom: 2px solid #64b488;
-      padding-bottom: 15px;
-      color: #333;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-
-      thead {
-        tr {
-          background-color: #64b488;
-          color: #fff;
-
-          th {
-            padding: 20px;
-            text-align: left;
-            font-size: 18px;
-          }
+        th {
+          padding: 20px;
+          text-align: left;
+          font-size: 18px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Header shadow */
         }
       }
+    }
 
-      tbody {
-        tr {
-          &:nth-child(odd) {
-            background-color: #f9f9f9;
-          }
+    tbody {
+      tr {
+        &:nth-child(odd) {
+          background-color: #f9f9f9;
+        }
+
+        &:hover {
+          background-color: #eef;
+        }
+
+        td {
+          padding: 20px;
+          border-bottom: 1px solid #ddd;
+          font-size: 16px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Light shadow for rows */
+        }
+
+        .action-btn {
+          background-color: #4CAF50;
+          color: #fff;
+          border: none;
+          padding: 10px 15px;
+          border-radius: 8px;
+          cursor: pointer;
+          font-size: 16px;
+          transition: background-color 0.3s ease, box-shadow 0.3s ease;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow to action button */
 
           &:hover {
-            background-color: #eef;
-          }
-
-          td {
-            padding: 20px;
-            border-bottom: 1px solid #ddd;
-            font-size: 16px;
-          }
-
-          .action-btn {
-            background-color: #4CAF50;
-            color: #fff;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-
-            &:hover {
-              background-color: #45a049;
-            }
+            background-color: #45a049;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
           }
         }
       }
     }
   }
-  /* Modal background */
+}
+
+/* Modal Styling */
 .modal {
-  display: block; /* Make the modal visible when open */
+  display: block;
   position: fixed;
   z-index: 999;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.5);
   overflow: auto;
 }
 
-/* Modal content */
+/* Modal content with shadow */
 .modal-content {
   background-color: #fff;
   margin: 15% auto;
@@ -138,6 +128,7 @@
   border-radius: 8px;
   width: 50%;
   max-width: 600px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Added shadow for modal */
 }
 
 /* Close button */
@@ -149,15 +140,12 @@
   top: 10px;
   right: 20px;
   cursor: pointer;
+
+  &:hover {
+    color: black;
+  }
 }
 
-.close-btn:hover,
-.close-btn:focus {
-  color: black;
-  text-decoration: none;
-}
-
-/* Form inside the modal */
 form {
   display: flex;
   flex-direction: column;
@@ -168,14 +156,16 @@ form label {
   font-size: 16px;
 }
 
-form textarea, form select {
+form textarea,
+form select {
   padding: 10px;
   font-size: 14px;
   border: 1px solid #ddd;
   border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Add shadow to form fields */
 }
 
-form button {
+form .submit-btn {
   background-color: #64b488;
   color: white;
   border: none;
@@ -183,10 +173,71 @@ form button {
   border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow to submit button */
+
+  &:hover {
+    background-color: #45a049;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
+  }
 }
 
-form button:hover {
-  background-color: #45a049;
+/* Confirmation Pop-up with shadow */
+.confirmation-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  z-index: 1000;
+  opacity: 0;
+  animation: fadeInOut 4s forwards;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Add shadow to pop-up */
 }
 
+.popup-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Add shadow to content */
+}
+
+p {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+button {
+  background-color: #64b488;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+
+  &:hover {
+    background-color: #45a049;
+  }
+}
+
+/* Fade In & Out Animation */
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
 }

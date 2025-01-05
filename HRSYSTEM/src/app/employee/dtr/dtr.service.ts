@@ -10,21 +10,26 @@ export class DtrService {
 
   constructor(private http: HttpClient) {}
 
-  // Clock-in method modified to accept employeeId, date, and time
   clockIn(payload: { employee_id: number; date: string; time: string }): Observable<any> {
     const url = `${this.baseUrl}clockIn`;
-    return this.http.post(url, payload); // Send the full payload with employee_id, date, and time
+    return this.http.post(url, payload);
   }
 
-  // Clock-out method modified to accept employeeId, date, and time
   clockOut(payload: { employee_id: number; date: string; time: string }): Observable<any> {
     const url = `${this.baseUrl}clockOut`;
-    return this.http.post(url, payload); // Send the full payload with employee_id, date, and time
+    return this.http.post(url, payload);
   }
 
-  // Fetch employee data
   getEmployeeData(): Observable<any> {
     const url = `${this.baseUrl}getEmployeeData`;
     return this.http.get(url);
   }
+
+  // Fetch Time-In and Time-Out data for an employee
+  getEmployeeTimeInOut(employeeId: number): Observable<any> {
+    const url = `${this.baseUrl}getTimeInOut`;
+    const body = { employee_id: employeeId };
+    return this.http.post(url, body);
+  }
+  
 }

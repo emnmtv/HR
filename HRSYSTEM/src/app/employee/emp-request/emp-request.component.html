@@ -1,14 +1,13 @@
 <div class="emp-request-container">
   <div class="header">
     <h1>Employee Request Summary</h1>
-    
   </div>
 
-  
   <div class="request-section">
-    <h2><button class="request-btn" (click)="openModal()">Create New Request</button></h2>
-    
-    
+    <h2>
+      <button class="request-btn" (click)="openModal()">Create New Request</button>
+    </h2>
+
     <table>
       <thead>
         <tr>
@@ -25,34 +24,39 @@
           <td>{{ request.type }}</td>
           <td>{{ request.status }}</td>
           <td>{{ request.reason }}</td>
-          <td><button class="action-btn" >Details</button></td>
+          <td><button class="action-btn">Details</button></td>
         </tr>
       </tbody>
     </table>
   </div>
-  <!-- Button to open the modal -->
 
-<!-- Modal -->
-<div class="modal" *ngIf="isModalOpen">
-  <div class="modal-content">
-    <span class="close-btn" (click)="closeModal()">&times;</span>
-    <h2>Create New Request</h2>
-    <form (ngSubmit)="onSubmit()">
-      <label for="type">Request Type:</label>
-      <select [(ngModel)]="newRequest.type" name="type" required>
-        <option value="Leave">Leave</option>
-        <option value="Overtime">Overtime</option>
-        <option value="Day Off">Day Off</option>
-        <option value="Vacation">Vacation</option>
-      </select>
-      
+  <!-- Modal -->
+  <div class="modal" *ngIf="isModalOpen">
+    <div class="modal-content animate__animated animate__fadeIn">
+      <span class="close-btn" (click)="closeModal()">&times;</span>
+      <h2>Create New Request</h2>
+      <form (ngSubmit)="onSubmit()">
+        <label for="type">Request Type:</label>
+        <select [(ngModel)]="newRequest.type" name="type" required>
+          <option value="Leave">Leave</option>
+          <option value="Overtime">Overtime</option>
+          <option value="Day Off">Day Off</option>
+          <option value="Vacation">Vacation</option>
+        </select>
 
-      <label for="reason">Reason:</label>
-      <textarea [(ngModel)]="newRequest.reason" name="reason" required></textarea>
+        <label for="reason">Reason:</label>
+        <textarea [(ngModel)]="newRequest.reason" name="reason" required></textarea>
 
-      <button type="submit">Submit Request</button>
-    </form>
+        <button type="submit" class="submit-btn">Submit Request</button>
+      </form>
+    </div>
   </div>
-</div>
 
+  <!-- Confirmation Pop-up -->
+  <div class="confirmation-popup" *ngIf="isRequestSubmitted">
+    <div class="popup-content animate__animated animate__fadeIn">
+      <p>Your request has been submitted successfully!</p>
+      <button (click)="closeConfirmationPopup()">Close</button>
+    </div>
+  </div>
 </div>
