@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DtrService } from './dtr.service';
-
+import { Chart } from 'chart.js';
 @Component({
   selector: 'app-dtr',
   templateUrl: './dtr.component.html',
@@ -10,7 +10,7 @@ export class DtrComponent implements OnInit {
   dtrRecords: any[] = [];
   currentTime: string = '';
   currentDate: string = '';
-
+  chart: any;
   constructor(private dtrService: DtrService) {}
 
   ngOnInit() {
@@ -103,6 +103,9 @@ export class DtrComponent implements OnInit {
       );
     }
   }
+  ngAfterViewInit() {
+    this.initChart();
+  }
 
   calculateTimes(record: any) {
     const [start, end] = record.schedule.split(' - ').map(this.parseTime);
@@ -139,5 +142,30 @@ export class DtrComponent implements OnInit {
 
   saveRecords() {
     localStorage.setItem('dtrRecords', JSON.stringify(this.dtrRecords));
+  }
+  initChart() {
+    const ctx = document.getElementById('myChart') as HTMLCanvasElement;
+    this.chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Jan 1', 'Jan 2', 'Jan 3', 'Jan 4', 'Jan 5'], // Fake dates for demonstration
+        datasets: [{
+          label: 'Work Hours',
+          data: [8, 7, 6, 8, 7], // Fake data for daily work hours
+          borderColor: 'rgba(75, 192, 192, 1)',
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          fill: true,
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
   }
 }
