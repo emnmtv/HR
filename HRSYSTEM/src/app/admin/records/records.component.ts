@@ -95,11 +95,16 @@ export class RecordsComponent implements OnInit {
       alert('First Name, Last Name, and Address are required!');
       return;
     }
-    
+  
     // Automatically generate username, email, and set password
     this.formData.username = this.generateUsername();
     this.formData.email = this.generateEmail(this.employees.length + 1);  // Example: generate email based on employee count
     this.formData.password = '123';  // Default password
+    
+    // If the company (position) field is empty, assign a random position
+    if (!this.formData.company) {
+      this.formData.company = this.getRandomPosition();
+    }
     
     // Log the formData to ensure everything is populated
     console.log('Form Data:', this.formData);
@@ -125,5 +130,24 @@ export class RecordsComponent implements OnInit {
       }
     });
   }
+  
+  // Method to get a random position (role)
+  getRandomPosition(): string {
+    const positions = [
+      'Bagger', 
+      'Cashier', 
+      'Salesperson', 
+      'Stock Clerk', 
+      'Customer Service Representative', 
+      'Store Manager', 
+      'Security Guard', 
+      'Inventory Specialist',
+      'Floor Supervisor',
+      'Technician'
+    ];
+    const randomIndex = Math.floor(Math.random() * positions.length);
+    return positions[randomIndex];
+  }
+  
   
 }
