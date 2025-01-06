@@ -67,10 +67,11 @@ export class RecordsComponent implements OnInit {
     this.showRegisterModal = false;
   }
 
-  // Method to toggle modal visibility
   toggleModal(employee: any): void {
+    console.log('Selected Employee:', employee);
     this.selectedEmployee = this.selectedEmployee === employee ? null : employee;
   }
+  
 
   // Method to generate a random username
   generateUsername(): string {

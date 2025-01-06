@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { EmployeeService } from './services/employee.service';
 
 @Component({
   selector: 'app-admin-profile',
@@ -6,90 +7,62 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./adminprofile.component.scss'],
 })
 export class AdminProfileComponent implements OnInit {
-  isEditing = false;
-  uploadSuccess = false;
-  profileUpdated = false;
-
   user = {
-    name: '',
-    location: 'Unknown', //Added default value
-    age: '24',
-    sex: 'Unknown', //Added default value
-    vaccinationStatus: 'yes',
-    role: 'Unknown', //Added default value
+    id: 0,
+    username: '',
     email: '',
-    contact: 'Unknown', //Added default value
-    region: 'Unknown', //Added default value
-    profilePictureUrl: 'assets/profile-placeholder.png', // Added default image
+    account_type: '',
+    first_name: '',
+    last_name: '',
+    address: '',
+    cellphone_number: '',
+    sex: '',
+    place_of_birth: '',
+    barangay: '',
+    province: '',
+    vaccination_status: '',
+    company: '',
+    created_at: '',
+    profilePictureUrl: '', // Add a default placeholder or manage dynamically
   };
 
-  tempUser = { ...this.user };
-
-  activities = [
-    { description: "You added a role 'Sales Lead'", timestamp: '19/02/2023 10:40:55 AM' },
-    { description: "You assigned task 'API Integration' to a role 'Technical Lead - BE'", timestamp: '19/02/2023 09:40:55 AM' },
-  ];
-
-  onEditProfile() {
-    this.tempUser = { ...this.user };
-    this.isEditing = true;
-  }
-
-  closeModal() {
-    this.tempUser = { ...this.user };
-    this.isEditing = false;
-    this.uploadSuccess = false; // Reset upload success message
-  }
-
-  saveProfile() {
-    this.user = { ...this.tempUser };
-    localStorage.setItem('userName', this.user.name);
-    localStorage.setItem('userEmail', this.user.email);
-    localStorage.setItem('userSex', this.user.sex);
-    localStorage.setItem('userLocation', this.user.location);
-    localStorage.setItem('userRole', this.user.role);
-    localStorage.setItem('userContact', this.user.contact);
-    localStorage.setItem('userRegion', this.user.region);
-    localStorage.setItem('profilePictureUrl', this.user.profilePictureUrl);
-
-
-    this.profileUpdated = true;
-    setTimeout(() => this.profileUpdated = false, 3000);
-    this.isEditing = false;
-  }
-
-  onProfilePictureUpload(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      const file = input.files[0];
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        this.tempUser.profilePictureUrl = reader.result as string;
-        this.uploadSuccess = true;
-      };
-
-      reader.readAsDataURL(file);
-    }
-  }
+  constructor(private employeeService: EmployeeService) {}
 
   ngOnInit() {
-    const storedName = localStorage.getItem('userName');
-    const storedEmail = localStorage.getItem('userEmail');
-    const storedSex = localStorage.getItem('userSex');
-    const storedLocation = localStorage.getItem('userLocation');
-    const storedRole = localStorage.getItem('userRole');
-    const storedContact = localStorage.getItem('userContact');
-    const storedRegion = localStorage.getItem('userRegion');
-    const storedImage = localStorage.getItem('profilePictureUrl');
-
-    if (storedName) this.user.name = storedName;
-    if (storedEmail) this.user.email = storedEmail;
-    if (storedSex) this.user.sex = storedSex;
-    if (storedLocation) this.user.location = storedLocation;
-    if (storedRole) this.user.role = storedRole;
-    if (storedContact) this.user.contact = storedContact;
-    if (storedRegion) this.user.region = storedRegion;
-    if (storedImage) this.user.profilePictureUrl = storedImage;
+    const employeeId = localStorage.getItem('employee_id');
+    console.log('Employee ID from localStorage:', employeeId);
+    if (employeeId) {
+      this.fetchEmployeeData(+employeeId);
+    } else {
+      console.warn('No Employee ID found in localStorage.');
+    }
   }
+  
+
+  fetchEmployeeData(employeeId: number) {
+    this.employeeService.getAllEmployees().subscribe(
+      (response) => {
+        console.log('All Employees:', response); // Debugging step
+        if (response.status === 'success') {
+          const employee = response.data.find((emp: any) => emp.id === employeeId);
+          if (employee) {
+            console.log('Filtered Employee:', employee); // Debugging step
+            this.user = {
+              ...this.user,
+              ...employee,
+              profilePictureUrl: employee.profilePictureUrl || 'https://via.placeholder.com/150', // Fallback
+            };
+          } else {
+            console.warn('No matching employee found for ID:', employeeId);
+          }
+        } else {
+          console.error('API Error:', response.message);
+        }
+      },
+      (error) => {
+        console.error('Network/API Error:', error);
+      }
+    );
+  }
+  
 }

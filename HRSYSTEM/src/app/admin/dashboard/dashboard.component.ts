@@ -22,7 +22,20 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.fetchDashboardData();
-    this.fetchEmployeeData(); // Fetch employee data on init
+    this.fetchEmployeeData(); // Fetch employee data on init'
+    
+  }
+  refreshDashboard() {
+    // Trigger API to check attendance and update dashboard
+    this.dashboardService.checkAttendance().subscribe((response) => {
+      if (response.status === 'success') {
+        console.log('Attendance check completed successfully');
+        this.fetchDashboardData(); // Re-fetch the dashboard data after attendance check
+        this.fetchEmployeeData(); // Re-fetch employee data if needed
+      } else {
+        console.error('Error checking attendance:', response.message);
+      }
+    });
   }
 
   ngAfterViewInit() {

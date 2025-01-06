@@ -31,6 +31,24 @@
     </tbody>
   </table>
 
+  <div class="modal" *ngIf="selectedEmployee">
+    <div class="modal-content">
+      <span class="close" (click)="toggleModal(selectedEmployee)">×</span>
+      <h2>Employee Details</h2>
+      <p><strong>ID:</strong> {{ selectedEmployee.id }}</p>
+      <p><strong>Name:</strong> {{ selectedEmployee.first_name }} {{ selectedEmployee.last_name }}</p>
+      <p><strong>Position:</strong> {{ selectedEmployee.company }}</p>
+      <p><strong>Phone:</strong> {{ selectedEmployee.cellphone_number }}</p>
+      <p><strong>Gender:</strong> {{ selectedEmployee.sex }}</p>
+      <p><strong>Address:</strong> {{ selectedEmployee.address }}</p>
+      <p><strong>Place of Birth:</strong> {{ selectedEmployee.place_of_birth }}</p>
+      <p><strong>Barangay:</strong> {{ selectedEmployee.barangay }}</p>
+      <p><strong>Province:</strong> {{ selectedEmployee.province }}</p>
+      <p><strong>Vaccination Status:</strong> {{ selectedEmployee.vaccination_status ? 'Vaccinated' : 'Not Vaccinated' }}</p>
+    </div>
+  </div>
+
+  <!-- Registration Modal -->
   <div class="modal" *ngIf="showRegisterModal">
     <div class="modal-content">
       <span class="close" (click)="closeRegisterModal()">×</span>

@@ -5,15 +5,16 @@
 
   <div class="profile-header">
     <div class="profile-picture">
-      <img src="https://via.placeholder.com/150" alt="User Picture" />
+      <img [src]="user.profilePictureUrl" alt="User Picture" />
     </div>
     <div class="profile-info">
-      <h1>Hector Mariano</h1>
-      <p>Software Developer</p>
-      <p><a href="mailto:bancboyme">bancboyme</a></p>
+      <h1>{{ user.first_name }} {{ user.last_name }}</h1>
+      <p>{{ user.account_type }}</p>
+      <p><a [href]="'mailto:' + user.email">{{ user.email }}</a></p>
       <div class="tags">
         <span class="tag">Design</span>
         <span class="tag">iOS</span>
+        <!-- Add dynamic tags if needed -->
       </div>
     </div>
   </div>
@@ -22,21 +23,21 @@
     <div class="details-section">
       <h2>Personal Details</h2>
       <ul>
-        <li><strong>Gender:</strong> Male</li>
-        <li><strong>Marital Status:</strong> Single</li>
-        <li><strong>Blood Group:</strong> O Positive</li>
-        <li><strong>Date of Birth:</strong> 07-23-1990</li>
-        <li><strong>Age:</strong> 28</li>
-        <li><strong>Nationality:</strong> British</li>
+        <li><strong>Gender:</strong> {{ user.sex }}</li>
+        <li><strong>Place of Birth:</strong> {{ user.place_of_birth }}</li>
+        <li><strong>Address:</strong> {{ user.address }}</li>
+        <li><strong>Barangay:</strong> {{ user.barangay }}</li>
+        <li><strong>Province:</strong> {{ user.province }}</li>
+        <li><strong>Cellphone Number:</strong> {{ user.cellphone_number }}</li>
+        <li><strong>Vaccination Status:</strong> {{ user.vaccination_status }}</li>
       </ul>
     </div>
     <div class="details-section">
       <h2>Job Details</h2>
       <ul>
-        <li><strong>Job Title:</strong> Software Developer</li>
-        <li><strong>Skills:</strong> Java, C++, HTML, CSS</li>
-        <li><strong>Location:</strong> Jacksonville</li>
-        <li><strong>Desk Location:</strong> 4A - 28</li>
+        <li><strong>Company:</strong> {{ user.company }}</li>
+        <li><strong>Job Title:</strong> {{ user.account_type }}</li>
+        <li><strong>Date Joined:</strong> {{ user.created_at }}</li>
       </ul>
     </div>
   </div>

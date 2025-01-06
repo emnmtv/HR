@@ -22,13 +22,17 @@ export class DashboardService {
     return this.http.get(`${this.baseUrl}?route=getAttendanceSummary`);
   }
 
-  // Add new method to fetch employee data with dynamic filters
   getEmployeeData(filters: any = {}): Observable<any> {
     return this.http.get(`${this.baseUrl}?route=getEmployeeData`, { params: filters });
   }
+
   getEmployeesPerCompany(): Observable<any> {
     return this.http.get(`${this.baseUrl}?route=getAllCompaniesWithEmployeeCount`);
   }
-  
+
+  // Add new method to check all employees' time-in status
+  checkAttendance(): Observable<any> {
+    return this.http.get(`${this.baseUrl}?route=checkAllEmployeesTimeIn`);
+  }
 }
 
