@@ -25,8 +25,8 @@ export class DtrService {
     return this.http.get(url);
   }
 
-  // Fetch Time-In and Time-Out data for an employee
-  getEmployeeTimeInOut(employeeId: number): Observable<any> {
+   // Fetch Time-In and Time-Out data for an employee
+   getEmployeeTimeInOut(employeeId: number): Observable<any> {
     const url = `${this.baseUrl}getTimeInOut`;
     const body = { employee_id: employeeId };
     return this.http.post(url, body);
