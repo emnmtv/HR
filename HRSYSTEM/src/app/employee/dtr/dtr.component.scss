@@ -1,3 +1,12 @@
+// Color variables
+$green-light: #e8f5e9;  // Light pastel green
+$green-medium: #66bb6a; // Medium green for tags, accents, etc.
+$green-dark: #2e7d32;   // Dark green for contrast, headings, etc.
+$green-lighter: #c8e6c9; // Lighter shade of green for borders and hover effects
+$green-highlight: #4caf50; // Vibrant green for buttons and highlights
+$green-muted: #81c784;  // Pastel green for background accents
+$green-hover: #388e3c;  // Darker green for hover effects
+
 .dtr-container {
   font-family: Arial, sans-serif;
   padding: 20px;
@@ -11,87 +20,65 @@
     .clock {
       font-size: 20px;
       font-weight: bold;
-      color: #4CAF50;
-      background-color: #f0f8ff;
+      color: $green-dark;
+      background-color: $green-light;
       padding: 10px 15px;
       border-radius: 8px;
     }
   }
 
-  /* Giant bouncing clock styles */
-  .giant-clock {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 150px;
-    font-weight: bold;
-    color: #FF5733; /* Color for the clock */
-    animation: bounce 2s infinite;
-  }
-  .giant-clock {
-    position: absolute;
-    font-size: 150px;
-    font-weight: bold;
-    color: #FF5733; /* Color for the clock */
-    transition: top 0.1s, left 0.1s; /* Smooth transition for movement */
-  }
-  
-
-  /* Bouncing animation for the clock */
-  @keyframes bounce {
-    0%, 100% {
-      transform: translate(-50%, -50%) translateY(0);
-    }
-    50% {
-      transform: translate(-50%, -50%) translateY(-50px);
-    }
+  body {
+    background: linear-gradient(to bottom, $green-dark, $green-lighter);
   }
 
   .record-section {
+    h4 {
+      color: $green-dark;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      border: 1px solid #ccc;
+      border: 1px solid $green-lighter;
       margin-top: 10px;
 
       thead tr {
-        background-color: #64b488;
-        color: #fff;
+        background-color: $green-muted;
+        color: #ffffff;
 
         th {
           padding: 15px;
           text-align: left;
-          border: 1px solid #ddd;
+          border: 1px solid $green-medium;
         }
       }
 
       tbody tr {
         &:nth-child(odd) {
-          background-color: #f9f9f9;
+          background-color: $green-light;
         }
 
         &:hover {
-          background-color: #eef;
+          background-color: $green-lighter;
         }
 
         td {
           padding: 15px;
-          border: 1px solid #dddddd;
+          border: 1px solid $green-lighter;
           text-align: center;
         }
       }
 
       .action-btn {
-        background-color: #4CAF50;
-        color: rgb(33, 172, 56);
+        background-color: $green-highlight;
+        color: #ffffff;
         border: none;
         padding: 8px 12px;
         border-radius: 4px;
         cursor: pointer;
 
         &:hover {
-          background-color: #45a049;
+          background-color: $green-hover;
         }
       }
     }
@@ -110,46 +97,47 @@
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s, visibility 0.3s;
-  
+
     &.active {
       opacity: 1;
       visibility: visible;
     }
-  
+
     .modal-content {
       background-color: white;
       padding: 20px;
       border-radius: 10px;
       text-align: center;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  
+
       h3 {
+        color: $green-dark;
         margin-bottom: 10px;
       }
-  
+
       .modal-icon {
         font-size: 50px;
-        color: #4CAF50;
+        color: $green-highlight;
         margin-bottom: 10px;
         animation: scale-up 0.5s ease-in-out;
       }
-  
+
       button {
         margin-top: 10px;
         padding: 10px 20px;
         border: none;
         border-radius: 4px;
-        background-color: #28a745;
+        background-color: $green-medium;
         color: white;
         cursor: pointer;
-  
+
         &:hover {
-          background-color: #218838;
+          background-color: $green-hover;
         }
       }
     }
   }
-  
+
   @keyframes scale-up {
     0% {
       transform: scale(0.5);
@@ -158,10 +146,4 @@
       transform: scale(1);
     }
   }
-  
-}
-.chart-container {
-  margin-top: 30px;
-  width: auto;
-  height: 1000px;
 }

@@ -1,26 +1,36 @@
+// Color variables
+$green-light: #e8f5e9;  // Light pastel green
+$green-medium: #66bb6a; // Medium green for tags, accents, etc.
+$green-dark: #2e7d32;   // Dark green for contrast, headings, etc.
+$green-lighter: #c8e6c9; // Lighter shade of green for borders and hover effects
+$green-highlight: #4caf50; // Vibrant green for buttons and highlights
+$green-muted: #81c784;  // Pastel green for background accents
+$green-hover: #388e3c;  // Darker green for hover effects
+
 .user-profile-container {
   font-family: Arial, sans-serif;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 100vh;
-  padding: 20px;
-  background-color: #f9f9f9;
+  min-height: 70vh;
+  padding: 10px;
+  background-color: $green-light;
+  overflow: hidden;
 
   .breadcrumb {
     font-size: 26px;
-    
 
     h1 {
-      color: #000000;
+      color: $green-dark;
       text-decoration: none;
 
       &:hover {
         text-decoration: underline;
       }
     }
+
     span {
-      color: #6c757d;
+      color: #8d8d8d;
     }
   }
 
@@ -32,15 +42,15 @@
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 40px;
-  
 
     .profile-picture {
       margin-right: 40px;
+
       img {
         width: 150px;
         height: 150px;
         border-radius: 50%;
-        border: 6px solid #4CAF50;
+        border: 6px solid $green-muted;
       }
     }
 
@@ -48,18 +58,21 @@
       h1 {
         font-size: 36px;
         margin-bottom: 10px;
+        color: $green-dark;
       }
+
       p {
         font-size: 18px;
         margin: 5px 0;
-        color: #6c757d;
+        color: #4e4e4e;
       }
+
       .tags {
         margin-top: 15px;
 
         .tag {
           display: inline-block;
-          background-color: #4CAF50;
+          background-color: $green-medium;
           color: #ffffff;
           border-radius: 12px;
           padding: 10px 20px;
@@ -86,13 +99,14 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       padding: 40px;
       flex: 1;
-      margin-bottom:50%;
+      margin-bottom: 20px;
 
       h2 {
         font-size: 24px;
         margin-bottom: 20px;
-        border-bottom: 2px solid #4CAF50;
+        border-bottom: 2px solid $green-medium;
         padding-bottom: 10px;
+        color: $green-dark;
       }
 
       ul {
@@ -102,9 +116,10 @@
         li {
           font-size: 18px;
           margin-bottom: 15px;
+          color: #4e4e4e;
 
           strong {
-            color: #6c757d;
+            color: $green-dark;
             font-weight: bold;
           }
         }

@@ -53,15 +53,17 @@ h1 {
   table {
     width: 100%;
     border-collapse: collapse;
- border-radius: 10px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Add shadow for container */
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Add shadow for container */
+    margin-bottom: 20px;
+
     thead {
       tr {
         background-color: #64b488;
         color: #fff;
 
         th {
-          padding: 20px;
+          padding: 12px;
           text-align: left;
           font-size: 18px;
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Header shadow */
@@ -80,14 +82,14 @@ h1 {
         }
 
         td {
-          padding: 20px;
+          padding: 12px;
           border-bottom: 1px solid #ddd;
           font-size: 16px;
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Light shadow for rows */
         }
 
         .action-btn {
-          background-color: #4CAF50;
+          background-color: #4caf50;
           color: #fff;
           border: none;
           padding: 10px 15px;
@@ -118,54 +120,68 @@ h1 {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   overflow: auto;
-}
 
-.modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1000;
-  background: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  padding: 20px;
-  width: 400px;
-  text-align: center;
+  .modal-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+    text-align: left;
+    animation: fadeIn 0.3s ease-in-out;
 
-  .close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-    font-size: 18px;
-  }
-
-  .button-group {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-
-    button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
       cursor: pointer;
+      font-size: 18px;
+    }
 
-      &.approve-btn {
-        background-color: #4caf50;
-        color: white;
+    form {
+      display: flex;
+      flex-direction: column;
+
+      label {
+        font-size: 16px;
+        margin-bottom: 8px;
       }
 
-      &.reject-btn {
-        background-color: #f44336;
+      select, textarea {
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        width: 100%;
+      }
+
+      button.submit-btn {
+        background-color: #64b488;
         color: white;
+        padding: 12px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+          background-color: #45a049;
+        }
       }
     }
   }
 }
 
-.success-popup {
+/* Confirmation Pop-up */
+.confirmation-popup {
   position: fixed;
   top: 20%;
   left: 50%;
@@ -176,6 +192,7 @@ h1 {
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 1001;
+  text-align: center;
 
   button {
     margin-top: 10px;
@@ -187,7 +204,6 @@ h1 {
     cursor: pointer;
   }
 }
-
 
 /* Fade In & Out Animation */
 @keyframes fadeInOut {

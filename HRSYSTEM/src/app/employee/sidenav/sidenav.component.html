@@ -3,7 +3,7 @@
     <!-- Sidenav Content -->
     <div class="logo-container">
       <button class="logo" (click)="toggleCollapse()">
-        <img src="../../assets/images/logo.png">
+        <img src="../../assets/images/logo.png" alt="Logo">
       </button>
       <div class="logo-text" *ngIf="collapsed">HR<span class="blue">RECORDS</span></div>
       <button class="btn-close" *ngIf="collapsed" (click)="closeSidenav()">
@@ -21,7 +21,7 @@
         </a>
       </li>
     </ul>
-    
+
     <button class="Btn" (click)="logout()">
       <div class="sign">
         <svg viewBox="0 0 512 512">

@@ -1,9 +1,17 @@
+// Define the color variables at the top for consistency
+$green-dark: #2e7d32; /* Dark green */
+$green-medium: #66bb6a; /* Medium green */
+$green-light: #e8f5e9; /* Light green */
+$green-highlight: #388e3c; /* Darker green for card titles */
+$green-hover: #43a047; /* Darker green for buttons */
+$green-light-hover: #c8e6c9; /* Light green for hover effects */
+$white: #fff;
+
 .dtr-summary-container {
   font-family: Arial, sans-serif;
-  padding: px;
+  padding: 20px; /* Adjusted for proper spacing */
   max-width: auto;
   margin: 20px;
-
 
   .header {
     text-align: left;
@@ -11,12 +19,12 @@
 
     h1 {
       font-size: 32px;
-      color: #333;
+      color: $green-dark; /* Dark green for the title */
     }
 
     p {
       font-size: 18px;
-      color: #666;
+      color: $green-medium; /* Medium green for the subtitle */
     }
   }
 
@@ -33,7 +41,7 @@
 
     .summary-card {
       flex: 1;
-      background-color: #f9f9f9;
+      background-color: $green-light; /* Light green */
       border-radius: 12px;
       padding: 30px;
       text-align: center;
@@ -48,13 +56,13 @@
       h3 {
         font-size: 20px;
         margin-bottom: 15px;
-        color: #64b488;
+        color: $green-highlight; /* Darker green for card titles */
       }
 
       span {
         font-size: 28px;
         font-weight: bold;
-        color: #333;
+        color: $green-dark; /* Bold dark green for data */
       }
     }
   }
@@ -63,9 +71,9 @@
     h2 {
       font-size: 26px;
       margin-bottom: 25px;
-      border-bottom: 2px solid #64b488;
+      border-bottom: 2px solid $green-dark; /* Dark green for section divider */
       padding-bottom: 15px;
-      color: #333;
+      color: $green-dark; /* Dark green for section title */
     }
 
     table {
@@ -74,8 +82,8 @@
 
       thead {
         tr {
-          background-color: #64b488;
-          color: #fff;
+          background-color: $green-highlight; /* Vibrant green for header */
+          color: $white;
 
           th {
             padding: 20px;
@@ -88,22 +96,22 @@
       tbody {
         tr {
           &:nth-child(odd) {
-            background-color: #f9f9f9;
+            background-color: $green-light; /* Light green for alternating rows */
           }
 
           &:hover {
-            background-color: #eef;
+            background-color: $green-light-hover; /* Highlighted green on hover */
           }
 
           td {
             padding: 20px;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid $green-light-hover; /* Light green for row dividers */
             font-size: 16px;
           }
 
           .action-btn {
-            background-color: #4CAF50;
-            color: #fff;
+            background-color: $green-hover; /* Darker green for buttons */
+            color: $white;
             border: none;
             padding: 10px 15px;
             border-radius: 8px;
@@ -111,7 +119,7 @@
             font-size: 16px;
 
             &:hover {
-              background-color: #45a049;
+              background-color: $green-dark; /* Darker hover effect */
             }
           }
         }
