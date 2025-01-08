@@ -16,7 +16,7 @@ export class RecordsComponent implements OnInit {
   // Declare the form data object to hold the employee data
   formData = {
     username: '',
-    password: '123',  // Default password
+    password: '123456',  // Default password
     email: '',
     account_type: 'Employee',
     system: 'Payroll',
@@ -88,6 +88,7 @@ export class RecordsComponent implements OnInit {
   generateEmail(employeeId: number): string {
     return `2025-${employeeId}-@gmail.com`;
   }
+    
 
   registerEmployee(): void {
     // Check for missing required fields
@@ -99,7 +100,7 @@ export class RecordsComponent implements OnInit {
     // Automatically generate username, email, and set password
     this.formData.username = this.generateUsername();
     this.formData.email = this.generateEmail(this.employees.length + 1);  // Example: generate email based on employee count
-    this.formData.password = '123';  // Default password
+    this.formData.password = '123456';  // Default password
     
     // If the company (position) field is empty, assign a random position
     if (!this.formData.company) {
