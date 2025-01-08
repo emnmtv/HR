@@ -66,4 +66,10 @@
       </tr>
     </tbody>
   </table>
+  <div class="modal" *ngIf="showModal">
+    <div class="modal-content">
+      <p>{{ modalMessage }}</p>
+      <button class="close-btn" (click)="closeModal()">Close</button>
+    </div>
+  </div>
 </div>

@@ -5,8 +5,6 @@
     </div>
   </div>
 
-  
-
   <div class="record-section">
     <h4>Daily Time Records</h4>
     <table>
@@ -40,8 +38,18 @@
       </tbody>
     </table>
   </div>
-   <!-- Line Chart -->
-   <div class="chart-container">
+
+  <!-- Line Chart -->
+  <div class="chart-container">
     <canvas id="myChart"></canvas>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" [ngClass]="{ 'active': isModalVisible }">
+    <div class="modal-content">
+      <div class="modal-icon">✔</div>
+      <h3>{{ modalMessage }}</h3>
+      <button (click)="closeModal()">OK</button>
+    </div>
   </div>
 </div>

@@ -5,15 +5,16 @@
 
   <div class="profile-header">
     <div class="profile-picture">
-      <img [src]="user.profilePictureUrl" alt="User Picture" />
+      <img [src]="'../../assets/images/blank.png'" alt="User Picture" />
+
     </div>
     <div class="profile-info">
       <h1>{{ user.first_name }} {{ user.last_name }}</h1>
       <p>{{ user.account_type }}</p>
       <p><a [href]="'mailto:' + user.email">{{ user.email }}</a></p>
       <div class="tags">
-        <span class="tag">Design</span>
-        <span class="tag">iOS</span>
+        <span class="tag">Update</span>
+        <span class="tag">Details</span>
         <!-- Add dynamic tags if needed -->
       </div>
     </div>
@@ -35,8 +36,8 @@
     <div class="details-section">
       <h2>Job Details</h2>
       <ul>
-        <li><strong>Company:</strong> {{ user.company }}</li>
-        <li><strong>Job Title:</strong> {{ user.account_type }}</li>
+        <li><strong>Company:</strong> iMART</li>
+        <li><strong>Position:</strong> {{ user.account_type }}</li>
         <li><strong>Date Joined:</strong> {{ user.created_at }}</li>
       </ul>
     </div>

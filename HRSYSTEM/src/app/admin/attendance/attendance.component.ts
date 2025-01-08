@@ -125,27 +125,111 @@ export class AttendanceComponent implements OnInit {
   printDtrHistory() {
     const printWindow = window.open('', '', 'width=800,height=600');
     if (printWindow) { // Ensure printWindow is not null
-      printWindow.document.write('<html><head><title>DTR History</title></head><body>');
-      printWindow.document.write('<h3>' + this.selectedEmployee.name + "'s DTR History</h3>");
-      printWindow.document.write('<table border="1" cellpadding="5"><thead><tr><th>Date</th><th>Time In</th><th>Time Out</th><th>Total Hours</th><th>Status</th></tr></thead><tbody>');
-      
-      this.selectedEmployee.dtrHistory.forEach((dtr: any) => {  // Explicitly defining 'dtr' as 'any'
-        printWindow.document.write('<tr>');
-        printWindow.document.write('<td>' + dtr.date + '</td>');
-        printWindow.document.write('<td>' + dtr.timeIn + '</td>');
-        printWindow.document.write('<td>' + dtr.timeOut + '</td>');
-        printWindow.document.write('<td>' + dtr.totalHours + '</td>');
-        printWindow.document.write('<td>' + dtr.status + '</td>');
-        printWindow.document.write('</tr>');
-      });
-      
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>DTR History</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              margin: 20px;
+              padding: 0;
+              line-height: 1.6;
+            }
+            .header {
+              text-align: center;
+              margin-bottom: 20px;
+            }
+            .header h1 {
+              margin: 0;
+              font-size: 24px;
+              color: #333;
+            }
+            .header h3 {
+              margin: 5px 0;
+              font-size: 20px;
+              color: #555;
+            }
+            table {
+              width: 100%;
+              border-collapse: collapse;
+              margin: 20px 0;
+            }
+            table th, table td {
+              border: 1px solid #ddd;
+              padding: 8px;
+              text-align: center;
+            }
+            table th {
+              background-color: #f4f4f4;
+              font-weight: bold;
+              color: #333;
+            }
+            table tr:nth-child(even) {
+              background-color: #f9f9f9;
+            }
+            table tr:hover {
+              background-color: #f1f1f1;
+            }
+            .footer {
+              text-align: center;
+              margin-top: 20px;
+              font-size: 12px;
+              color: #555;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h1>iMART</h1>
+            <h3>${this.selectedEmployee.name}'s DTR History</h3>
+            <h3>Position:${this.selectedEmployee.company}</h3>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Time In</th>
+                <th>Time Out</th>
+                <th>Total Hours</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+      `);
   
-      printWindow.document.write('</tbody></table></body></html>');
+      this.selectedEmployee.dtrHistory.forEach((dtr: any) => {
+        printWindow.document.write(`
+          <tr>
+            <td>${dtr.date}</td>
+            <td>${dtr.timeIn}</td>
+            <td>${dtr.timeOut}</td>
+            <td>${dtr.totalHours}</td>
+            <td>${dtr.status}</td>
+          </tr>
+        `);
+      });
+  
+      printWindow.document.write(`
+            </tbody>
+          </table>
+          <div class="footer">
+            <p>Generated on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</p>
+            <p>&copy; iMART</p>
+          </div>
+        </body>
+        </html>
+      `);
+  
       printWindow.document.close(); // Close the document to finish writing
       printWindow.print(); // Print the contents
     } else {
       console.error('Failed to open print window');
     }
   }
+  
   
 }

@@ -11,6 +11,8 @@ export class EmployeeRequestsComponent implements OnInit {
   allRequests: any[] = [];
   employeeMap: Map<number, any> = new Map(); // To map employee ID to employee data
 
+  showModal: boolean = false; // Modal visibility
+  modalMessage: string = ''; // Modal message
   constructor(private employeeRequestService: EmployeeRequestService) {}
 
   ngOnInit(): void {
@@ -80,6 +82,8 @@ export class EmployeeRequestsComponent implements OnInit {
       (response) => {
         if (response.status === 'success') {
           console.log('Request status updated');
+          this.modalMessage = `Request has been successfully ${status.toLowerCase()}.`;
+          this.showModal = true; // Show the modal
           this.loadAllRequestsForEmployees(); // Reload the requests after update
         } else {
           console.error('Error updating request status:', response.message);
@@ -89,6 +93,9 @@ export class EmployeeRequestsComponent implements OnInit {
         console.error('Error updating request status:', error);
       }
     );
+  }
+  closeModal(): void {
+    this.showModal = false; // Close the modal
   }
 
   // Get the appropriate CSS class based on status

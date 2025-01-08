@@ -120,110 +120,74 @@ h1 {
   overflow: auto;
 }
 
-/* Modal content with shadow */
-.modal-content {
-  background-color: #fff;
-  margin: 15% auto;
-  padding: 20px;
-  border-radius: 8px;
-  width: 50%;
-  max-width: 600px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Added shadow for modal */
-}
-
-/* Close button */
-.close-btn {
-  color: #aaa;
-  font-size: 28px;
-  font-weight: bold;
-  position: absolute;
-  top: 10px;
-  right: 20px;
-  cursor: pointer;
-
-  &:hover {
-    color: black;
-  }
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-form label {
-  font-size: 16px;
-}
-
-form textarea,
-form select {
-  padding: 10px;
-  font-size: 14px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Add shadow to form fields */
-}
-
-form .submit-btn {
-  background-color: #64b488;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow to submit button */
-
-  &:hover {
-    background-color: #45a049;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
-  }
-}
-
-/* Confirmation Pop-up with shadow */
-.confirmation-popup {
+.modal {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 30px;
-  border-radius: 10px;
-  text-align: center;
   z-index: 1000;
-  opacity: 0;
-  animation: fadeInOut 4s forwards;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Add shadow to pop-up */
-}
-
-.popup-content {
-  background-color: #fff;
+  background: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Add shadow to content */
-}
+  width: 400px;
+  text-align: center;
 
-p {
-  font-size: 18px;
-  color: #333;
-  margin-bottom: 15px;
-}
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 18px;
+  }
 
-button {
-  background-color: #64b488;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
 
-  &:hover {
-    background-color: #45a049;
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &.approve-btn {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      &.reject-btn {
+        background-color: #f44336;
+        color: white;
+      }
+    }
   }
 }
+
+.success-popup {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  background: #4caf50;
+  color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1001;
+
+  button {
+    margin-top: 10px;
+    background: white;
+    color: #4caf50;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+}
+
 
 /* Fade In & Out Animation */
 @keyframes fadeInOut {

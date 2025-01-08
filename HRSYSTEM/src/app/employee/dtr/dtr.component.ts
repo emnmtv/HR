@@ -11,6 +11,8 @@ export class DtrComponent implements OnInit {
   currentTime: string = '';
   currentDate: string = '';
   chart: any;
+  isModalVisible: boolean = false;
+  modalMessage: string = '';
   constructor(private dtrService: DtrService) {}
 
   ngOnInit() {
@@ -23,9 +25,14 @@ export class DtrComponent implements OnInit {
  
   updateClock() {
     const now = new Date();
-    this.currentTime = now.toLocaleTimeString();
+    this.currentTime = now.toLocaleTimeString('en-PH', { timeZone: 'Asia/Manila' });
     this.currentDate = this.formatDate(now);
-  } 
+  }
+  
+  formatDate(date: Date): string {
+    return date.toLocaleDateString('en-PH', { timeZone: 'Asia/Manila' });
+  }
+  
 
   ensureTodayRecord() {
     const today = this.formatDate(new Date());
@@ -45,19 +52,17 @@ export class DtrComponent implements OnInit {
     }
   }
 
-  formatDate(date: Date): string {
-    return date.toISOString().split('T')[0]; // Format: YYYY-MM-DD
-  }
+  
 
   handleTimeInOut(record: any) {
     if (record.clockIn && record.clockOut) {
-      alert('You have already clocked in and out for today!');
+      this.showModal('You have already clocked in and out for today!');
       return;
     }
 
     const employeeId = localStorage.getItem('employee_id');
     if (!employeeId) {
-      alert('Employee ID is missing!');
+      this.showModal('Employee ID is missing!');
       return;
     }
 
@@ -74,14 +79,14 @@ export class DtrComponent implements OnInit {
             record.clockIn = this.currentTime;
             record.status = 'Present';
             this.saveRecords();
-            alert('Clock-in successful!');
+            this.showModal('Clock-in successful!');
           } else {
-            alert(response.message);
+            this.showModal(response.message);
           }
         },
         (error) => {
           console.error('Clock-in error:', error);
-          alert('Clock-in failed!');
+          this.showModal('Clock-in failed!');
         }
       );
     } else if (!record.clockOut) {
@@ -91,14 +96,14 @@ export class DtrComponent implements OnInit {
             record.clockOut = this.currentTime;
             this.calculateTimes(record);
             this.saveRecords();
-            alert('Clock-out successful!');
+            this.showModal('Clock-out successful!');
           } else {
-            alert(response.message);
+            this.showModal(response.message);
           }
         },
         (error) => {
           console.error('Clock-out error:', error);
-          alert('Clock-out failed!');
+          this.showModal('Clock-out failed!');
         }
       );
     }
@@ -138,6 +143,15 @@ export class DtrComponent implements OnInit {
   loadRecords() {
     const storedRecords = localStorage.getItem('dtrRecords');
     this.dtrRecords = storedRecords ? JSON.parse(storedRecords) : [];
+  }
+
+  showModal(message: string) {
+    this.modalMessage = message;
+    this.isModalVisible = true;
+  }
+
+  closeModal() {
+    this.isModalVisible = false;
   }
 
   saveRecords() {
