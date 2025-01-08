@@ -198,23 +198,94 @@ renderEmployeeDistributionChart() {
   }
   
   // New function to print the content
-  printReport() {
-    const content = document.querySelector('.dashboard-container')!;
-    const printWindow = window.open('', '_blank');
-    printWindow?.document.write(content.innerHTML);
+ // New function to print the content
+printReport() {
+  const content = document.querySelector('.dashboard-container')!;
+  const printWindow = window.open('', '_blank');
   
-    // Add the Attendance Report to the print window
-    const attendanceReport = `
-      <h3>Attendance Summary:</h3>
-      <p>Present: ${this.attendanceSummary.present}</p>
-      <p>Absent: ${this.attendanceSummary.absent}</p>
-      <p>Late: ${this.attendanceSummary.late}</p>
-    `;
+  if (printWindow) {
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Attendance Report</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            line-height: 1.6;
+          }
+          .header {
+            text-align: center;
+            margin-bottom: 30px;
+          }
+          .header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+          }
+          .content {
+            margin-bottom: 20px;
+          }
+          .attendance-summary {
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: bold;
+          }
+          .attendance-summary p {
+            margin: 5px 0;
+          }
+          .table-wrapper {
+            margin-top: 30px;
+            width: 100%;
+            overflow-x: auto;
+          }
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+          }
+          table th, table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+          }
+          table th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>iMART Attendance Report</h1>
+          <h3>Dashboard Summary</h3>
+        </div>
+        <div class="content">
+          ${content.innerHTML}
+        </div>
+        <div class="attendance-summary">
+          <h3>Attendance Summary:</h3>
+          <p>Present: ${this.attendanceSummary.present}</p>
+          <p>Absent: ${this.attendanceSummary.absent}</p>
+          <p>Late: ${this.attendanceSummary.late}</p>
+        </div>
+        <div class="table-wrapper">
+          <!-- You can also add a table or other components here if needed -->
+        </div>
+      </body>
+      </html>
+    `);
     
-    printWindow?.document.write(attendanceReport);
-  
-    printWindow?.document.close();
-    printWindow?.print();
+    printWindow.document.close();
+    printWindow.print();
+  } else {
+    console.error('Failed to open print window');
   }
+}
+
   
 }
