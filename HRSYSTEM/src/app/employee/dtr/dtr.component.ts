@@ -18,24 +18,14 @@ export class DtrComponent implements OnInit {
     setInterval(() => this.updateClock(), 1000);
     this.loadRecords();
     this.ensureTodayRecord();
-   
     
   }
  
   updateClock() {
     const now = new Date();
-    this.currentTime = this.convertToPhilippineTimezone(now).toLocaleTimeString();
+    this.currentTime = now.toLocaleTimeString();
     this.currentDate = this.formatDate(now);
-  }
-
-  // Converts the time to Philippine Time Zone (UTC +8)
-  convertToPhilippineTimezone(date: Date): Date {
-    const philippineOffset = 8 * 60; // Philippine Standard Time (PST) is UTC +8
-    const utcDate = new Date(date.toUTCString());
-    utcDate.setMinutes(utcDate.getMinutes() + philippineOffset);
-    return utcDate;
-  }
-
+  } 
 
   ensureTodayRecord() {
     const today = this.formatDate(new Date());
@@ -116,7 +106,6 @@ export class DtrComponent implements OnInit {
   ngAfterViewInit() {
     this.initChart();
   }
-  
 
   calculateTimes(record: any) {
     const [start, end] = record.schedule.split(' - ').map(this.parseTime);
