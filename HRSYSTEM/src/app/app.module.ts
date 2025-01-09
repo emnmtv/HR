@@ -24,6 +24,7 @@ import { ListComponent } from './admin/list/list.component';
 import { RecordsComponent } from './admin/records/records.component';
 import { DtrSummaryComponent } from './employee/dtr-summary/dtr-summary.component';
 import { AttendanceComponent } from './admin/attendance/attendance.component';
+import { EmployeeDashboardComponent } from './employee/employee-dashboard/employee-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { AttendanceComponent } from './admin/attendance/attendance.component';
     RecordsComponent,
     DtrSummaryComponent,
     AttendanceComponent,
+    EmployeeDashboardComponent,
   ],
   imports: [
     BrowserModule,

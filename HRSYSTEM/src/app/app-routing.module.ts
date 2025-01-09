@@ -16,6 +16,7 @@ import { EmpRequestComponent } from './employee/emp-request/emp-request.componen
 import { RecordsComponent } from './admin/records/records.component';
 import { DtrSummaryComponent } from './employee/dtr-summary/dtr-summary.component';
 import { AttendanceComponent } from './admin/attendance/attendance.component';
+import { EmployeeDashboardComponent } from './employee/employee-dashboard/employee-dashboard.component';
 
 const routes: Routes = [
   { path: '', redirectTo:'login', pathMatch: 'full' },
@@ -34,7 +35,7 @@ const routes: Routes = [
   { path: 'request', component: EmpRequestComponent},
   { path: 'summary', component: DtrSummaryComponent},
   { path: 'attendance', component: AttendanceComponent},
-
+  { path: 'employeedash', component: EmployeeDashboardComponent},
   { path: '**', component: ErrorComponent}, // Add this route for the login page
   
 ];

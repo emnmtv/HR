@@ -1,0 +1,32 @@
+<div class="dashboard-container">
+  <h1>HR Dashboard</h1>
+
+
+  <div class="overview-cards">
+   
+    <div class="card">
+      <h3>Pending Requests</h3>
+      <p>{{ pendingRequests }}</p>
+    </div>
+    <div class="card">
+      <h3>Approved Requests</h3>
+      <p>{{ approvedRequests }}</p>
+    </div>
+    <div class="card">
+      <h3>Rejected Requests</h3>
+      <p>{{ rejectedRequests }}</p>
+    </div>
+  </div>
+
+
+
+
+    <div class="chart-container">
+      <h3>Salary Details</h3>
+      <canvas id="salaryChart"></canvas>
+    </div>
+    <div class="chart-container">
+      <h3>Worked Hours</h3>
+      <canvas id="workedHoursChart"></canvas>
+    </div>
+  </div>

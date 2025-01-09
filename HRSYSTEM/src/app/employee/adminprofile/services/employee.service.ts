@@ -20,4 +20,9 @@ export class EmployeeService {
   getAllEmployees(): Observable<any> {
     return this.http.get(this.apiUrl);
   }
+  
+  getEmployeeData(employeeId: number): Observable<any> {
+    const url = `${this.apiUrl}&employee_id=${employeeId}`;
+    return this.http.get(url);
+  }
 }
