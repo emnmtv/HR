@@ -9,15 +9,14 @@
     <button class="tab">Change of Schedule</button>
   </div>
 
-  <div class="status-summary">
-    <span class="status pending">20 Pending</span>
-    <span class="status approved">44 Approved</span>
-    <span class="status canceled">12 Canceled</span>
-    <span class="status denied">12 Denied</span>
-    <span class="status all">460 All</span>
-  </div>
-
   <div class="filters">
+    <div class="filter-buttons">
+      <button class="filter-btn" (click)="filterRequests('all')">All</button>
+      <button class="filter-btn" (click)="filterRequests('pending')">Pending</button>
+      <button class="filter-btn" (click)="filterRequests('approved')">Approved</button>
+      <button class="filter-btn" (click)="filterRequests('rejected')">Rejected</button>
+    </div>
+  
     <div class="dropdown">
       <label for="department-select">Department</label>
       <select id="department-select">
@@ -26,11 +25,12 @@
         <option value="Bagger">Bagger</option>
       </select>
     </div>
-
+  
     <div class="search-bar">
       <input type="text" placeholder="Search" />
     </div>
   </div>
+  
 
   <table class="requests-table">
     <thead>
@@ -46,26 +46,30 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let request of allRequests">
+      <tr *ngFor="let request of filteredRequests">
         <td><input type="checkbox" /></td>
         <td>
           {{ request.employee_name }}
           <br />
-
         </td>
         <td>{{ request.company }}</td>
-        <td>{{request.reason}}</td>
+        <td>{{ request.reason }}</td>
         <td>{{ request.type }}</td>
         <td>{{ request.date }}</td>
         <td class="status-cell">
           <span [class]="getStatusClass(request.status)">{{ request.status }}</span>
         </td>
         <td>
-          <button class="edit-btn" (click)="handleRequestAction(request.id, 'approve', request.employee_id)">Approve</button>
-          <button class="edit-btn" (click)="handleRequestAction(request.id, 'reject', request.employee_id)">Reject</button>
+          <button class="edit-btn" (click)="handleRequestAction(request.id, 'approve', request.employee_id)">
+            Approve
+          </button>
+          <button class="edit-btn" (click)="handleRequestAction(request.id, 'reject', request.employee_id)">
+            Reject
+          </button>
         </td>
       </tr>
     </tbody>
+    
   </table>
   <div class="modal" *ngIf="showModal">
     <div class="modal-content">

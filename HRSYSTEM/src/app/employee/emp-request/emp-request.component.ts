@@ -70,6 +70,7 @@ export class EmpRequestComponent implements OnInit {
     this.summary.specialHolidays = requests.filter(request => request.type === 'Special Holiday').length + ' days';
     this.summary.pendingRequests = requests.filter(request => request.status === 'Pending').length.toString();
     this.summary.approvedRequests = requests.filter(request => request.status === 'Approved').length.toString();
+    
   }
 
   openModal(): void {

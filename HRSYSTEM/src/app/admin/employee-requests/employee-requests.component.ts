@@ -10,7 +10,9 @@ export class EmployeeRequestsComponent implements OnInit {
   employees: any[] = [];
   allRequests: any[] = [];
   employeeMap: Map<number, any> = new Map(); // To map employee ID to employee data
-
+  filteredRequests: any[] = [];
+  currentFilter: string = 'all'; // Default filter
+  
   showModal: boolean = false; // Modal visibility
   modalMessage: string = ''; // Modal message
   constructor(private employeeRequestService: EmployeeRequestService) {}
@@ -18,7 +20,17 @@ export class EmployeeRequestsComponent implements OnInit {
   ngOnInit(): void {
     this.loadAllEmployees();
   }
-
+  filterRequests(status: string): void {
+    this.currentFilter = status;
+    if (status === 'all') {
+      this.filteredRequests = this.allRequests;
+    } else {
+      this.filteredRequests = this.allRequests.filter(
+        (request) => request.status.toLowerCase() === status.toLowerCase()
+      );
+    }
+  }
+  
   // Fetch all employees and their requests
   loadAllEmployees(): void {
     this.employeeRequestService.getEmployeeData().subscribe(
@@ -45,20 +57,20 @@ export class EmployeeRequestsComponent implements OnInit {
 
   // Fetch requests for all employees and link them with employee data
   loadAllRequestsForEmployees(): void {
-    this.allRequests = [];  // Reset the requests array
+    this.allRequests = []; // Reset the requests array
     this.employees.forEach((employee) => {
       this.employeeRequestService.fetchUserRequests(employee.id).subscribe(
         (response) => {
           if (response.status === 'success') {
             response.data.forEach((request: any) => {
-              // Merge employee info with each request
               const employeeData = this.employeeMap.get(employee.id);
               this.allRequests.push({
                 ...request,
                 employee_name: employeeData.name,
-                company: employeeData.company
+                company: employeeData.company,
               });
             });
+            this.filterRequests(this.currentFilter); // Apply the current filter
           } else {
             console.error(`Error fetching requests for employee ${employee.id}:`, response.message);
           }
@@ -69,6 +81,7 @@ export class EmployeeRequestsComponent implements OnInit {
       );
     });
   }
+  
 
   // Handle the button action to approve/reject requests
   handleRequestAction(requestId: number, action: 'approve' | 'reject', employeeId: number): void {
