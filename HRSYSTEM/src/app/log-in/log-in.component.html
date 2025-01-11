@@ -1,3 +1,4 @@
+<!-- Log-in Component HTML -->
 <div class="wrapper">
   <div class="container">
     <div class="header">
@@ -7,7 +8,7 @@
         <div class="middle">
           <h3 class="middle-title">Welcome to IMART Records System</h3>
           <h4 class="middle-subtitle">IMART Records System is a secure, efficient platform</h4>
-          <h4 class="middle-subtitle"> for managing and accessing records seamlessly.</h4>
+          <h4 class="middle-subtitle">for managing and accessing records seamlessly.</h4>
         </div>
       </div>
     </div>
@@ -48,28 +49,39 @@
               Login!
             </button>
           </form>
-          
         </div>
-        <!-- Modal HTML -->
-<div class="modal fade" id="notAdminModal" tabindex="-1" aria-labelledby="notAdminModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="notAdminModalLabel">Access Denied</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        You must be an admin to access this system.
+    </div>
+  </div>
+
+  <!-- Modal for loading -->
+  <div class="modal fade" id="loadingModal" tabindex="-1" aria-labelledby="loadingModalLabel" aria-hidden="true" *ngIf="isLoading">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loadingModalLabel">Logging In</h5>
+        </div>
+        <div class="modal-body">
+          Please wait...
+        </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    </div>
+  </div>
+
+  <!-- Modal for errors -->
+  <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true" *ngIf="errorMessage">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="errorModalLabel">Error</h5>
+        </div>
+        <div class="modal-body">
+          {{ errorMessage }}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="errorMessage = ''">Close</button>
+        </div>
       </div>
     </div>
   </div>
 </div>
-
-      </div>
-    </div>
-  </div>
-</div>
-

@@ -12,39 +12,42 @@ export class LogInComponent {
   password: string = '';
   errorMessage: string = '';
   accountType: string = 'Admin'; // Default account type, can be dynamically set if needed
+  isLoading: boolean = false;    // For controlling modal visibility
 
   constructor(private loginService: LoginService, private router: Router) {}
 
-  // This method will be triggered on form submission
   onLogin() {
     this.errorMessage = '';  // Clear previous errors
-  
-    this.loginService.login(this.email, this.password, this.accountType).subscribe(
-      (response) => {
-        if (response.status === 'success') {
-          console.log('Login successful:', response);
-  
-          // Save user details and employee ID in local storage
-          localStorage.setItem('user', JSON.stringify(response.user));  // Save entire user data
-          localStorage.setItem('accountType', response.user.account_type);
-          localStorage.setItem('employee_id', response.user.id.toString());  // Save employee ID
-  
-          // Redirect based on account type
-          if (response.user.account_type === 'Admin') {
-            this.router.navigate(['/dashboard']);
-          } else if (response.user.account_type === 'Employee') {
-            this.router.navigate(['/employeedash']);
-          }
-        } else {
-          this.errorMessage = response.message || 'Invalid credentials';
-        }
-      },
-      (error) => {
-        this.errorMessage = 'Failed to connect to the backend';
-        console.error(error);
-      }
-    );
-  }
-  
+    this.isLoading = true;    // Show loading modal
 
+    // Simulate a delay for showing the modal
+    setTimeout(() => {
+      this.loginService.login(this.email, this.password, this.accountType).subscribe(
+        (response) => {
+          this.isLoading = false; // Hide modal when response comes
+          if (response.status === 'success') {
+            console.log('Login successful:', response);
+            localStorage.setItem('user', JSON.stringify(response.user));
+            localStorage.setItem('accountType', response.user.account_type);
+            localStorage.setItem('employee_id', response.user.id.toString());
+
+            if (response.user.account_type === 'Admin') {
+              this.router.navigate(['/dashboard']);
+            } else if (response.user.account_type === 'Employee') {
+              this.router.navigate(['/employeedash']);
+            }
+          } else {
+            this.errorMessage = response.message || 'Invalid credentials';
+            // Show error modal here
+            this.isLoading = false;
+          }
+        },
+        (error) => {
+          this.isLoading = false; // Hide modal on error
+          this.errorMessage = 'Failed to connect to the backend';
+          console.error(error);
+        }
+      );
+    }, 1000);  // Simulate a 1-second delay before the login process
+  }
 }
