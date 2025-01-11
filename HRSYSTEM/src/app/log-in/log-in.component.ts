@@ -33,7 +33,7 @@ export class LogInComponent {
           if (response.user.account_type === 'Admin') {
             this.router.navigate(['/dashboard']);
           } else if (response.user.account_type === 'Employee') {
-            this.router.navigate(['/dtr']); // Adjust route as needed
+            this.router.navigate(['/employeedash']);
           }
         } else {
           this.errorMessage = response.message || 'Invalid credentials';
@@ -46,6 +46,5 @@ export class LogInComponent {
     );
   }
   
-  
-  
+
 }

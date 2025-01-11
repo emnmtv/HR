@@ -151,3 +151,46 @@ $green-hover: #388e3c;  // Darker green for hover effects
   width: auto;
   height: 1000px;
 }
+
+// Action Buttons
+.time-in-btn {
+  background-color: $green-highlight; // Vibrant green
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    background-color: $green-hover;
+    transform: scale(1.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  &:active {
+    transform: scale(1);
+  }
+}
+
+.time-out-btn {
+  background-color: #e53935; // Red for Time Out
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    background-color: #c62828;
+    transform: scale(1.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  &:active {
+    transform: scale(1);
+  }
+}

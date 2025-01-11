@@ -28,11 +28,15 @@ export class DtrSummaryComponent implements OnInit {
     unpaidLeave: '0 day/s',
     specialHoliday: '00:00:00'
   };
+  showModal: boolean = false;
 
   // dtrRecords array typed as DtrRecord[]
   dtrRecords: DtrRecord[] = [];
 
   loggedInEmployeeId: number = 0; // Variable to store logged-in employee ID
+
+  // Declare selectedRecord property to store the selected DTR record
+  selectedRecord: DtrRecord | null = null;
 
   constructor(
     private dtrSummaryService: DtrSummaryService, 
@@ -90,7 +94,13 @@ export class DtrSummaryComponent implements OnInit {
 
   // Method to handle "Details" button click
   onDetails(record: DtrRecord): void {
-    alert(`Details for ${record.date}:\nStatus: ${record.status}\nSchedule: ${record.schedule}`);
+    this.selectedRecord = record;  // Set the selected record
+    this.showModal = true;         // Show the modal
+  }
+
+  // Method to close the modal
+  closeModal(): void {
+    this.showModal = false;        // Hide the modal
   }
 
   // Method to calculate late time based on clock-in time and schedule start time

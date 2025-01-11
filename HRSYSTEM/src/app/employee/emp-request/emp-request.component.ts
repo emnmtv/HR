@@ -106,4 +106,17 @@ export class EmpRequestComponent implements OnInit {
   closeConfirmationPopup(): void {
     this.isRequestSubmitted = false;  // Hide the pop-up
   }
+  isDetailsModalOpen: boolean = false;
+selectedRequest: any = null;
+
+openDetailsModal(request: any) {
+  this.selectedRequest = request;
+  this.isDetailsModalOpen = true;
+}
+
+closeDetailsModal() {
+  this.isDetailsModalOpen = false;
+  this.selectedRequest = null;
+}
+
 }

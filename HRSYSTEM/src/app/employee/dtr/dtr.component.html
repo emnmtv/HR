@@ -30,8 +30,10 @@
           <td>{{ record.undertime || '--:--' }}</td>
           <td>{{ record.overtime || '--:--' }}</td>
           <td>
-            <button (click)="handleTimeInOut(record)">
-              {{ record.clockIn ? 'Time Out' : 'Time In' }}
+            <button 
+               (click)="handleTimeInOut(record)" 
+              [ngClass]="record.clockIn ? 'time-out-btn' : 'time-in-btn'">
+              {{ record.clockIn ? '🕒 Time Out' : '⏰ Time In' }}
             </button>
           </td>
         </tr>
@@ -53,3 +55,4 @@
     </div>
   </div>
 </div>
+

@@ -33,59 +33,77 @@
     }
   }
 
-  .status-summary {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-
-    .status {
-      padding: 5px 10px;
-      border-radius: 20px;
-      font-size: 14px;
-      text-align: center;
-
-      &.pending {
-        background-color: #ffeeba;
-        color: #856404;
-      }
-
-      &.approved {
-        background-color: #d4edda;
-        color: #155724;
-      }
-
-      &.canceled {
-        background-color: #f5c6cb;
-        color: #721c24;
-      }
-
-      &.denied {
-        background-color: #f8d7da;
-        color: #721c24;
-      }
-
-      &.all {
-        background-color: #e2e3e5;
-        color: #383d41;
-      }
-    }
-  }
-
   .filters {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    flex-wrap: wrap;  /* Allow wrapping for responsiveness */
+    
+    .filter-buttons {
+      display: flex;
+      gap: 10px;
+
+      .filter-btn {
+        padding: 8px 15px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        font-size: 0.9rem;
+        
+        &:hover {
+          background-color: #f0f0f0;
+        }
+
+        &.active {
+          background-color: #4caf50;
+          color: #fff;
+        }
+      }
+    }
 
     .dropdown {
       display: flex;
       flex-direction: column;
+      gap: 5px;
+
+      label {
+        font-size: 0.9rem;
+        color: #333;
+      }
+
+      select {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 0.9rem;
+        width: 180px; /* Set a fixed width */
+        
+        &:focus {
+          border-color: #4caf50;
+          outline: none;
+        }
+      }
     }
 
-    .search-bar input {
-      padding: 5px 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
+    .search-bar {
+      display: flex;
+      gap: 10px;
+
+      input {
+        padding: 8px 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 0.9rem;
+        width: 250px; /* Set a fixed width */
+        
+        &:focus {
+          border-color: #4caf50;
+          outline: none;
+        }
+      }
     }
   }
 
@@ -144,6 +162,11 @@
               background-color: #f8d7da;
               color: #721c24;
             }
+            
+            &.rejected {
+              background-color: #f8d7da;
+              color: #721c24;
+            }
           }
         }
 
@@ -164,57 +187,58 @@
       }
     }
   }
-}.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  animation: fadeIn 0.3s ease-in-out;
-}
 
-.modal-content {
-  background: #fff;
-  padding: 40px;
-  border-radius: 10px;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  animation: slideUp 0.3s ease-in-out;
-}
-
-.close-btn {
-  background: #37be55;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.close-btn:hover {
-  background: #0056b3;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease-in-out;
   }
-  to {
-    opacity: 1;
+
+  .modal-content {
+    background: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    animation: slideUp 0.3s ease-in-out;
+  }
+
+  .close-btn {
+    background: #37be55;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .close-btn:hover {
+    background: #0056b3;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(20px);
+    }
+    to {
+      transform: translateY(0);
+    }
   }
 }
-
-@keyframes slideUp {
-  from {
-    transform: translateY(20px);
-  }
-  to {
-    transform: translateY(0);
-  }
-}
-

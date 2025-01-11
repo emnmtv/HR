@@ -24,7 +24,9 @@
           <td>{{ request.type }}</td>
           <td>{{ request.status }}</td>
           <td>{{ request.reason }}</td>
-          <td><button class="action-btn">Details</button></td>
+          <td>
+            <button class="action-btn" (click)="openDetailsModal(request)">Details</button>
+          </td>          
         </tr>
       </tbody>
     </table>
@@ -59,5 +61,17 @@
       <p>Your request has been submitted successfully!</p>
       <button (click)="closeConfirmationPopup()">Close</button>
     </div>
+  </div>
+</div>
+
+<!-- Details Modal -->
+<div class="modal" *ngIf="isDetailsModalOpen">
+  <div class="modal-content animate__animated animate__fadeIn">
+    <span class="close-btn" (click)="closeDetailsModal()">&times;</span>
+    <h2>Request Details</h2>
+    <p><strong>Date:</strong> {{ selectedRequest?.date }}</p>
+    <p><strong>Type:</strong> {{ selectedRequest?.type }}</p>
+    <p><strong>Status:</strong> {{ selectedRequest?.status }}</p>
+    <p><strong>Reason:</strong> {{ selectedRequest?.reason }}</p>
   </div>
 </div>
