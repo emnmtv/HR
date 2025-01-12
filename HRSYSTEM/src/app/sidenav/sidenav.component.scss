@@ -15,6 +15,30 @@
   flex-direction: column;
   justify-content: space-between; /* Push content apart */
 
+  .kups {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;  /* Adds space below the image */
+    padding-top: 1rem;
+    img {
+      width: 30%;  /* Make the image smaller */
+      height: auto;  /* Maintain aspect ratio */
+      object-fit: cover;  /* Ensure the image covers the space without distortion */
+      transition: width 0.3s ease; /* Smooth transition when collapsed/expanded */
+    }
+  
+    &.sidenav-collapsed img {
+      width: 25%;  /* Adjust size when sidenav is collapsed */
+    }
+  
+    /* Darker shade of white and a line at the bottom */
+    background-color: #efefef;  /* Darker white shade */
+    border-bottom: 1px solid #d1d1d1;  /* Line at the bottom */
+    padding-bottom: 1rem;  /* Add some space before the line */
+  }
+  
+  
   .logo-container {
     display: flex;
     align-items: center;
