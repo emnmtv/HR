@@ -6,8 +6,9 @@
   <div class="request-section">
     <h2>
       <button class="request-btn" (click)="openModal()">Create New Request</button>
+      <button class="request-btn" (click)="fetchMessages()">Fetch Messages</button>
     </h2>
-
+    
     <table>
       <thead>
         <tr>
@@ -25,12 +26,28 @@
           <td>{{ request.status }}</td>
           <td>{{ request.reason }}</td>
           <td>
-            <button class="action-btn" (click)="openDetailsModal(request)">Details</button>
-          </td>          
+            <button class="action-btn" (click)="openDetailModal(request)">Details</button>
+          </td>            
         </tr>
       </tbody>
     </table>
   </div>
+<!-- Modal to Display Messages -->
+<div class="modal2" *ngIf="isMessagesModalOpen">
+<div class="modal-content animate__animated animate__fadeIn">
+  <span class="close-btn" (click)="closeMessagesModal()">&times;</span>
+  <h2>Messages</h2>
+  <ul>
+    <li *ngFor="let message of messages">
+      {{ message.message }} <br>
+      <span>{{ message.created_at | date:'short' }}</span>  <!-- Format the date as required -->
+    </li>
+  </ul>
+  <p *ngIf="messages.length === 0">No messages available.</p>
+  
+</div>
+</div>
+
 
   <!-- Modal -->
   <div class="modal" *ngIf="isModalOpen">
@@ -44,7 +61,6 @@
           <option value="Overtime">Overtime</option>
           <option value="Day Off">Day Off</option>
           <option value="Vacation">Vacation</option>
-          <option value="Concert">Concern</option>
         </select>
 
         <label for="reason">Reason:</label>
@@ -64,14 +80,23 @@
   </div>
 </div>
 
-<!-- Details Modal -->
-<div class="modal" *ngIf="isDetailsModalOpen">
-  <div class="modal-content animate__animated animate__fadeIn">
-    <span class="close-btn" (click)="closeDetailsModal()">&times;</span>
-    <h2>Request Details</h2>
-    <p><strong>Date:</strong> {{ selectedRequest?.date }}</p>
-    <p><strong>Type:</strong> {{ selectedRequest?.type }}</p>
-    <p><strong>Status:</strong> {{ selectedRequest?.status }}</p>
-    <p><strong>Reason:</strong> {{ selectedRequest?.reason }}</p>
+<!-- Detail Modal -->
+<div class="modal" *ngIf="isDetailModalOpen">
+<div class="modal-content animate__animated animate__fadeIn">
+  <span class="close-btn" (click)="closeDetailModal()">&times;</span>
+  <h2>Request Details</h2>
+  <div *ngIf="selectedRequest" class="details-container">
+    <p><strong>Date:</strong> {{ selectedRequest.date }}</p>
+    <p><strong>Type:</strong> {{ selectedRequest.type }}</p>
+    <p>
+      <strong>Status:</strong> 
+      <span [ngClass]="getStatusClass(selectedRequest.status)">
+        {{ selectedRequest.status }}
+      </span>
+    </p>
+    <p><strong>Reason:</strong></p>
+    <p class="reason-text">{{ selectedRequest.reason }}</p>
   </div>
 </div>
+</div>
+

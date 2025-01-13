@@ -1,6 +1,9 @@
 <div class="employee-requests-container">
   <h1>Employee Requests</h1>
 
+  <!-- New Button for Sending Message -->
+ 
+
   <div class="tabs">
     <button class="tab active">Alter Logs</button>
     <button class="tab">Work from Home</button>
@@ -15,22 +18,9 @@
       <button class="filter-btn" (click)="filterRequests('pending')">Pending</button>
       <button class="filter-btn" (click)="filterRequests('approved')">Approved</button>
       <button class="filter-btn" (click)="filterRequests('rejected')">Rejected</button>
-    </div>
-  
-    <div class="dropdown">
-      <label for="department-select">Department</label>
-      <select id="department-select">
-        <option value="all">All Departments</option>
-        <option value="HR">Operations</option>
-        <option value="Bagger">Bagger</option>
-      </select>
-    </div>
-  
-    <div class="search-bar">
-      <input type="text" placeholder="Search" />
+      <button class="filter-btn" (click)="openNewMessageModal()">Send New Message</button>
     </div>
   </div>
-  
 
   <table class="requests-table">
     <thead>
@@ -48,10 +38,7 @@
     <tbody>
       <tr *ngFor="let request of filteredRequests">
         <td><input type="checkbox" /></td>
-        <td>
-          {{ request.employee_name }}
-          <br />
-        </td>
+        <td>{{ request.employee_name }}</td>
         <td>{{ request.company }}</td>
         <td>{{ request.reason }}</td>
         <td>{{ request.type }}</td>
@@ -66,11 +53,35 @@
           <button class="edit-btn" (click)="handleRequestAction(request.id, 'reject', request.employee_id)">
             Reject
           </button>
+          <button class="send-message-btn" (click)="openMessageModal(request.employee_id)">
+            Send Message
+          </button>
         </td>
       </tr>
     </tbody>
-    
   </table>
+
+  <!-- Modal for sending a new message -->
+  <div class="modal" *ngIf="showNewMessageModal">
+    <div class="modal-content">
+      <h2>Send New Message</h2>
+      <input type="number" [(ngModel)]="newEmployeeId" placeholder="Enter Employee ID" />
+      <textarea [(ngModel)]="newMessageContent" placeholder="Enter your message here..."></textarea>
+      <button (click)="sendNewMessage()">Send</button>
+      <button class="close-btn" (click)="closeNewMessageModal()">Close</button>
+    </div>
+  </div>
+
+  <!-- Modal for sending a message -->
+  <div class="modal" *ngIf="showMessageModal">
+    <div class="modal-content">
+      <h2>Send Message</h2>
+      <textarea [(ngModel)]="messageContent" placeholder="Type your message here..."></textarea>
+      <button (click)="sendMessage()">Send</button>
+      <button class="close-btn" (click)="closeMessageModal()">Close</button>
+    </div>
+  </div>
+
   <div class="modal" *ngIf="showModal">
     <div class="modal-content">
       <p>{{ modalMessage }}</p>
@@ -78,4 +89,3 @@
     </div>
   </div>
 </div>
-

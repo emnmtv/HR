@@ -18,6 +18,13 @@ export class EmpRequestService {
     return this.http.post<any>(this.apiUrl, body);
   }
 
+     // Method to fetch messages using GET
+  getMessages(employeeId: number): Observable<any> {
+    const url = `${this.apiUrl}?route=fetchMessages&employee_id=${employeeId}`;
+    return this.http.get<any>(url);
+  }
+
+  
   createRequest(employeeId: number, date: string, type: string, reason: string): Observable<any> {
     const body = {
       route: 'createRequest',

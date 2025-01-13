@@ -16,6 +16,11 @@ export class EmployeeRequestService {
     return this.http.get(url);
   }
 
+  sendMessage(body: any): Observable<any> {
+    const url = `${this.apiUrl}?route=sendMessage`;
+    return this.http.post<any>(url, body);
+  }
+  
   // Fetch requests for a specific employee
   fetchUserRequests(employeeId: number): Observable<any> {
     const body = {

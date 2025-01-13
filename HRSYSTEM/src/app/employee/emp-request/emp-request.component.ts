@@ -8,6 +8,12 @@ interface EmployeeRequest {
   status: string;
   reason: string;
 }
+interface Message {
+  message: string;   // This will hold the actual message content
+  created_at: string;  // This will hold the message's timestamp
+}
+
+
 
 @Component({
   selector: 'app-emp-request',
@@ -25,8 +31,11 @@ export class EmpRequestComponent implements OnInit {
   requestRecords: EmployeeRequest[] = [];
 
   loggedInEmployeeId: number = 0; 
-
+  messages: Message[] = [];
+  isMessagesModalOpen = false;
   isModalOpen = false;  
+  isDetailModalOpen = false; // Control visibility of the detail modal
+  selectedRequest: EmployeeRequest | null = null; // Store selected request details
   isRequestSubmitted = false; // Control confirmation pop-up visibility
 
   newRequest = {
@@ -38,6 +47,46 @@ export class EmpRequestComponent implements OnInit {
     private empRequestService: EmpRequestService, 
     private router: Router
   ) {}
+
+  getStatusClass(status: string): string {
+    return {
+      Approved: 'status-approved',
+      Rejected: 'status-rejected',
+      Pending: 'status-pending'
+    }[status] || 'status-default';
+  }  
+  fetchMessages(): void {
+    const employeeId = this.loggedInEmployeeId;
+  
+    this.empRequestService.getMessages(employeeId).subscribe(
+      response => {
+        if (response.status === 'success') {
+          // Map the data to match the structure you need
+          this.messages = response.data.map((message: any) => {
+            return {
+              message: message.message,  // Correcting the field to `message`
+              created_at: new Date(message.created_at)  // Ensuring the created_at is a valid Date
+            };
+          });
+          this.isMessagesModalOpen = true; // Open the modal
+        } else {
+          alert('Error fetching messages: ' + (response.message || 'Unknown error'));
+        }
+      },
+      error => {
+        console.error('Error fetching messages:', error);
+        alert('There was an issue fetching messages. Please try again.');
+      }
+    );
+  }
+  
+  
+
+  // Close the messages modal
+  closeMessagesModal(): void {
+    this.isMessagesModalOpen = false;
+    this.messages = [];  // Clear messages when closing modal
+  }
 
   ngOnInit(): void {
     const storedEmployeeId = localStorage.getItem('employee_id');
@@ -70,7 +119,6 @@ export class EmpRequestComponent implements OnInit {
     this.summary.specialHolidays = requests.filter(request => request.type === 'Special Holiday').length + ' days';
     this.summary.pendingRequests = requests.filter(request => request.status === 'Pending').length.toString();
     this.summary.approvedRequests = requests.filter(request => request.status === 'Approved').length.toString();
-    
   }
 
   openModal(): void {
@@ -106,17 +154,17 @@ export class EmpRequestComponent implements OnInit {
   closeConfirmationPopup(): void {
     this.isRequestSubmitted = false;  // Hide the pop-up
   }
-  isDetailsModalOpen: boolean = false;
-selectedRequest: any = null;
 
-openDetailsModal(request: any) {
-  this.selectedRequest = request;
-  this.isDetailsModalOpen = true;
+  // Open the Details Modal
+openDetailModal(request: EmployeeRequest): void {
+  this.selectedRequest = request; // Set the selected request
+  this.isDetailModalOpen = true; // Open the modal
 }
 
-closeDetailsModal() {
-  this.isDetailsModalOpen = false;
-  this.selectedRequest = null;
+// Close the Details Modal
+closeDetailModal(): void {
+  this.isDetailModalOpen = false; // Close the modal
+  this.selectedRequest = null; // Clear the selected request
 }
 
 }

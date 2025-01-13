@@ -13,13 +13,22 @@ export class EmployeeRequestsComponent implements OnInit {
   filteredRequests: any[] = [];
   currentFilter: string = 'all'; // Default filter
   
-  showModal: boolean = false; // Modal visibility
+  showModal: boolean = false; // Modal visibility for request actions
+  showMessageModal: boolean = false; // Modal visibility for sending a message
+  showNewMessageModal: boolean = false; // Modal visibility for sending a new message
   modalMessage: string = ''; // Modal message
+  selectedEmployeeId: number = 0; // Store selected employee ID for message
+  
+  messageContent: string = ''; // Content of the message
+  newEmployeeId: number = 0; // New Employee ID for message
+  newMessageContent: string = ''; // New Message Content
+
   constructor(private employeeRequestService: EmployeeRequestService) {}
 
   ngOnInit(): void {
     this.loadAllEmployees();
   }
+
   filterRequests(status: string): void {
     this.currentFilter = status;
     if (status === 'all') {
@@ -30,8 +39,7 @@ export class EmployeeRequestsComponent implements OnInit {
       );
     }
   }
-  
-  // Fetch all employees and their requests
+
   loadAllEmployees(): void {
     this.employeeRequestService.getEmployeeData().subscribe(
       (response) => {
@@ -55,7 +63,6 @@ export class EmployeeRequestsComponent implements OnInit {
     );
   }
 
-  // Fetch requests for all employees and link them with employee data
   loadAllRequestsForEmployees(): void {
     this.allRequests = []; // Reset the requests array
     this.employees.forEach((employee) => {
@@ -81,7 +88,6 @@ export class EmployeeRequestsComponent implements OnInit {
       );
     });
   }
-  
 
   // Handle the button action to approve/reject requests
   handleRequestAction(requestId: number, action: 'approve' | 'reject', employeeId: number): void {
@@ -107,8 +113,82 @@ export class EmployeeRequestsComponent implements OnInit {
       }
     );
   }
+
+  // Open send message modal for a specific employee
+  openMessageModal(employeeId: number): void {
+    this.selectedEmployeeId = employeeId;
+    this.messageContent = ''; // Clear previous message content
+    this.showMessageModal = true; // Open modal
+  }
+
+  // Open the modal for sending a new message
+  openNewMessageModal(): void {
+    this.newEmployeeId = 0;
+    this.newMessageContent = '';
+    this.showNewMessageModal = true; // Open new message modal
+  }
+
+  // Close message modal
+  closeMessageModal(): void {
+    this.showMessageModal = false; // Close modal
+  }
+
+  // Close new message modal
+  closeNewMessageModal(): void {
+    this.showNewMessageModal = false; // Close modal
+  }
+
+  // Send message to a specific employee
+  sendMessage(): void {
+    const message = this.messageContent.trim();
+    if (message) {
+      const body = {
+        employee_id: this.selectedEmployeeId,
+        message: message,
+      };
+      this.employeeRequestService.sendMessage(body).subscribe(
+        (response) => {
+          if (response.status === 'success') {
+            console.log('Message sent successfully');
+            this.closeMessageModal();
+          } else {
+            console.error('Error sending message:', response.message);
+          }
+        },
+        (error) => {
+          console.error('Error sending message:', error);
+        }
+      );
+    }
+  }
+
+  // Send message to a new employee (via Employee ID and Message)
+  sendNewMessage(): void {
+    const message = this.newMessageContent.trim();
+    const employeeId = this.newEmployeeId;
+    if (message && employeeId) {
+      const body = {
+        employee_id: employeeId,
+        message: message,
+      };
+      this.employeeRequestService.sendMessage(body).subscribe(
+        (response) => {
+          if (response.status === 'success') {
+            console.log('Message sent successfully');
+            this.closeNewMessageModal();
+          } else {
+            console.error('Error sending message:', response.message);
+          }
+        },
+        (error) => {
+          console.error('Error sending message:', error);
+        }
+      );
+    }
+  }
+
   closeModal(): void {
-    this.showModal = false; // Close the modal
+    this.showModal = false; // Close the request action modal
   }
 
   // Get the appropriate CSS class based on status
