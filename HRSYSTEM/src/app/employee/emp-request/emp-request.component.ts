@@ -80,8 +80,6 @@ export class EmpRequestComponent implements OnInit {
     );
   }
   
-  
-
   // Close the messages modal
   closeMessagesModal(): void {
     this.isMessagesModalOpen = false;
