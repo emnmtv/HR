@@ -22,6 +22,8 @@ export class EmployeeRequestsComponent implements OnInit {
   messageContent: string = ''; // Content of the message
   newEmployeeId: number = 0; // New Employee ID for message
   newMessageContent: string = ''; // New Message Content
+  showNotification: boolean = false; // For showing/hiding notification
+  notificationMessage: string = ''; // Notification message
 
   constructor(private employeeRequestService: EmployeeRequestService) {}
 
@@ -139,53 +141,66 @@ export class EmployeeRequestsComponent implements OnInit {
   }
 
   // Send message to a specific employee
-  sendMessage(): void {
-    const message = this.messageContent.trim();
-    if (message) {
-      const body = {
-        employee_id: this.selectedEmployeeId,
-        message: message,
-      };
-      this.employeeRequestService.sendMessage(body).subscribe(
-        (response) => {
-          if (response.status === 'success') {
-            console.log('Message sent successfully');
-            this.closeMessageModal();
-          } else {
-            console.error('Error sending message:', response.message);
-          }
-        },
-        (error) => {
-          console.error('Error sending message:', error);
+sendMessage(): void {
+  const message = this.messageContent.trim();
+  if (message) {
+    const body = {
+      employee_id: this.selectedEmployeeId,
+      message: message,
+    };
+    this.employeeRequestService.sendMessage(body).subscribe(
+      (response) => {
+        if (response.status === 'success') {
+          console.log('Message sent successfully');
+          this.showNotificationMessage('Message sent successfully');
+          this.closeMessageModal();
+        } else {
+          console.error('Error sending message:', response.message);
         }
-      );
-    }
+      },
+      (error) => {
+        console.error('Error sending message:', error);
+      }
+    );
   }
+}
 
-  // Send message to a new employee (via Employee ID and Message)
-  sendNewMessage(): void {
-    const message = this.newMessageContent.trim();
-    const employeeId = this.newEmployeeId;
-    if (message && employeeId) {
-      const body = {
-        employee_id: employeeId,
-        message: message,
-      };
-      this.employeeRequestService.sendMessage(body).subscribe(
-        (response) => {
-          if (response.status === 'success') {
-            console.log('Message sent successfully');
-            this.closeNewMessageModal();
-          } else {
-            console.error('Error sending message:', response.message);
-          }
-        },
-        (error) => {
-          console.error('Error sending message:', error);
+// Send message to a new employee (via Employee ID and Message)
+sendNewMessage(): void {
+  const message = this.newMessageContent.trim();
+  const employeeId = this.newEmployeeId;
+  if (message && employeeId) {
+    const body = {
+      employee_id: employeeId,
+      message: message,
+    };
+    this.employeeRequestService.sendMessage(body).subscribe(
+      (response) => {
+        if (response.status === 'success') {
+          console.log('Message sent successfully');
+          this.showNotificationMessage('Message sent successfully');
+          this.closeNewMessageModal();
+        } else {
+          console.error('Error sending message:', response.message);
         }
-      );
-    }
+      },
+      (error) => {
+        console.error('Error sending message:', error);
+      }
+    );
   }
+}
+
+// Show notification message
+showNotificationMessage(message: string): void {
+  this.notificationMessage = message;
+  this.showNotification = true;
+
+  // Hide notification after 1 second
+  setTimeout(() => {
+    this.showNotification = false;
+  }, 1500);
+}
 
   closeModal(): void {
     this.showModal = false; // Close the request action modal
