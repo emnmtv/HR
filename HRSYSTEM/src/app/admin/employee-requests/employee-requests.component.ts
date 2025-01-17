@@ -24,6 +24,8 @@ export class EmployeeRequestsComponent implements OnInit {
   newMessageContent: string = ''; // New Message Content
   showNotification: boolean = false; // For showing/hiding notification
   notificationMessage: string = ''; // Notification message
+  showImageModal: boolean = false; // To control the image modal visibility
+  selectedImagePath: string = ''; // To store the image path for viewing
 
   constructor(private employeeRequestService: EmployeeRequestService) {}
 
@@ -35,6 +37,10 @@ export class EmployeeRequestsComponent implements OnInit {
     this.currentFilter = status;
     if (status === 'all') {
       this.filteredRequests = this.allRequests;
+    } else if (status === 'blank') {
+      this.filteredRequests = this.allRequests.filter(
+        (request) => !request.type || request.type.trim() === ''
+      );
     } else {
       this.filteredRequests = this.allRequests.filter(
         (request) => request.status.toLowerCase() === status.toLowerCase()
@@ -77,6 +83,8 @@ export class EmployeeRequestsComponent implements OnInit {
                 ...request,
                 employee_name: employeeData.name,
                 company: employeeData.company,
+                // Prepend the correct base URL for the image path
+                image_path: request.image_path ? `http://localhost/integapi/main/${request.image_path}` : '', 
               });
             });
             this.filterRequests(this.currentFilter); // Apply the current filter
@@ -90,6 +98,18 @@ export class EmployeeRequestsComponent implements OnInit {
       );
     });
   }
+  
+   // Open image modal to view photo
+   viewImage(imagePath: string): void {
+    this.selectedImagePath = imagePath;
+    this.showImageModal = true;
+  }
+
+  // Close the image view modal
+  closeImageModal(): void {
+    this.showImageModal = false;
+  }
+  
 
   // Handle the button action to approve/reject requests
   handleRequestAction(requestId: number, action: 'approve' | 'reject', employeeId: number): void {

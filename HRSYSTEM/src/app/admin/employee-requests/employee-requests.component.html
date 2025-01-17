@@ -18,6 +18,7 @@
       <button class="filter-btn" (click)="filterRequests('pending')">Pending</button>
       <button class="filter-btn" (click)="filterRequests('approved')">Approved</button>
       <button class="filter-btn" (click)="filterRequests('rejected')">Rejected</button>
+      <button class="filter-btn" (click)="filterRequests('blank')">Concern</button>
       <button class="filter-btn" (click)="openNewMessageModal()">Send New Message</button>
     </div>
   </div>
@@ -47,6 +48,7 @@
           <span [class]="getStatusClass(request.status)">{{ request.status }}</span>
         </td>
         <td>
+          <button *ngIf="request.image_path" (click)="viewImage(request.image_path)">View Photo</button>
           <button class="edit-btn" (click)="handleRequestAction(request.id, 'approve', request.employee_id)">
             Approve
           </button>
@@ -60,7 +62,15 @@
       </tr>
     </tbody>
   </table>
-
+  <!-- Modal for viewing image -->
+  <div class="modal" *ngIf="showImageModal">
+    <div class="modal-content">
+      <h2>View Photo</h2>
+      <img [src]="selectedImagePath" alt="Employee Image" class="view-image" />
+     
+      <button class="close-btn" (click)="closeImageModal()">Close</button>
+    </div>
+  </div>
   <!-- Modal for sending a new message -->
   <div class="modal" *ngIf="showNewMessageModal">
     <div class="modal-content">

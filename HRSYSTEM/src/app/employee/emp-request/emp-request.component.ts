@@ -8,12 +8,11 @@ interface EmployeeRequest {
   status: string;
   reason: string;
 }
+
 interface Message {
-  message: string;   // This will hold the actual message content
-  created_at: string;  // This will hold the message's timestamp
+  message: string;
+  created_at: string;
 }
-
-
 
 @Component({
   selector: 'app-emp-request',
@@ -30,23 +29,41 @@ export class EmpRequestComponent implements OnInit {
 
   requestRecords: EmployeeRequest[] = [];
 
-  loggedInEmployeeId: number = 0; 
+  loggedInEmployeeId: number = 0;
   messages: Message[] = [];
   isMessagesModalOpen = false;
   isModalOpen = false;  
-  isDetailModalOpen = false; // Control visibility of the detail modal
-  selectedRequest: EmployeeRequest | null = null; // Store selected request details
-  isRequestSubmitted = false; // Control confirmation pop-up visibility
+  isDetailModalOpen = false;
+  selectedRequest: EmployeeRequest | null = null;
+  isRequestSubmitted = false;
 
   newRequest = {
-    type: 'Leave',  
-    reason: ''
+    type: 'Leave',
+    reason: '',
+    image: '' // Add an image field for base64 data
   };
 
   constructor(
-    private empRequestService: EmpRequestService, 
+    private empRequestService: EmpRequestService,
     private router: Router
   ) {}
+
+  onFileSelected(event: any): void {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.convertFileToBase64(file);
+    }
+  }
+  
+  convertFileToBase64(file: File): void {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      this.newRequest.image = reader.result as string;  // This stores the base64 string
+      console.log('Base64 Image:', this.newRequest.image);  // Check the console to see if it's correct
+    };
+    reader.readAsDataURL(file);
+  }
+  
 
   getStatusClass(status: string): string {
     return {
@@ -54,21 +71,20 @@ export class EmpRequestComponent implements OnInit {
       Rejected: 'status-rejected',
       Pending: 'status-pending'
     }[status] || 'status-default';
-  }  
+  }
+
   fetchMessages(): void {
     const employeeId = this.loggedInEmployeeId;
-  
     this.empRequestService.getMessages(employeeId).subscribe(
       response => {
         if (response.status === 'success') {
-          // Map the data to match the structure you need
           this.messages = response.data.map((message: any) => {
             return {
-              message: message.message,  // Correcting the field to `message`
-              created_at: new Date(message.created_at)  // Ensuring the created_at is a valid Date
+              message: message.message,
+              created_at: new Date(message.created_at)
             };
           });
-          this.isMessagesModalOpen = true; // Open the modal
+          this.isMessagesModalOpen = true;
         } else {
           alert('Error fetching messages: ' + (response.message || 'Unknown error'));
         }
@@ -79,11 +95,10 @@ export class EmpRequestComponent implements OnInit {
       }
     );
   }
-  
-  // Close the messages modal
+
   closeMessagesModal(): void {
     this.isMessagesModalOpen = false;
-    this.messages = [];  // Clear messages when closing modal
+    this.messages = [];
   }
 
   ngOnInit(): void {
@@ -128,16 +143,17 @@ export class EmpRequestComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const { type, reason } = this.newRequest;
+    const { type, reason, image } = this.newRequest;
     const employeeId = this.loggedInEmployeeId;
-    const date = new Date().toISOString().split('T')[0]; 
-
-    this.empRequestService.createRequest(employeeId, date, type, reason).subscribe(
+    const date = new Date().toISOString().split('T')[0];
+  
+    this.empRequestService.createRequest(employeeId, date, type, reason, image).subscribe(
       (response) => {
+        console.log(response);  // Log the response to check for errors
         if (response.status === 'success') {
-          this.isRequestSubmitted = true;  // Show pop-up
-          this.closeModal();  
-          this.fetchRequestData(employeeId); 
+          this.isRequestSubmitted = true;
+          this.closeModal();
+          this.fetchRequestData(employeeId);
         } else {
           alert('Error submitting request: ' + response.message);
         }
@@ -148,21 +164,19 @@ export class EmpRequestComponent implements OnInit {
       }
     );
   }
+  
 
   closeConfirmationPopup(): void {
-    this.isRequestSubmitted = false;  // Hide the pop-up
+    this.isRequestSubmitted = false;
   }
 
-  // Open the Details Modal
-openDetailModal(request: EmployeeRequest): void {
-  this.selectedRequest = request; // Set the selected request
-  this.isDetailModalOpen = true; // Open the modal
-}
+  openDetailModal(request: EmployeeRequest): void {
+    this.selectedRequest = request;
+    this.isDetailModalOpen = true;
+  }
 
-// Close the Details Modal
-closeDetailModal(): void {
-  this.isDetailModalOpen = false; // Close the modal
-  this.selectedRequest = null; // Clear the selected request
-}
-
+  closeDetailModal(): void {
+    this.isDetailModalOpen = false;
+    this.selectedRequest = null;
+  }
 }

@@ -187,7 +187,22 @@
       }
     }
   }
-
+  .employee-image {
+    width: auto; /* Adjust size as needed */
+    height: auto;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+  /* Image styles */
+  .view-image {
+    width: 100%; /* Makes image responsive */
+    height: auto; /* Maintains aspect ratio */
+    max-width: 100%; /* Ensures image doesn't overflow */
+    max-height: 70vh; /* Limits the height of the image */
+    object-fit: contain; /* Ensures the image is contained within the modal */
+    border-radius: 8px;
+  }
   .modal {
     position: fixed;
     top: 0;
