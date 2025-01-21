@@ -17,7 +17,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   reportGenerated: boolean = false; // Track if report is generated
   attendanceSummary = { present: 0, absent: 0, late: 0 };
   employeesByPosition: any[] = []; // This will hold the filtered employee data
-
+  // Modal State
+  modalVisible: boolean = false;
+  selectedCompany: string = '';
+  employeeList: any[] = [];
+    // New report fields
+    attendanceReport: string = '';
+    employeeDistributionReport: string = '';
+    requestReport: string = ''; // Added for request summary
   constructor(private dashboardService: DashboardService) {}
 
   ngOnInit() {
@@ -37,7 +44,67 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       }
     });
   }
+// New method to generate the request report
+generateRequestReport() {
+  const { pendingRequests, approvedRequests, rejectedRequests } = this;
 
+  let requestExplanation = `The request summary is as follows:
+  - Pending Requests: ${pendingRequests}
+  - Approved Requests: ${approvedRequests}
+  - Rejected Requests: ${rejectedRequests}`;
+
+  if (pendingRequests > approvedRequests && pendingRequests > rejectedRequests) {
+    requestExplanation += " There are many requests still pending. Consider reviewing them soon.";
+  } else if (approvedRequests > rejectedRequests) {
+    requestExplanation += " Most requests are being approved, indicating that the process is running smoothly.";
+  } else {
+    requestExplanation += " A significant number of requests are being rejected, which may need further attention.";
+  }
+
+  this.requestReport = requestExplanation; // Set the dynamic report for requests
+}
+    // New method to generate the attendance report
+    generateAttendanceReport() {
+      const { present, absent, late } = this.attendanceSummary;
+  
+      let attendanceExplanation = `The attendance summary for the latest period shows:
+      - Present: ${present} employees
+      - Absent: ${absent} employees
+      - Late: ${late} employees.`;
+  
+      if (present > absent && present > late) {
+        attendanceExplanation += " Overall, the attendance is good, with most employees present on time.";
+      } else if (late > absent) {
+        attendanceExplanation += " There seems to be a significant number of late arrivals. Addressing punctuality could be beneficial.";
+      } else {
+        attendanceExplanation += " A considerable number of employees were absent. This might need further investigation.";
+      }
+  
+      this.attendanceReport = attendanceExplanation; // Set the dynamic report
+    }
+  
+    // New method to generate the employee distribution report
+    generateEmployeeDistributionReport() {
+      if (this.employeesByPosition.length === 0) {
+        this.employeeDistributionReport = "No data available for employee distribution.";
+        return;
+      }
+  
+      const totalEmployees = this.employeesByPosition.reduce((sum, entry) => sum + entry.employee_count, 0);
+      let distributionExplanation = `The employee distribution across positions is as follows:\n`;
+  
+      this.employeesByPosition.forEach((entry) => {
+        distributionExplanation += `- ${entry.company}: ${entry.employee_count} employees (${((entry.employee_count / totalEmployees) * 100).toFixed(2)}% of total employees)\n`;
+      });
+  
+      if (this.employeesByPosition.length > 1) {
+        distributionExplanation += " There is a balanced distribution of employees across different positions.";
+      } else {
+        distributionExplanation += " The company may benefit from a more diverse set of positions or roles.";
+      }
+  
+      this.employeeDistributionReport = distributionExplanation; // Set the dynamic report
+    }
   ngAfterViewInit() {
     this.dashboardService.getAttendanceData().subscribe((response) => {
       if (response.status === 'success') {
@@ -52,7 +119,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
     this.renderEmployeeDistributionChart(); // Render employee chart after view init
   }
-
+  closeModal() {
+    this.modalVisible = false; // Hide the modal
+    this.selectedCompany = ''; // Reset selected company
+    this.employeeList = []; // Clear the employee list
+  }
   fetchDashboardData() {
     this.dashboardService.getEmployeeCount().subscribe((response) => {
       if (response.status === 'success') {
@@ -65,6 +136,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.pendingRequests = response.pending_requests;
         this.approvedRequests = response.approved_requests;
         this.rejectedRequests = response.rejected_requests;
+        this.generateRequestReport();
       }
     });
   }
@@ -117,92 +189,189 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         },
       },
     });
+    this.generateAttendanceReport();
   }
 
  
-renderEmployeeDistributionChart() {
-  const ctx = document.getElementById('employeeDistributionChart') as HTMLCanvasElement;
-
-  if (!ctx) {
-    console.error('Employee Distribution Chart element not found');
-    return;
-  }
-
-  // Destroy existing chart instance if it exists
-  if (this.employeeDistributionChart) {
-    this.employeeDistributionChart.destroy();
-  }
-
-  // Extract 'company' names and employee counts, but display them as 'position'
-  const labels = this.employeesByPosition.map((entry) => entry.company || 'Unknown'); // Use 'company' here
-  const data = this.employeesByPosition.map((entry) => entry.employee_count);
-
-  // Softer pastel colors for each bar
-  const pastelColors = [
-    '#A8D5BA', '#FFB6B9', '#FFDAC1', '#FFE156', '#6A4C93', '#FF6F61', '#D4E157', 
-    '#FFB74D', '#81C784', '#B2EBF2', // A set of calm pastel colors
-  ];
-
-  // Create a new chart
-  this.employeeDistributionChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels,  // Labels will still be based on 'company' field, but will display as 'position'
-      datasets: [
-        {
-          label: 'Employees per Position', // The label for this chart remains 'Employees per Position'
-          data,
-          backgroundColor: pastelColors.slice(0, labels.length), // Dynamically slice colors for the labels
+  renderEmployeeDistributionChart() {
+    const ctx = document.getElementById('employeeDistributionChart') as HTMLCanvasElement;
+  
+    if (!ctx) {
+      console.error('Employee Distribution Chart element not found');
+      return;
+    }
+  
+    // Destroy existing chart instance if it exists
+    if (this.employeeDistributionChart) {
+      this.employeeDistributionChart.destroy();
+    }
+  
+    // Extract labels (positions) and employee counts
+    const labels = this.employeesByPosition.map((entry) => entry.company || 'Unknown'); // Positions
+    const data = this.employeesByPosition.map((entry) => entry.employee_count);
+  
+    // Map labels to actual backend `company` values
+    const labelToCompanyMap = this.employeesByPosition.reduce((map, entry) => {
+      map[entry.company || 'Unknown'] = entry.company; // Map 'Unknown' labels to actual company names
+      return map;
+    }, {} as { [key: string]: string });
+  
+    const pastelColors = ['#A8D5BA', '#FFB6B9', '#FFDAC1', '#FFE156', '#6A4C93'];
+  
+    // Create the chart
+    this.employeeDistributionChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Employees per Position',
+            data,
+            backgroundColor: pastelColors.slice(0, labels.length),
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
         },
-      ],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          position: 'top',
+        onClick: (event, elements) => {
+          if (elements.length > 0) {
+            const index = elements[0].index; // Get the index of the clicked bar
+            const selectedLabel = labels[index]; // Get the label (position) for the clicked bar
+            const selectedCompany = labelToCompanyMap[selectedLabel]; // Map label to the actual company
+            if (selectedCompany) {
+              console.log('Selected Company:', selectedCompany);
+              this.showEmployeeModal(selectedCompany); // Pass company to modal
+            } else {
+              console.error('No company mapped for the selected label:', selectedLabel);
+            }
+          }
         },
       },
-    },
-  });
-}
+    });
+    this.generateEmployeeDistributionReport(); // Call it after chart rendering to update the report
+  }
+  
+  
+  showEmployeeModal(company: string) {
+    if (!company) {
+      console.error('Company is undefined or missing');
+      return;
+    }
+
+    this.selectedCompany = company; // Set the company for modal
+    this.modalVisible = true; // Show the modal
+
+    this.dashboardService.getEmployeeDataByCompany(company).subscribe(
+      (response) => {
+        if (response.status === 'success') {
+          this.employeeList = response.data; // Populate employee list
+        } else {
+          console.error('Failed to fetch employees:', response.message);
+          this.employeeList = [];
+        }
+      },
+      (error) => {
+        console.error('API call failed:', error);
+        this.employeeList = [];
+      }
+    );
+  }
+  
+  
+  
 
   generatePDF() {
-    // Get the dashboard content as a screenshot (including charts)
-    html2canvas(document.querySelector('.dashboard-container')!).then((canvas) => {
-      const pdf = new jsPDF();
-      const imgData = canvas.toDataURL('image/png');
+    const pdf = new jsPDF();
+    const margin = 10;  // Define margin
+    let currentY = margin + 10;  // Start position for the content
   
-      // Add the screenshot as an image to the PDF
-      pdf.addImage(imgData, 'PNG', 10, 10, 190, 120);
+    // Set title style
+    pdf.setFont('helvetica', 'bold');
+    pdf.setFontSize(18);
+    pdf.text('HR Dashboard Automatic Report', margin, currentY);
+    currentY += 20; // Add space after the title
   
-      // Add a title or custom content (e.g., total employees, requests, etc.)
-      pdf.setFontSize(16);
-      pdf.text('HR Dashboard Report', 10, 140);
-      pdf.setFontSize(12);
-      pdf.text(`Total Employees: ${this.totalEmployees}`, 10, 150);
-      pdf.text(`Pending Requests: ${this.pendingRequests}`, 10, 160);
-      pdf.text(`Approved Requests: ${this.approvedRequests}`, 10, 170);
-      pdf.text(`Rejected Requests: ${this.rejectedRequests}`, 10, 180);
+    // Add Automatic Reports Section Title
+    pdf.setFont('helvetica', 'bold');
+    pdf.setFontSize(14);
+    pdf.text('Automatic Reports', margin, currentY);
+    currentY += 15; // Add space after section title
   
-      // Add Attendance Report Section
-      pdf.text('Attendance Summary:', 10, 190);
-      pdf.text(`Present: ${this.attendanceSummary.present}`, 10, 200);
-      pdf.text(`Absent: ${this.attendanceSummary.absent}`, 10, 210);
-      pdf.text(`Late: ${this.attendanceSummary.late}`, 10, 220);
+    // Attendance Report Summary
+    pdf.setFont('helvetica', 'bold');
+    pdf.setFontSize(12);
+    pdf.text('Attendance Report Summary', margin, currentY);
+    currentY += 10; // Add space after the report title
+    pdf.setFont('helvetica', 'normal');
+    pdf.setFontSize(12);
+    this.addTextToPDF(pdf, this.attendanceReport, margin, currentY);
+    currentY += this.calculateTextHeight(this.attendanceReport) + 20;
   
-      // Save the PDF
-      pdf.save('HR_Dashboard_Report.pdf');
-    });
+    // Employee Distribution Report Summary
+    pdf.setFont('helvetica', 'bold');
+    pdf.setFontSize(12);
+    pdf.text('Employee Distribution Report Summary', margin, currentY);
+    currentY += 10; // Add space after the report title
+    pdf.setFont('helvetica', 'normal');
+    pdf.setFontSize(12);
+    this.addTextToPDF(pdf, this.employeeDistributionReport, margin, currentY);
+    currentY += this.calculateTextHeight(this.employeeDistributionReport) + 20;
+  
+    // Request Report Summary
+    pdf.setFont('helvetica', 'bold');
+    pdf.setFontSize(12);
+    pdf.text('Request Report Summary', margin, currentY);
+    currentY += 10; // Add space after the report title
+    pdf.setFont('helvetica', 'normal');
+    pdf.setFontSize(12);
+    this.addTextToPDF(pdf, this.requestReport, margin, currentY);
+    currentY += this.calculateTextHeight(this.requestReport) + 20;
+  
+    // Save the PDF
+    pdf.save('HR_Dashboard_Automatic_Report.pdf');
   }
+  
+  // Utility to add text with wrapping
+  addTextToPDF(pdf: jsPDF, text: string, x: number, y: number) {
+    const pageHeight = pdf.internal.pageSize.height;
+    const pageWidth = pdf.internal.pageSize.width;
+    const lineHeight = 10;
+    let cursorY = y;
+    let textLines = pdf.splitTextToSize(text, pageWidth - 2 * x); // Wrap the text to fit page width
+  
+    // Check if text overflows the page, and move to the next page if needed
+    for (let i = 0; i < textLines.length; i++) {
+      if (cursorY + lineHeight > pageHeight - 10) { // Use 10 as margin instead of 'margin'
+        pdf.addPage();  // Add new page if text overflows
+        cursorY = 10; // Reset Y to the top of the new page
+      }
+      pdf.text(textLines[i], x, cursorY);
+      cursorY += lineHeight;
+    }
+  }
+  
+  // Utility to calculate text height based on the content
+  calculateTextHeight(text: string) {
+    const lineHeight = 10;
+    const lines = text.split("\n").length;
+    return lines * lineHeight;
+  }
+  
+  
+  
+  
   
   // New function to print the content
  // New function to print the content
-printReport() {
-  const content = document.querySelector('.dashboard-container')!;
+ printReport() {
   const printWindow = window.open('', '_blank');
-  
+
   if (printWindow) {
     printWindow.document.write(`
       <!DOCTYPE html>
@@ -210,7 +379,7 @@ printReport() {
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Attendance Report</title>
+        <title>HR Dashboard Automatic Report</title>
         <style>
           body {
             font-family: Arial, sans-serif;
@@ -230,51 +399,51 @@ printReport() {
           .content {
             margin-bottom: 20px;
           }
-          .attendance-summary {
+          .automatic-report-section {
             margin-top: 20px;
+          }
+          .automatic-report-section h3 {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+          }
+          .report-summary {
+            margin-top: 20px;
+          }
+          .report-summary h4 {
             font-size: 16px;
             font-weight: bold;
           }
-          .attendance-summary p {
+          .report-summary p {
+            font-size: 14px;
             margin: 5px 0;
-          }
-          .table-wrapper {
-            margin-top: 30px;
-            width: 100%;
-            overflow-x: auto;
-          }
-          table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-          }
-          table th, table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-          }
-          table th {
-            background-color: #f4f4f4;
-            font-weight: bold;
           }
         </style>
       </head>
       <body>
         <div class="header">
-          <h1>iMART Attendance Report</h1>
-          <h3>Dashboard Summary</h3>
+          <h1>HR Dashboard Automatic Report</h1>
         </div>
         <div class="content">
-          ${content.innerHTML}
-        </div>
-        <div class="attendance-summary">
-          <h3>Attendance Summary:</h3>
-          <p>Present: ${this.attendanceSummary.present}</p>
-          <p>Absent: ${this.attendanceSummary.absent}</p>
-          <p>Late: ${this.attendanceSummary.late}</p>
-        </div>
-        <div class="table-wrapper">
-          <!-- You can also add a table or other components here if needed -->
+          <!-- Automatic Reports Section -->
+          <div class="automatic-report-section">
+            <h3>Automatic Reports</h3>
+
+            <div class="report-summary">
+              <h4>Attendance Report Summary</h4>
+              <p>${this.attendanceReport}</p>
+            </div>
+
+            <div class="report-summary">
+              <h4>Employee Distribution Report Summary</h4>
+              <p>${this.employeeDistributionReport}</p>
+            </div>
+
+            <div class="report-summary">
+              <h4>Request Report Summary</h4>
+              <p>${this.requestReport}</p>
+            </div>
+          </div>
         </div>
       </body>
       </html>
@@ -286,6 +455,7 @@ printReport() {
     console.error('Failed to open print window');
   }
 }
+
 
   
 }

@@ -9,13 +9,24 @@ import { AttendanceService } from './attendance.service';
 export class AttendanceComponent implements OnInit {
   attendanceRecords: any[] = [];
   selectedEmployee: any = null;
-
+  searchTerm: string = ''; // Variable for search term
+  
   constructor(private attendanceService: AttendanceService) {}
 
   ngOnInit(): void {
     this.loadEmployeeData();
   }
+// Method to filter records
+filteredAttendanceRecords() {
+  if (!this.searchTerm) return this.attendanceRecords;
 
+  const term = this.searchTerm.toLowerCase();
+  return this.attendanceRecords.filter(
+    (record) =>
+      record.id.toString().includes(term) ||
+      record.name.toLowerCase().includes(term)
+  );
+}
   loadEmployeeData() {
     this.attendanceService.getEmployeeData().subscribe(
       (response) => {

@@ -12,7 +12,7 @@ export class RecordsComponent implements OnInit {
   loading: boolean = true;
   errorMessage: string = '';
   showRegisterModal: boolean = false;  // Flag to show the modal
-
+  searchTerm: string = ''; // Variable for the search term
   // Declare the form data object to hold the employee data
   formData = {
     username: '',
@@ -36,6 +36,16 @@ export class RecordsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getEmployeeRecords();
+  }
+  filteredEmployees(): any[] {
+    if (!this.searchTerm) {
+      return this.employees; // Return all employees if no search term
+    }
+    const lowerCaseTerm = this.searchTerm.toLowerCase();
+    return this.employees.filter((employee) =>
+      employee.id.toString().includes(lowerCaseTerm) ||
+      (`${employee.first_name} ${employee.last_name}`.toLowerCase().includes(lowerCaseTerm))
+    );
   }
 
   // Fetch employee data from the backend

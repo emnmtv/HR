@@ -6,31 +6,45 @@
       Refresh
     </button>
   </header>
-
+ <!-- Search Filter -->
+ <div class="mb-4 flex items-center">
+  <input
+    type="text"
+    placeholder="Search by ID or Name"
+    class="border p-2 rounded-md flex-grow"
+    [(ngModel)]="searchTerm"
+  />
+</div>
   <div class="table-container overflow-x-auto bg-white p-4 rounded-lg shadow-md">
     <table class="w-full border-collapse">
       <thead class="bg-gray-200">
         <tr>
+          <th class="px-4 py-2 text-left">ID</th>
           <th class="px-4 py-2 text-left">Employee</th>
           <th class="px-4 py-2 text-left">Position</th>
           <th class="px-4 py-2 text-left">Date</th>
           <th class="px-4 py-2 text-left">Latest Time In</th>
           <th class="px-4 py-2 text-left">Latest Time Out</th>
-          
           <th class="px-4 py-2 text-left">Status</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let record of attendanceRecords">
-          <td class="px-4 py-2 cursor-pointer text-blue-500" (click)="viewDtrHistory(record.id)">
+        <tr
+          *ngFor="let record of filteredAttendanceRecords()"
+          [class.cursor-pointer]="true"
+        >
+          <td class="px-4 py-2">{{ record.id }}</td>
+          <td
+            class="px-4 py-2 text-blue-500"
+            (click)="viewDtrHistory(record.id)"
+          >
             {{ record.name }}
           </td>
           <td class="px-4 py-2">{{ record.company }}</td>
           <td class="px-4 py-2">{{ record.date }}</td>
           <td class="px-4 py-2">{{ record.timeIn || '--:--' }}</td>
           <td class="px-4 py-2">{{ record.timeOut || '--:--' }}</td>
-          
-          <td class="px-4 py-2">{{record.status}}</td>
+          <td class="px-4 py-2">{{ record.status }}</td>
         </tr>
       </tbody>
     </table>

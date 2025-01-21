@@ -22,4 +22,13 @@ export class AttendanceService {
     };
     return this.http.post<any>(this.apiUrl, body);
   }
+  generateDTR(employeeId: number, startDate: string, endDate: string): Observable<any> {
+    const body = {
+      route: 'generateDtr',
+      employee_id: employeeId,
+      start_date: startDate,
+      end_date: endDate
+    };
+    return this.http.post<any>(this.apiUrl, body);
+  }
 }

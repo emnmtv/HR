@@ -34,5 +34,12 @@ export class DashboardService {
   checkAttendance(): Observable<any> {
     return this.http.get(`${this.baseUrl}?route=checkAllEmployeesTimeIn`);
   }
+  getEmployeeDataByCompany(company: string): Observable<any> {
+    const apiUrl = 'http://localhost/integapi/main/routes.php?route=getEmployeesByCompany';
+    const body = { company }; // Send the company as part of the request body
+    return this.http.post<any>(apiUrl, body); // Use POST to send the payload
+  }
+  
+  
 }
 
