@@ -18,6 +18,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   attendanceSummary = { present: 0, absent: 0, late: 0 };
   employeesByPosition: any[] = []; // This will hold the filtered employee data
   // Modal State
+  
   modalVisible: boolean = false;
   selectedCompany: string = '';
   employeeList: any[] = [];
@@ -25,12 +26,20 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     attendanceReport: string = '';
     employeeDistributionReport: string = '';
     requestReport: string = ''; // Added for request summary
+    reportModalVisible: boolean = false;  // Modal visibility for report options
   constructor(private dashboardService: DashboardService) {}
 
   ngOnInit() {
     this.fetchDashboardData();
     this.fetchEmployeeData(); // Fetch employee data on init'
     
+  }
+  openReportModal() {
+    this.reportModalVisible = true;
+  }
+
+  closeReportModal() {
+    this.reportModalVisible = false;
   }
   refreshDashboard() {
     // Trigger API to check attendance and update dashboard
@@ -44,6 +53,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       }
     });
   }
+  
 // New method to generate the request report
 generateRequestReport() {
   const { pendingRequests, approvedRequests, rejectedRequests } = this;
@@ -381,42 +391,90 @@ generateRequestReport() {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>HR Dashboard Automatic Report</title>
         <style>
+          /* General styling */
           body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
             padding: 0;
-            line-height: 1.6;
+            color: #333;
+            line-height: 1.8;
+            background-color: #f4f7fa;
           }
+
           .header {
             text-align: center;
-            margin-bottom: 30px;
+            background-color: #007bff;
+            color: white;
+            padding: 20px 0;
           }
           .header h1 {
             margin: 0;
-            font-size: 24px;
-            color: #333;
+            font-size: 28px;
+            letter-spacing: 2px;
           }
+
+          /* Content section */
           .content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          }
+
+          .content h3 {
+            font-size: 22px;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
             margin-bottom: 20px;
           }
-          .automatic-report-section {
-            margin-top: 20px;
+
+          .report-summary {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-left: 5px solid #007bff;
+            border-radius: 5px;
           }
-          .automatic-report-section h3 {
-            font-size: 20px;
-            font-weight: bold;
+
+          .report-summary h4 {
+            font-size: 18px;
+            font-weight: 600;
             color: #333;
           }
-          .report-summary {
-            margin-top: 20px;
-          }
-          .report-summary h4 {
-            font-size: 16px;
-            font-weight: bold;
-          }
+
           .report-summary p {
+            font-size: 15px;
+            color: #555;
+            margin-top: 5px;
+          }
+
+          .footer {
+            margin-top: 40px;
+            text-align: center;
             font-size: 14px;
-            margin: 5px 0;
+            color: #777;
+          }
+
+          /* Print-specific styles */
+          @media print {
+            body {
+              background-color: white;
+              margin: 0;
+              padding: 20px;
+            }
+            .content {
+              max-width: 100%;
+              box-shadow: none;
+              margin-top: 20px;
+              padding: 15px;
+            }
+            .footer {
+              margin-top: 30px;
+            }
           }
         </style>
       </head>
@@ -445,16 +503,20 @@ generateRequestReport() {
             </div>
           </div>
         </div>
+        <div class="footer">
+          <p>&copy; 2025 HR Dashboard. All Rights Reserved.</p>
+        </div>
       </body>
       </html>
     `);
-    
+
     printWindow.document.close();
     printWindow.print();
   } else {
     console.error('Failed to open print window');
   }
 }
+
 
 
   

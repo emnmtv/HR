@@ -21,12 +21,8 @@
     </div>
   </div>
 
-  <!-- Automatic Report Section -->
-  <div class="automatic-reports">
-    <h3>Automatic Reports</h3>
-    <button (click)="generatePDF()">Download PDF Report</button>
-    <button (click)="printReport()">Print Report</button>
-  </div>
+  <!-- Button to open the Automatic Reports Modal -->
+  <button (click)="openReportModal()">Open Automatic Reports</button>
 
   <div class="charts-section">
     <div class="chart">
@@ -40,6 +36,32 @@
     </div>
   </div>
 </div>
+
+<!-- Automatic Reports Popup Modal -->
+<div class="automatic-reports-modal" *ngIf="reportModalVisible">
+  <div class="modal-content">
+    <h3>Automatic Reports</h3>
+
+    <div class="report-summary">
+      <h4>Attendance Report Summary</h4>
+      <p>{{ attendanceReport }}</p>
+    </div>
+
+    <div class="report-summary">
+      <h4>Employee Distribution Report Summary</h4>
+      <p>{{ employeeDistributionReport }}</p>
+    </div>
+
+    <div class="report-summary">
+      <h4>Request Report Summary</h4>
+      <p>{{ requestReport }}</p>
+    </div>
+    <button (click)="generatePDF()">Download PDF Report</button>
+    <button (click)="printReport()">Print Report</button>
+    <button (click)="closeReportModal()">Close</button>
+  </div>
+</div>
+
 <!-- Employee Modal -->
 <div class="employee-modal" *ngIf="modalVisible">
   <div class="modal-content">
@@ -67,24 +89,9 @@
     <ng-template #noEmployees>
       <p>No employees found.</p>
     </ng-template>
+    
     <button (click)="closeModal()">Close</button>
+    
   </div>
 </div>
-<div class="automatic-report-section">
-  <h3>Automatic Reports</h3>
 
-  <div class="report-summary">
-    <h4>Attendance Report Summary</h4>
-    <p>{{ attendanceReport }}</p>
-  </div>
-
-  <div class="report-summary">
-    <h4>Employee Distribution Report Summary</h4>
-    <p>{{ employeeDistributionReport }}</p>
-  </div>
-
-  <div class="report-summary">
-    <h4>Request Report Summary</h4>
-    <p>{{ requestReport }}</p>
-  </div>
-</div>

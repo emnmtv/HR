@@ -48,7 +48,7 @@
           <span [class]="getStatusClass(request.status)">{{ request.status }}</span>
         </td>
         <td>
-          <button *ngIf="request.image_path" (click)="viewImage(request.image_path)">View Photo</button>
+          
           <button class="edit-btn" (click)="handleRequestAction(request.id, 'approve', request.employee_id)">
             Approve
           </button>
@@ -58,6 +58,7 @@
           <button class="send-message-btn" (click)="openMessageModal(request.employee_id)">
             Send Message
           </button>
+          <button  class="send-message-btn" *ngIf="request.image_path" (click)="viewImage(request.image_path)">View Photo</button>
         </td>
       </tr>
     </tbody>

@@ -44,6 +44,7 @@
           <td class="px-4 py-2">{{ record.date }}</td>
           <td class="px-4 py-2">{{ record.timeIn || '--:--' }}</td>
           <td class="px-4 py-2">{{ record.timeOut || '--:--' }}</td>
+          
           <td class="px-4 py-2">{{ record.status }}</td>
         </tr>
       </tbody>
@@ -62,6 +63,7 @@
             <th class="px-4 py-2 text-left">Date</th>
             <th class="px-4 py-2 text-left">Time In</th>
             <th class="px-4 py-2 text-left">Time Out</th>
+            <th class="px-4 py-2 text-left">Total Hours</th>
             
             <th class="px-4 py-2 text-left">Status</th>
           </tr>
@@ -71,7 +73,7 @@
             <td class="px-4 py-2">{{ dtr.date }}</td>
             <td class="px-4 py-2">{{ dtr.timeIn || '--:--' }}</td>
             <td class="px-4 py-2">{{ dtr.timeOut || '--:--' }}</td>
-            
+            <td class="px-4 py-2">{{ dtr.totalHours || '--:--' }}</td>
             <td class="px-4 py-2">{{ dtr.status }}</td>
           </tr>
         </tbody>
@@ -80,7 +82,7 @@
 
     <div class="flex justify-between mt-4">
       <button class="bg-blue-500 text-white px-4 py-2 rounded-md" (click)="printDtrHistory()">
-        Print DTR
+        Generate DTR
       </button>
       <button class="bg-gray-500 text-white px-4 py-2 rounded-md" (click)="closeModal()">Close</button>
     </div>
