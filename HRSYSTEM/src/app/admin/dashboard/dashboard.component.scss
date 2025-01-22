@@ -284,39 +284,43 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6); /* Slightly darker background for better contrast */
   z-index: 1000;
 }
 
 .modal-content {
   background-color: #fff;
-  padding: 30px;
-  border-radius: 8px;
-  max-width: 800px;
+  padding: 40px; /* Increased padding for more spacing */
+  border-radius: 10px; /* More rounded corners */
+  max-width: 900px;
   width: 100%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 2px 15px rgba(0, 0, 0, 0.1); /* Added shadow */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15), 0 4px 20px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
+  font-family: 'Arial', sans-serif; /* Adding a readable font */
+  line-height: 1.6; /* Increased line height for better readability */
 }
 
 /* Report Summary Styles */
 .report-summary {
-  margin-bottom: 20px;
-  padding: 10px;
+  margin-bottom: 30px; /* Increased margin for more spacing */
+  padding: 15px; /* Increased padding */
   background-color: #f8f9fa;
   border-left: 5px solid #2bc470;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Added shadow to report summary */
+  border-radius: 8px; /* More rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
 .report-summary h4 {
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 22px; /* Larger font size */
+  font-weight: 700; /* Bolder heading */
   color: #333;
+  margin-bottom: 10px; /* Spacing between heading and paragraph */
 }
 
 .report-summary p {
-  font-size: 15px;
+  font-size: 16px; /* Larger font size for readability */
   color: #555;
-  margin-top: 5px;
+  margin-top: 8px;
+  line-height: 1.6; /* Increased line height for better spacing */
 }
 
 /* Button Styles */
@@ -324,15 +328,17 @@ button {
   background-color: #50c778;
   color: white;
   border: none;
-  padding: 10px 20px;
-  margin-right: 10px;
-  border-radius: 5px;
+  padding: 12px 24px; /* Increased padding for easier interaction */
+  margin-right: 15px; /* More space between buttons */
+  border-radius: 8px; /* More rounded buttons */
   cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Added shadow to button */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
+  font-size: 16px; /* Larger text inside button */
+  line-height: 1.5;
   
   &:hover {
-    background-color: #0056b3;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Increased shadow on hover */
+    background-color: #45b070; /* Slightly darker hover color */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Increased shadow on hover */
   }
 }
 
@@ -352,23 +358,22 @@ button {
   }
 
   .modal-content {
-    padding: 15px;
+    padding: 20px; /* Reduced padding for print */
     max-width: 100%;
     box-shadow: none;
   }
 
   .footer {
-    margin-top: 30px;
+    margin-top: 40px; /* Spacing before footer */
   }
 
   /* Make the modal content suitable for printing */
   .report-summary h4, .report-summary p {
-    font-size: 16px;
+    font-size: 18px; /* Slightly larger font for print */
   }
 
   .report-summary {
     border-left: none;
-    padding-left: 10px;
+    padding-left: 15px; /* Adjusted padding for print */
   }
 }
-

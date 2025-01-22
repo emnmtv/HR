@@ -63,58 +63,71 @@ generateRequestReport() {
   - Approved Requests: ${approvedRequests}
   - Rejected Requests: ${rejectedRequests}`;
 
+  // Analyze current state
   if (pendingRequests > approvedRequests && pendingRequests > rejectedRequests) {
-    requestExplanation += " There are many requests still pending. Consider reviewing them soon.";
+    requestExplanation += " There are many requests still pending. Consider reviewing them soon to avoid backlog.";
   } else if (approvedRequests > rejectedRequests) {
-    requestExplanation += " Most requests are being approved, indicating that the process is running smoothly.";
+    requestExplanation += " Most requests are being approved, indicating that the process is running smoothly. This is a positive trend, but continued monitoring is recommended.";
   } else {
-    requestExplanation += " A significant number of requests are being rejected, which may need further attention.";
+    requestExplanation += " A significant number of requests are being rejected, which may need further attention. This could indicate issues with the request process or criteria that need to be revisited.";
   }
+
+  // Conclusion and actionable insights
+  requestExplanation += `\n\nConclusion: To ensure smoother operations, a more proactive approach may be needed in addressing pending requests. Additionally, it may be helpful to analyze the reasons behind rejections and refine the approval criteria or process for better efficiency.`;
 
   this.requestReport = requestExplanation; // Set the dynamic report for requests
 }
-    // New method to generate the attendance report
-    generateAttendanceReport() {
-      const { present, absent, late } = this.attendanceSummary;
+
+generateAttendanceReport() {
+  const { present, absent, late } = this.attendanceSummary;
   
-      let attendanceExplanation = `The attendance summary for the latest period shows:
-      - Present: ${present} employees
-      - Absent: ${absent} employees
-      - Late: ${late} employees.`;
+  let attendanceExplanation = `The attendance summary for the latest period shows:
+  - Present: ${present} employees
+  - Absent: ${absent} employees
+  - Late: ${late} employees.`;
+
+  // Analyze current state
+  if (present > absent && present > late) {
+    attendanceExplanation += " Overall, the attendance is good, with most employees present on time. This reflects positively on team engagement and punctuality.";
+  } else if (late > absent) {
+    attendanceExplanation += " There seems to be a significant number of late arrivals. Addressing punctuality through reminders or incentives could be beneficial.";
+  } else {
+    attendanceExplanation += " A considerable number of employees were absent. This might need further investigation to understand the root causes and improve attendance.";
+  }
+
+  // Conclusion and actionable insights
+  attendanceExplanation += `\n\nConclusion: While attendance is generally positive, addressing the issue of late arrivals can help improve overall team productivity. It may also be beneficial to understand if the absenteeism is due to specific patterns, such as certain days of the week or health-related issues, and act accordingly.`;
+
+  this.attendanceReport = attendanceExplanation; // Set the dynamic report
+}
+
   
-      if (present > absent && present > late) {
-        attendanceExplanation += " Overall, the attendance is good, with most employees present on time.";
-      } else if (late > absent) {
-        attendanceExplanation += " There seems to be a significant number of late arrivals. Addressing punctuality could be beneficial.";
-      } else {
-        attendanceExplanation += " A considerable number of employees were absent. This might need further investigation.";
-      }
-  
-      this.attendanceReport = attendanceExplanation; // Set the dynamic report
-    }
-  
-    // New method to generate the employee distribution report
-    generateEmployeeDistributionReport() {
-      if (this.employeesByPosition.length === 0) {
-        this.employeeDistributionReport = "No data available for employee distribution.";
-        return;
-      }
-  
-      const totalEmployees = this.employeesByPosition.reduce((sum, entry) => sum + entry.employee_count, 0);
-      let distributionExplanation = `The employee distribution across positions is as follows:\n`;
-  
-      this.employeesByPosition.forEach((entry) => {
-        distributionExplanation += `- ${entry.company}: ${entry.employee_count} employees (${((entry.employee_count / totalEmployees) * 100).toFixed(2)}% of total employees)\n`;
-      });
-  
-      if (this.employeesByPosition.length > 1) {
-        distributionExplanation += " There is a balanced distribution of employees across different positions.";
-      } else {
-        distributionExplanation += " The company may benefit from a more diverse set of positions or roles.";
-      }
-  
-      this.employeeDistributionReport = distributionExplanation; // Set the dynamic report
-    }
+generateEmployeeDistributionReport() {
+  if (this.employeesByPosition.length === 0) {
+    this.employeeDistributionReport = "No data available for employee distribution.";
+    return;
+  }
+
+  const totalEmployees = this.employeesByPosition.reduce((sum, entry) => sum + entry.employee_count, 0);
+  let distributionExplanation = `The employee distribution across positions is as follows:\n`;
+
+  this.employeesByPosition.forEach((entry) => {
+    distributionExplanation += `- ${entry.company}: ${entry.employee_count} employees (${((entry.employee_count / totalEmployees) * 100).toFixed(2)}% of total employees)\n`;
+  });
+
+  // Analyze balance in distribution
+  if (this.employeesByPosition.length > 1) {
+    distributionExplanation += " There is a balanced distribution of employees across different positions, suggesting a diversified skill set within the workforce.";
+  } else {
+    distributionExplanation += " The company may benefit from a more diverse set of positions or roles to ensure operational flexibility and growth potential.";
+  }
+
+  // Conclusion and actionable insights
+  distributionExplanation += `\n\nConclusion: If the distribution is skewed, there may be an opportunity to develop underrepresented positions or roles, ensuring the organization can adapt to changing needs or scale effectively. On the other hand, balanced distribution suggests a well-structured organization with a good spread of skills across roles.`;
+
+  this.employeeDistributionReport = distributionExplanation; // Set the dynamic report
+}
+
   ngAfterViewInit() {
     this.dashboardService.getAttendanceData().subscribe((response) => {
       if (response.status === 'success') {
