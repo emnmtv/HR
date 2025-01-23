@@ -3,14 +3,15 @@
     <h1>Employees</h1>
     <button class="add-employee-btn" (click)="openRegisterModal()">Register Employee</button>
   </div>
-  <div class="search-bar">
-    <input
-      type="text"
-      [(ngModel)]="searchTerm"
-      placeholder="Search by ID or Name"
-      class="search-input"
-    />
-  </div>
+  <!-- Search Filter -->
+ <div class="search-container mb-4">
+  <input
+    type="text"
+    placeholder="Search by ID or Name"
+    class="search-input"
+    [(ngModel)]="searchTerm"
+  />
+</div>
   <table class="employee-table" *ngIf="!loading && !errorMessage">
     <thead>
       <tr>

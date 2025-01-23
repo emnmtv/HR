@@ -176,14 +176,29 @@
     cursor: not-allowed;
   }
 }
-.search-bar {
-  margin-bottom: 20px;
-}
 
-.search-input {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.search-container {
+  display: flex; // Use flexbox for alignment
+  align-items: center; // Center items vertically
+  border: 1px solid #ccc; // Light gray border
+  border-radius: 5px; // Rounded corners
+  overflow: hidden; // Prevent overflow of inner elements
+  margin-bottom: 1rem; // Space below the search bar
+
+  .search-input {
+    border: none; // Remove default border
+    padding: 10px 15px; // Padding for the input
+    font-size: 16px; // Font size
+    flex-grow: 1; // Allow input to take available space
+    transition: background-color 0.3s ease; // Smooth background transition
+
+    &::placeholder {
+      color: #aaa; // Placeholder text color
+    }
+
+    &:focus {
+      background-color: #f9f9f9; // Change background on focus
+      outline: none; // Remove default outline
+    }
+  }
 }
