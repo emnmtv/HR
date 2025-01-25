@@ -40,6 +40,15 @@ export class DashboardService {
     return this.http.post<any>(apiUrl, body); // Use POST to send the payload
   }
   
-  
+    // Add method for fetching today's attendance
+    getTodayAttendance(): Observable<any> {
+      return this.http.get(`${this.baseUrl}?route=getTodayAttendance`);
+    }
+    getEmployeeAttendanceData(employeeId: string): Observable<any> {
+      const apiUrl = 'http://localhost/integapi/main/routes.php?route=getEmployeeAttendanceData';
+      const body = { employee_id: employeeId }; // Send the employee_id as part of the request body
+      return this.http.post<any>(apiUrl, body); // Use POST to send the payload
+    }
+    
 }
 

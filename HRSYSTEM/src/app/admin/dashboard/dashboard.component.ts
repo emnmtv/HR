@@ -3,6 +3,10 @@ import { DashboardService } from './dashboard.service';
 import Chart from 'chart.js/auto';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
+interface AttendanceEntry {
+  date: string;
+  status: string;
+}
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -27,12 +31,385 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     employeeDistributionReport: string = '';
     requestReport: string = ''; // Added for request summary
     reportModalVisible: boolean = false;  // Modal visibility for report options
+    
+    attendanceData: any[] = [];
+    filteredAttendance: any[] = [];
+    attendanceFilter: string = ''; // Empty initially, meaning no filter
+    searchQuery: string = ''; // Empty initially
+
+    modalVisible3: boolean = false;
+    isModalVisible: boolean = false;
+    employeeId: string = '';
+    reportType: string = 'all'; // Default report type
+    
+    attendanceData2: AttendanceEntry[] = []; // Define the type of the attendance data
+    totalHours: number = 0;
+    presentCount: number = 0;
+    absentCount: number = 0;
+    lateCount: number = 0;
+    evaluations: string = '';
+    employeeDetails: { name: string; company: string; email: string } = { name: '', company: '', email: '' };
+    showAllAttendance: boolean = false;
+    selectedReportType: string = 'summary'; // Default to summary
+    isPrintModalVisible = false;
   constructor(private dashboardService: DashboardService) {}
 
   ngOnInit() {
     this.fetchDashboardData();
     this.fetchEmployeeData(); // Fetch employee data on init'
+    this.fetchAttendanceData();
     
+  }
+
+  // Function to open the print modal
+  openPrintModal() {
+    this.isPrintModalVisible = true;
+  }
+
+  // Function to close the print modal
+  closePrintModal() {
+    this.isPrintModalVisible = false;
+  }
+
+   // Function to handle the selection of the print option
+   printReport2(reportType: string) {
+    this.selectedReportType = reportType;
+    this.closePrintModal();
+    this.generatePrintLayout();
+  }
+
+  generatePrintLayout() {
+    let reportHTML = '';
+    
+    // Shared Employee Details Section with Styling
+    const employeeDetailsSection = `
+      <div style="margin-bottom: 20px;">
+        <p><strong style="font-size: 18px; color: #333;">Employee Name:</strong> <span style="font-size: 16px;">${this.employeeDetails.name}</span></p>
+        <p><strong style="font-size: 18px; color: #333;">Company:</strong> <span style="font-size: 16px;">${this.employeeDetails.company}</span></p>
+        <p><strong style="font-size: 18px; color: #333;">Email:</strong> <span style="font-size: 16px;">${this.employeeDetails.email}</span></p>
+      </div>
+    `;
+    
+    // Shared Attendance Summary Section with Styling
+    const attendanceSummary = `
+      <h3 style="color: #4CAF50;">Attendance Summary</h3>
+      <p><strong>Total Present:</strong> <span style="font-size: 16px;">${this.presentCount}</span></p>
+      <p><strong>Total Absent:</strong> <span style="font-size: 16px;">${this.absentCount}</span></p>
+      <p><strong>Total Late:</strong> <span style="font-size: 16px;">${this.lateCount}</span></p>
+      <p><strong>Attendance Rate:</strong> <span style="font-size: 16px; color: ${this.presentCount / (this.presentCount + this.absentCount + this.lateCount) * 100 < 75 ? 'red' : 'green'};">
+        ${(this.presentCount / (this.presentCount + this.absentCount + this.lateCount) * 100).toFixed(2)}%</span>
+      </p>
+    `;
+    
+    // Full Report Layout: Display Attendance Data (for 'full' report type)
+    const attendanceDetails = `
+      <h3 style="color: #4CAF50;">Attendance Records</h3>
+      <table border="1" style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+        <thead>
+          <tr style="background-color: #f2f2f2; text-align: left;">
+            <th style="padding: 8px; color: #333;">Date</th>
+            <th style="padding: 8px; color: #333;">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${this.attendanceData2.map((entry: AttendanceEntry) => `
+            <tr style="background-color: ${this.attendanceData2.indexOf(entry) % 2 === 0 ? '#f9f9f9' : '#fff'};">
+              <td style="padding: 8px; text-align: left;">${entry.date}</td>
+              <td style="padding: 8px; text-align: left;">${entry.status}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+    
+    // Add Evaluation Section with Styling
+    const evaluationSection = `
+      <h3 style="color: #4CAF50;">Evaluation</h3>
+      <p style="font-size: 16px; color: #555;">${this.evaluations}</p>
+    `;
+    
+    // Generate Report Layout Based on the Selected Report Type
+    if (this.selectedReportType === 'summary') {
+      // Include only the summary details, along with evaluations
+      reportHTML = `
+        <h1 style="font-size: 24px; color: #333; border-bottom: 2px solid #4CAF50; padding-bottom: 10px;">Attendance Summary Report</h1>
+        ${employeeDetailsSection}
+        ${attendanceSummary}
+        ${evaluationSection}
+      `;
+    } else {
+      // Full Report Layout, includes employee details, attendance records, and evaluation
+      reportHTML = `
+        <h1 style="font-size: 24px; color: #333; border-bottom: 2px solid #4CAF50; padding-bottom: 10px;">Full Attendance Report</h1>
+        ${employeeDetailsSection}
+        ${attendanceSummary}
+        ${attendanceDetails}
+        ${evaluationSection}
+      `;
+    }
+  
+    // Open the print window with the generated HTML and enhanced styling
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {  // Check if printWindow is not null
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Attendance Report</title>
+            <style>
+              body { 
+                font-family: Arial, sans-serif; 
+                padding: 20px;
+                color: #333;
+              }
+              h1 { 
+                font-size: 24px; 
+                color: #333; 
+                border-bottom: 2px solid #4CAF50; 
+                padding-bottom: 10px; 
+              }
+              h3 { 
+                color: #4CAF50; 
+              }
+              p { 
+                font-size: 16px; 
+                line-height: 1.6;
+              }
+              table { 
+                width: 100%; 
+                border-collapse: collapse; 
+                margin: 20px 0; 
+              }
+              th, td { 
+                padding: 8px; 
+                text-align: left; 
+                border: 1px solid #ddd; 
+              }
+              th { 
+                background-color: #f2f2f2;
+              }
+              tr:nth-child(even) { 
+                background-color: #f9f9f9; 
+              }
+            </style>
+          </head>
+          <body>
+            ${reportHTML}
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
+      printWindow.print();
+    } else {
+      console.error('Failed to open print window');
+    }
+  }
+  
+  
+  toggleAttendanceDetails() {
+    this.showAllAttendance = !this.showAllAttendance;
+  }
+  openModal4() {
+    this.isModalVisible = true;
+  }
+
+  closeModal4() {
+    this.isModalVisible = false;
+  }
+
+  generateReport() {
+    if (this.employeeId) {
+      // Fetch attendance data, which also includes employee details
+      this.dashboardService.getEmployeeAttendanceData(this.employeeId).subscribe(
+        (data) => {
+          if (data.status === 'success') {
+            // Extract employee details and attendance data from the response
+            this.employeeDetails = data.data.employee;
+            this.attendanceData2 = data.data.attendance_records;
+            this.totalHours = data.data.total_hours;
+            this.presentCount = data.data.present_count;
+            this.absentCount = data.data.absent_count;
+            this.lateCount = data.data.late_count;
+  
+            this.evaluateData();
+            this.generateReportBasedOnType();
+          } else {
+            console.error('Error fetching employee attendance data');
+            alert('Error: No data found for the provided employee ID');
+          }
+        },
+        (error) => {
+          console.error('Error fetching employee attendance data:', error);
+        }
+      );
+    } else {
+      alert('Please enter an employee ID');
+    }
+  }
+  
+  evaluateData() {
+    // Calculate the total number of days accounted for in the attendance data
+    const totalDays = this.presentCount + this.absentCount + this.lateCount;
+  
+    // Calculate the attendance rate as a percentage
+    const attendanceRate = (this.presentCount / totalDays) * 100;
+  
+    // Store the attendance rate in the evaluation message with two decimal precision
+    this.evaluations = `Employee Attendance Rate: ${attendanceRate.toFixed(2)}%`;
+  
+    // Evaluate the attendance and provide a recommendation based on the rate
+    if (attendanceRate < 75) {
+      this.evaluations += `\nAttendance Rate is below the expected threshold of 75%. It's important to address the attendance issues. Consider discussing with the employee to understand the reasons for the frequent absences or tardiness.`;
+    } else if (attendanceRate >= 75 && attendanceRate < 90) {
+      this.evaluations += `\nAttendance Rate is below ideal performance. While the employee has been present most of the time, there is room for improvement in punctuality and consistent attendance. Consider offering coaching or support to help the employee improve.`;
+    } else {
+      this.evaluations += `\nExcellent attendance rate! The employee has been consistently present and on time, demonstrating a strong commitment to their work.`;
+    }
+  
+    // Calculate additional factors for deeper analysis (e.g., late count)
+    const latePercentage = (this.lateCount / totalDays) * 100;
+    if (latePercentage > 10) {
+      this.evaluations += `\nLate arrivals account for over 10% of the total attendance, which could impact overall productivity. It is recommended to address the lateness with the employee to ensure punctuality.`;
+    }
+  }
+  
+  generateReportBasedOnType() {
+    switch (this.reportType) {
+      case 'summary':
+        this.generateSummaryReport();
+        break;
+      case 'dataInterpretation':
+        this.generateDataInterpretationReport();
+        break;
+      case 'all':
+        this.generateAllReport();
+        break;
+      default:
+        this.evaluations += '\nInvalid report type selected. Please choose a valid report type.';
+    }
+  }
+  
+  generateSummaryReport() {
+    // Generate a concise summary of the employee's attendance
+    this.evaluations += `\nSummary Report:\nTotal Present: ${this.presentCount}, Total Absent: ${this.absentCount}, Total Late: ${this.lateCount}`;
+  
+    // Provide insights based on the numbers
+    const totalDays = this.presentCount + this.absentCount + this.lateCount;
+    const attendanceRate = (this.presentCount / totalDays) * 100;
+    if (attendanceRate < 75) {
+      this.evaluations += `\nNote: The attendance rate is below the expected 75% threshold, indicating potential attendance issues.`;
+    } else {
+      this.evaluations += `\nThe attendance rate is within the acceptable range. However, ongoing monitoring is recommended to ensure consistency.`;
+    }
+  }
+  
+  generateDataInterpretationReport() {
+    // Provide an in-depth interpretation of the attendance data
+    this.evaluations += `\nData Interpretation Report:\n`;
+    this.evaluations += `The data shows that the employee was present ${this.presentCount} days, absent ${this.absentCount} days, and late ${this.lateCount} days. This information is crucial to understanding the employee's work habits and reliability.\n`;
+  
+    // Offer an interpretation based on trends
+    const totalDays = this.presentCount + this.absentCount + this.lateCount;
+    const attendanceRate = (this.presentCount / totalDays) * 100;
+    const latePercentage = (this.lateCount / totalDays) * 100;
+  
+    if (attendanceRate < 75) {
+      this.evaluations += `\nInterpretation: The employee's attendance is significantly below the expected standard, with an attendance rate of ${attendanceRate.toFixed(2)}%. The late arrivals and absences are contributing to this low rate. Further investigation is necessary to understand the reasons and take corrective actions.`;
+    } else if (attendanceRate >= 75 && attendanceRate < 90) {
+      this.evaluations += `\nInterpretation: While the attendance rate is slightly above the minimum standard, late arrivals are still a concern. The employee may benefit from a discussion to identify potential barriers to punctuality or consistency.`;
+    } else {
+      this.evaluations += `\nInterpretation: The employee demonstrates exemplary attendance with a rate above 90%, indicating strong reliability and work ethic. This employee is a positive role model in terms of punctuality and attendance.`;
+    }
+  
+    // Late percentage interpretation
+    if (latePercentage > 10) {
+      this.evaluations += `\nNote: Lateness constitutes ${latePercentage.toFixed(2)}% of the attendance, which is considered high and could affect overall performance. Addressing the reasons behind the tardiness could improve productivity.`;
+    }
+  }
+  
+  generateAllReport() {
+    // Generate the most comprehensive report
+    this.evaluations += `\nAll Report:\nAttendance records from the entire period are displayed, including a summary of work hours and attendance behaviors.\n`;
+  
+    // Calculate and provide total hours worked
+    this.evaluations += `\nTotal Hours Worked: ${this.totalHours}\n`;
+  
+    // Offer insights based on the total work hours and attendance patterns
+    if (this.totalHours < 160) {
+      this.evaluations += `\nNote: The total hours worked is below the expected threshold of 160 hours per month, which could indicate issues with absenteeism or tardiness. Further evaluation of attendance patterns may be needed.`;
+    } else {
+      this.evaluations += `\nThe total hours worked meets the expected standards, reflecting an adequate level of commitment and productivity.`;
+    }
+  
+    // Add more detailed evaluation for any specific trends (e.g., high absenteeism)
+    if (this.absentCount > this.presentCount) {
+      this.evaluations += `\nWarning: Absences have outpaced attendance, indicating a potential problem with employee reliability. Immediate attention is recommended.`;
+    }
+  
+    // Additional report interpretation
+    this.evaluations += `\nFinal Thoughts: Based on the collected data, further steps should be taken to address attendance concerns. Employees with poor attendance may need counseling or other interventions to improve their commitment to their role.`;
+  }
+  
+  fetchAttendanceData(): void {
+    this.dashboardService.getTodayAttendance().subscribe({
+      next: (response) => {
+        if (response.status === 'success') {
+          this.attendanceData = response.data;
+          this.filteredAttendance = [...this.attendanceData]; // Copy initial data
+          this.filterAttendance(); // Apply the initial filter (if any)
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching attendance data:', error);
+      },
+    });
+  }
+  
+  
+
+  // Method to open the modal
+  openModal1(): void {
+    this.modalVisible3 = true;
+  }
+
+  // Method to close the modal
+  closeModal3(): void {
+    this.modalVisible3 = false;
+  }
+  
+
+  filterAttendance(): void {
+    const query = this.searchQuery.toLowerCase();
+    
+    this.filteredAttendance = this.attendanceData.filter((record) => {
+      // Apply search filter
+      const matchesSearch =
+        !query ||
+        record.first_name.toLowerCase().includes(query) ||
+        record.last_name.toLowerCase().includes(query) ||
+        record.position.toLowerCase().includes(query);
+  
+      // Apply attendance status filter
+      const matchesFilter =
+        !this.attendanceFilter || record.status === this.attendanceFilter;
+  
+      // Only include records that match both filters
+      return matchesSearch && matchesFilter;
+    });
+  }
+  
+  
+  
+
+  printAttendance(): void {
+    const printContents = document.getElementById('attendanceModal')?.innerHTML;
+    const printWindow = window.open('', '', 'height=600,width=800');
+    if (printWindow && printContents) {
+      printWindow.document.write('<html><head><title>Attendance</title></head><body>');
+      printWindow.document.write(printContents);
+      printWindow.document.write('</body></html>');
+      printWindow.document.close();
+      printWindow.print();
+    }
   }
   openReportModal() {
     this.reportModalVisible = true;
@@ -215,7 +592,41 @@ generateEmployeeDistributionReport() {
     this.generateAttendanceReport();
   }
 
- 
+  // Function to print the employee list
+  printEmployeeList(): void {
+    const printContents = document.querySelector('.modal-content')?.innerHTML || '';
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Print Employee List</title>
+            <style>
+              /* Add your print-specific styles here */
+              table {
+                width: 100%;
+                border-collapse: collapse;
+              }
+              th, td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+              }
+              th {
+                background-color: #f2f2f2;
+              }
+            </style>
+          </head>
+          <body>
+            ${printContents}
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
+      printWindow.print();
+    }
+  }
+
   renderEmployeeDistributionChart() {
     const ctx = document.getElementById('employeeDistributionChart') as HTMLCanvasElement;
   
@@ -310,75 +721,66 @@ generateEmployeeDistributionReport() {
   
 
   generatePDF() {
-    const pdf = new jsPDF();
-    const margin = 10;  // Define margin
-    let currentY = margin + 10;  // Start position for the content
-  
-    // Set title style
-    pdf.setFont('helvetica', 'bold');
-    pdf.setFontSize(18);
-    pdf.text('HR Dashboard Automatic Report', margin, currentY);
-    currentY += 20; // Add space after the title
-  
-    // Add Automatic Reports Section Title
-    pdf.setFont('helvetica', 'bold');
-    pdf.setFontSize(14);
-    pdf.text('Automatic Reports', margin, currentY);
-    currentY += 15; // Add space after section title
-  
-    // Attendance Report Summary
+  const pdf = new jsPDF();
+  const margin = 10;
+  let currentY = margin + 10; // Start position for the content
+
+  // Set title style
+  pdf.setFont('helvetica', 'bold');
+  pdf.setFontSize(18);
+  pdf.text('HR Dashboard Automatic Report', margin, currentY);
+  currentY += 20;
+
+  // Add Automatic Reports Section Title
+  pdf.setFont('helvetica', 'bold');
+  pdf.setFontSize(14);
+  pdf.text('Automatic Reports', margin, currentY);
+  currentY += 15;
+
+  // Function to handle report content
+  const addReportSection = (title: string, text: string) => {
     pdf.setFont('helvetica', 'bold');
     pdf.setFontSize(12);
-    pdf.text('Attendance Report Summary', margin, currentY);
-    currentY += 10; // Add space after the report title
+    pdf.text(title, margin, currentY);
+    currentY += 10;
     pdf.setFont('helvetica', 'normal');
     pdf.setFontSize(12);
-    this.addTextToPDF(pdf, this.attendanceReport, margin, currentY);
-    currentY += this.calculateTextHeight(this.attendanceReport) + 20;
-  
-    // Employee Distribution Report Summary
-    pdf.setFont('helvetica', 'bold');
-    pdf.setFontSize(12);
-    pdf.text('Employee Distribution Report Summary', margin, currentY);
-    currentY += 10; // Add space after the report title
-    pdf.setFont('helvetica', 'normal');
-    pdf.setFontSize(12);
-    this.addTextToPDF(pdf, this.employeeDistributionReport, margin, currentY);
-    currentY += this.calculateTextHeight(this.employeeDistributionReport) + 20;
-  
-    // Request Report Summary
-    pdf.setFont('helvetica', 'bold');
-    pdf.setFontSize(12);
-    pdf.text('Request Report Summary', margin, currentY);
-    currentY += 10; // Add space after the report title
-    pdf.setFont('helvetica', 'normal');
-    pdf.setFontSize(12);
-    this.addTextToPDF(pdf, this.requestReport, margin, currentY);
-    currentY += this.calculateTextHeight(this.requestReport) + 20;
-  
-    // Save the PDF
-    pdf.save('HR_Dashboard_Automatic_Report.pdf');
-  }
-  
-  // Utility to add text with wrapping
-  addTextToPDF(pdf: jsPDF, text: string, x: number, y: number) {
-    const pageHeight = pdf.internal.pageSize.height;
-    const pageWidth = pdf.internal.pageSize.width;
-    const lineHeight = 10;
-    let cursorY = y;
-    let textLines = pdf.splitTextToSize(text, pageWidth - 2 * x); // Wrap the text to fit page width
-  
-    // Check if text overflows the page, and move to the next page if needed
-    for (let i = 0; i < textLines.length; i++) {
-      if (cursorY + lineHeight > pageHeight - 10) { // Use 10 as margin instead of 'margin'
-        pdf.addPage();  // Add new page if text overflows
-        cursorY = 10; // Reset Y to the top of the new page
-      }
-      pdf.text(textLines[i], x, cursorY);
-      cursorY += lineHeight;
+    this.addTextToPDF(pdf, text, margin, currentY);
+    currentY += this.calculateTextHeight(text) + 20;
+  };
+
+  // Add Attendance Report Summary
+  addReportSection('Attendance Report Summary', this.attendanceReport);
+
+  // Add Employee Distribution Report Summary
+  addReportSection('Employee Distribution Report Summary', this.employeeDistributionReport);
+
+  // Add Request Report Summary
+  addReportSection('Request Report Summary', this.requestReport);
+
+  // Save the PDF
+  pdf.save('HR_Dashboard_Automatic_Report.pdf');
+}
+
+// Utility to add text with wrapping
+addTextToPDF(pdf: jsPDF, text: string, x: number, y: number) {
+  const pageHeight = pdf.internal.pageSize.height;
+  const pageWidth = pdf.internal.pageSize.width;
+  const lineHeight = 10;
+  let cursorY = y;
+  let textLines = pdf.splitTextToSize(text, pageWidth - 2 * x); // Wrap the text to fit page width
+
+  // Check if text overflows the page, and move to the next page if needed
+  for (let i = 0; i < textLines.length; i++) {
+    if (cursorY + lineHeight > pageHeight - 10) { // Use 10 as margin instead of 'margin'
+      pdf.addPage();  // Add new page if text overflows
+      cursorY = 10; // Reset Y to the top of the new page
     }
+    pdf.text(textLines[i], x, cursorY);
+    cursorY += lineHeight;
   }
-  
+}
+
   // Utility to calculate text height based on the content
   calculateTextHeight(text: string) {
     const lineHeight = 10;
@@ -392,7 +794,7 @@ generateEmployeeDistributionReport() {
   
   // New function to print the content
  // New function to print the content
- printReport() {
+ printReport() { 
   const printWindow = window.open('', '_blank');
 
   if (printWindow) {
@@ -403,93 +805,144 @@ generateEmployeeDistributionReport() {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>HR Dashboard Automatic Report</title>
-        <style>
-          /* General styling */
-          body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            color: #333;
-            line-height: 1.8;
-            background-color: #f4f7fa;
-          }
+    <style>
+  /* General styling */
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    line-height: 1.8;
+    background-color: #f4f7fa;
+  }
 
-          .header {
-            text-align: center;
-            background-color: #007bff;
-            color: white;
-            padding: 20px 0;
-          }
-          .header h1 {
-            margin: 0;
-            font-size: 28px;
-            letter-spacing: 2px;
-          }
+  .header {
+    text-align: center;
+    background-color: #007bff;
+    color: white;
+    padding: 20px 0;
+  }
+  .header h1 {
+    margin: 0;
+    font-size: 28px;
+    letter-spacing: 2px;
+  }
 
-          /* Content section */
-          .content {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-          }
+  /* Content section */
+  .content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
 
-          .content h3 {
-            font-size: 22px;
-            font-weight: 600;
-            color: #333;
-            border-bottom: 2px solid #007bff;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-          }
+  .content h3 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
 
-          .report-summary {
-            margin-bottom: 20px;
-            padding: 10px;
-            background-color: #f8f9fa;
-            border-left: 5px solid #007bff;
-            border-radius: 5px;
-          }
+  .report-summary {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-left: 5px solid #007bff;
+    border-radius: 5px;
+  }
 
-          .report-summary h4 {
-            font-size: 18px;
-            font-weight: 600;
-            color: #333;
-          }
+  .report-summary h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+  }
 
-          .report-summary p {
-            font-size: 15px;
-            color: #555;
-            margin-top: 5px;
-          }
+  .report-summary p {
+    font-size: 15px;
+    color: #555;
+    margin-top: 5px;
+  }
 
-          .footer {
-            margin-top: 40px;
-            text-align: center;
-            font-size: 14px;
-            color: #777;
-          }
+  /* Table styles */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    table-layout: fixed;
+  }
+  table, th, td {
+    border: 1px solid #ddd;
+  }
+  th, td {
+    padding: 10px;
+    text-align: left;
+    word-wrap: break-word;
+  }
+  th {
+    background-color: #007bff;
+    color: white;
+  }
 
-          /* Print-specific styles */
-          @media print {
-            body {
-              background-color: white;
-              margin: 0;
-              padding: 20px;
-            }
-            .content {
-              max-width: 100%;
-              box-shadow: none;
-              margin-top: 20px;
-              padding: 15px;
-            }
-            .footer {
-              margin-top: 30px;
-            }
-          }
-        </style>
+  /* Print-specific styles */
+  @media print {
+    body {
+      background-color: white;
+      margin: 0;
+      padding: 20px;
+    }
+    .content {
+      max-width: 100%;
+      box-shadow: none;
+      margin-top: 20px;
+      padding: 15px;
+    }
+
+    /* Ensure header only appears once on the first page */
+    .header {
+      page-break-before: always;
+    }
+
+    .footer {
+      margin-top: 30px;
+    }
+
+    table {
+      font-size: 12px;
+      page-break-inside: avoid;
+    }
+
+    /* Force page break between sections */
+    .automatic-report-section,
+    .report-summary {
+      page-break-after: always;
+    }
+
+    /* Prevent content from getting cut off */
+    .content {
+      max-width: 100%;
+    }
+
+    /* Add space between sections */
+    .report-summary {
+      margin-bottom: 20px;
+    }
+
+    /* Handle tables overflowing */
+    .table-wrapper {
+      page-break-inside: avoid;
+      overflow: hidden;
+    }
+
+    .chart-section {
+      page-break-before: always;
+    }
+  }
+</style>
+
       </head>
       <body>
         <div class="header">
@@ -500,22 +953,87 @@ generateEmployeeDistributionReport() {
           <div class="automatic-report-section">
             <h3>Automatic Reports</h3>
 
+            <!-- Attendance Report Table -->
             <div class="report-summary">
               <h4>Attendance Report Summary</h4>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Count</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Present</td>
+                    <td>${this.attendanceSummary.present}</td>
+                  </tr>
+                  <tr>
+                    <td>Absent</td>
+                    <td>${this.attendanceSummary.absent}</td>
+                  </tr>
+                  <tr>
+                    <td>Late</td>
+                    <td>${this.attendanceSummary.late}</td>
+                  </tr>
+                </tbody>
+              </table>
               <p>${this.attendanceReport}</p>
             </div>
 
+            <!-- Employee Distribution Report Table -->
             <div class="report-summary">
               <h4>Employee Distribution Report Summary</h4>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Position</th>
+                    <th>Employee Count</th>
+                    <th>Percentage</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${this.employeesByPosition.map(entry => `
+                    <tr>
+                      <td>${entry.company}</td>
+                      <td>${entry.employee_count}</td>
+                      <td>${((entry.employee_count / this.totalEmployees) * 100).toFixed(2)}%</td>
+                    </tr>`).join('')}
+                </tbody>
+              </table>
               <p>${this.employeeDistributionReport}</p>
             </div>
 
+            <!-- Request Report Table -->
             <div class="report-summary">
               <h4>Request Report Summary</h4>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Status</th>
+                    <th>Count</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Pending</td>
+                    <td>${this.pendingRequests}</td>
+                  </tr>
+                  <tr>
+                    <td>Approved</td>
+                    <td>${this.approvedRequests}</td>
+                  </tr>
+                  <tr>
+                    <td>Rejected</td>
+                    <td>${this.rejectedRequests}</td>
+                  </tr>
+                </tbody>
+              </table>
               <p>${this.requestReport}</p>
             </div>
           </div>
         </div>
+
         <div class="footer">
           <p>&copy; 2025 HR Dashboard. All Rights Reserved.</p>
         </div>
@@ -531,6 +1049,10 @@ generateEmployeeDistributionReport() {
 }
 
 
+ // Function to close the modal
+  closeEmployeeModal(): void {
+    this.modalVisible = false;
+  }
 
   
 }

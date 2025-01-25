@@ -23,7 +23,8 @@
 
   <!-- Button to open the Automatic Reports Modal -->
   <button (click)="openReportModal()">Open Automatic Reports</button>
-
+  <button (click)="openModal1()" class="btn btn-primary">View Today's Attendance</button>
+  <button (click)="openModal4()">Generate Report</button>
   <div class="charts-section">
     <div class="chart">
       <h3>Attendance Summary</h3>
@@ -89,9 +90,161 @@
     <ng-template #noEmployees>
       <p>No employees found.</p>
     </ng-template>
-    
-    <button (click)="closeModal()">Close</button>
-    
+
+    <div class="modal-actions">
+      <button (click)="printEmployeeList()">Print</button>
+      <button (click)="closeEmployeeModal()">Close</button>
+    </div>
   </div>
 </div>
 
+<!-- Modal -->
+<div id="attendanceModal" class="custom-modal" [ngClass]="{'show': modalVisible3}">
+  <div class="custom-modal-content">
+    <div class="custom-modal-header">
+      <h5 class="modal-title">Today's Attendance</h5>
+    </div>
+    <div class="custom-modal-body">
+      <!-- Filters -->
+      <div class="filters">
+        <button [class.active]="attendanceFilter === ''" (click)="attendanceFilter = ''; filterAttendance()">All</button>
+        <button [class.active]="attendanceFilter === 'Present'" (click)="attendanceFilter = 'Present'; filterAttendance()">Present</button>
+        <button [class.active]="attendanceFilter === 'Absent'" (click)="attendanceFilter = 'Absent'; filterAttendance()">Absent</button>
+        <button [class.active]="attendanceFilter === 'Late'" (click)="attendanceFilter = 'Late'; filterAttendance()">Late</button>
+        <button [class.active]="attendanceFilter === 'On Leave'" (click)="attendanceFilter = 'On Leave'; filterAttendance()">Leave</button>
+        <button (click)="printAttendance()">Print</button>
+      </div>
+
+      <!-- Table -->
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Position</th>
+            <th>Clock In</th>
+            <th>Clock Out</th>
+            <th>Hours Worked</th>
+            <th>Undertime</th>
+            <th>Overtime</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let record of filteredAttendance">
+            <td>{{ record.first_name }} {{ record.last_name }}</td>
+            <td>{{ record.company }}</td>
+            <td>{{ record.clock_in_time || 'N/A' }}</td>
+            <td>{{ record.clock_out_time || 'N/A' }}</td>
+            <td>{{ record.hours_worked || '0' }}</td>
+            <td>{{ record.undertime || '0' }}</td>
+            <td>{{ record.overtime || '0' }}</td>
+            <td>{{ record.status }}</td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <button  (click)="closeModal3()">close</button>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal-overlay" *ngIf="isModalVisible" (click)="closeModal4()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <span class="close-btn" (click)="closeModal4()">&times;</span>
+    <h2>Generate Report</h2>
+
+    <!-- Form to trigger the generate report function -->
+    <form (ngSubmit)="generateReport()">
+      <label for="employeeId">Employee ID:</label>
+      <input type="text" [(ngModel)]="employeeId" name="employeeId" placeholder="Enter Employee ID" required />
+
+      <label for="reportType">Report Type:</label>
+      <select [(ngModel)]="reportType" name="reportType" required>
+        <option value="all">All</option>
+        <option value="summary">Summary</option>
+        <option value="dataInterpretation">Data Interpretation</option>
+      </select>
+
+      <button type="submit">Generate Report</button>
+      <!-- Print Button -->
+<button (click)="openPrintModal()">Print Report</button>
+    </form>
+
+    <!-- Display Employee Details fetched from the API -->
+    <div *ngIf="employeeDetails">
+      <h3>Employee Information</h3>
+      <div class="employee-details">
+        <p><strong>Name:</strong> {{ employeeDetails.name }}</p>
+        <p><strong>print:</strong> {{ employeeDetails.company }}</p>
+        <p><strong>Email:</strong> {{ employeeDetails.email }}</p>
+      </div>
+    </div>
+
+    <!-- Display Attendance Records (with collapse/expand) -->
+    <div *ngIf="attendanceData2">
+      <h3>Attendance Record (Latest)</h3>
+      <div class="attendance-summary">
+        <p><strong>Date:</strong> {{ attendanceData2[0]?.date }}</p>
+        <p><strong>Status:</strong> {{ attendanceData2[0]?.status }}</p>
+
+        <!-- Collapse/Expand Button -->
+        <button class="toggle-btn" (click)="toggleAttendanceDetails()">
+          {{ showAllAttendance ? 'Show Less' : 'Show All' }}
+        </button>
+      </div>
+
+      <!-- Expanded Attendance Data in Grid Table -->
+      <div *ngIf="showAllAttendance">
+        <h4>Complete Attendance History</h4>
+        <div class="attendance-grid">
+          <div class="grid-header">
+            <span>Date</span>
+            <span>Status</span>
+          </div>
+          <div *ngFor="let entry of attendanceData2" class="grid-row">
+            <span>{{ entry.date }}</span>
+            <span>{{ entry.status }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="attendance-summary">
+        <p><strong>Total Hours Worked:</strong> {{ totalHours }}</p>
+        <p><strong>Present Count:</strong> {{ presentCount }}</p>
+        <p><strong>Absent Count:</strong> {{ absentCount }}</p>
+        <p><strong>Late Count:</strong> {{ lateCount }}</p>
+      </div>
+    </div>
+
+    <!-- Display Detailed Report Evaluations -->
+    <div *ngIf="evaluations">
+      <h3>Detailed Evaluation</h3>
+      <div class="evaluations-content">
+        <p>{{ evaluations }}</p>
+        <div *ngIf="reportType === 'summary'">
+          <p><strong>Summary Report:</strong> This report gives a concise overview of the employee's attendance, highlighting the total hours worked, total present, absent, and late counts.</p>
+        </div>
+        <div *ngIf="reportType === 'dataInterpretation'">
+          <p><strong>Data Interpretation:</strong> The employee’s attendance patterns suggest that there are significant periods of absenteeism. Action may be needed to improve attendance consistency.</p>
+        </div>
+        <div *ngIf="reportType === 'all'">
+          <p><strong>Comprehensive Report:</strong> This detailed report encompasses all attendance data, highlighting trends, hours worked, and any deviations from expected attendance.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal for Print Option -->
+<div class="guitar-modal" *ngIf="isPrintModalVisible">
+  <div class="guitar-modal-content">
+    <span class="guitar-close-btn" (click)="closePrintModal()">&times;</span>
+    <h2 class="guitar-modal-title">Select Print Option</h2>
+    <p class="guitar-modal-description">Select the type of report you want to print:</p>
+    <button class="guitar-btn" (click)="printReport2('summary')">Summary Report</button>
+    <button class="guitar-btn" (click)="printReport2('full')">Full Attendance Report</button>
+  </div>
+</div>
