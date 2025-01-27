@@ -52,10 +52,19 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     showAllAttendance: boolean = false;
     selectedReportType: string = 'summary'; // Default to summary
     isPrintModalVisible = false;
-
+    selectedMonth: string = 'All';
     currentDate: string = '';
-    
-    
+    attendanceData3: any[] = [];
+    filteredAttendanceData: any[] = [];
+  selectedFilter: string = 'Today';
+  selectedYear: string = 'All'; // Added year filter
+  startDate: string = '';  // Start date for range filter
+  endDate: string = '';    // End date for range filter
+  availableYears: string[] = []; // List of available years
+  selectedWeek: string = 'All'; // Default to All Weeks
+    isModalOpen: boolean = false; // Flag to control modal visibility
+    selectedStatusFilter: string = '';  
+    uniqueYears: number[] = [];  // Array to store unique years from the data// This will store the selected status filter (Absent, Present, Late, On Leave)
   constructor(private dashboardService: DashboardService) {}
 
   ngOnInit() {
@@ -64,6 +73,179 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.fetchAttendanceData();
     this.currentDate = new Date().toLocaleDateString(); // Format as per user's locale
     
+  }
+// Function to fetch attendance data 
+fetchAttendance() {
+  this.dashboardService.getAttendance().subscribe(
+    (response) => {
+      if (response.status === 'success') {
+        this.attendanceData3 = response.data; // Store original data
+        this.filteredAttendanceData = [...this.attendanceData3]; // Initialize filtered data with original data
+        this.isModalOpen = true; // Open the modal
+           // Extract unique years from the date field
+           this.uniqueYears = this.extractUniqueYears(this.attendanceData3);
+           this.isModalOpen = true; // Open the modal
+      } else {
+        console.error('Error fetching attendance data');
+      }
+    },
+    (error) => {
+      console.error('Error fetching attendance data:', error);
+    }
+  );
+  
+}
+extractUniqueYears(data: any[]): number[] {
+  const years = data.map(record => new Date(record.date).getFullYear());
+  return Array.from(new Set(years)); // Remove duplicates and return unique years
+}
+setFilter(filter: string) {
+  this.selectedFilter = filter;
+  this.applyFilter();  // Apply the selected filter
+}
+
+setStatusFilter(status: string) {
+  this.selectedStatusFilter = status;
+  this.applyFilter(); // Apply the status filter
+}
+
+applyFilter() {
+  // Apply filter by date (Today)
+  if (this.selectedFilter === 'Today') {
+    const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+    this.filteredAttendanceData = this.attendanceData3.filter(record => record.date === today);
+  }
+  // Apply filter by month and selected week
+  else if (this.selectedFilter === 'Month') {
+    if (this.selectedMonth === 'All') {
+      this.filteredAttendanceData = this.attendanceData3.filter(record => record.month === parseInt(this.selectedMonth));
+    } else {
+      this.filteredAttendanceData = this.attendanceData3.filter(
+        record => record.month === parseInt(this.selectedMonth) && (this.selectedWeek === 'All' || record.week === parseInt(this.selectedWeek))
+      );
+    }
+  }
+  // Apply date range filter if selected (start and end dates)
+  else if (this.selectedFilter === 'DateRange') {
+    if (this.startDate && this.endDate) {
+      this.filteredAttendanceData = this.attendanceData3.filter(record => {
+        const recordDate = new Date(record.date).getTime();
+        const start = new Date(this.startDate).getTime();
+        const end = new Date(this.endDate).getTime();
+        return recordDate >= start && recordDate <= end;
+      });
+    }
+  }
+  // Apply year filter if selected
+  else if (this.selectedFilter === 'Year' && this.selectedYear !== 'All') {
+    this.filteredAttendanceData = this.attendanceData3.filter(record => {
+      const recordYear = new Date(record.date).getFullYear();
+      return recordYear === parseInt(this.selectedYear);
+    });
+  }
+  // Show all records if no filter selected
+  else if (this.selectedFilter === 'All') {
+    this.filteredAttendanceData = [...this.attendanceData3];
+  }
+
+  // Apply status filter if selected (Present, Absent, Late, On Leave)
+  if (this.selectedStatusFilter) {
+    this.filteredAttendanceData = this.filteredAttendanceData.filter(record => record.status === this.selectedStatusFilter);
+  }
+}
+
+  closeModal10() {
+    this.isModalOpen = false; // Close the modal
+    this.attendanceData3 = [];  // Optionally reset the data when closing
+    this.filteredAttendanceData = []; // Reset filtered data
+  }
+
+  printAttendance3() {
+    const printContent = `
+      <html>
+        <head>
+          <title>Attendance Report</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              margin: 0;
+              padding: 20px;
+            }
+            .print-container {
+              width: 100%;
+              text-align: center;
+            }
+            .print-container h1 {
+              font-size: 24px;
+              margin-bottom: 20px;
+            }
+            .print-container table {
+              width: 100%;
+              border-collapse: collapse;
+            }
+            .print-container table, .print-container th, .print-container td {
+              border: 1px solid #ddd;
+            }
+            .print-container th, .print-container td {
+              padding: 12px;
+              text-align: left;
+            }
+            .print-container th {
+              background-color: #f2f2f2;
+            }
+            .print-container td {
+              font-size: 14px;
+            }
+            @media print {
+              .print-container {
+                width: 100%;
+              }
+              .print-container h1 {
+                font-size: 22px;
+              }
+              .print-container table th, .print-container table td {
+                padding: 8px;
+                font-size: 12px;
+              }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="print-container">
+            <h1>Employee Attendance Report</h1>
+            <table>
+              <thead>
+                <tr>
+                  <th>Employee Name</th>
+                  <th>Company</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Month</th>
+                  <th>Week</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${this.filteredAttendanceData.map(record => `
+                  <tr>
+                    <td>${record.employee_name}</td>
+                    <td>${record.company}</td>
+                    <td>${record.date}</td>
+                    <td>${record.status}</td>
+                    <td>${record.month}</td>
+                    <td>${record.week}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </body>
+      </html>
+    `;
+    
+    const printWindow = window.open('', '', 'height=500,width=800');
+    printWindow?.document.write(printContent);
+    printWindow?.document.close();
+    printWindow?.print(); // Trigger the print dialog
   }
 
   // Function to open the print modal

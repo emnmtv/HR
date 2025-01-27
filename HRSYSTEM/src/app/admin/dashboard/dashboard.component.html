@@ -25,6 +25,8 @@
   <button (click)="openReportModal()">Open Automatic Reports</button>
   <button (click)="openModal1()" class="btn btn-primary">View Today's Attendance</button>
   <button (click)="openModal4()">Generate Report</button>
+  <button (click)="fetchAttendance()" class="btn btn-primary">Show Attendance Data</button>
+
   <div class="charts-section">
     <div class="chart">
       <h3>Attendance Summary</h3>
@@ -249,3 +251,117 @@
     <button class="guitar-btn" (click)="printReport2('full')">Full Attendance Report</button>
   </div>
 </div>
+
+
+
+
+<!-- Modal -->
+<div class="modal123" tabindex="-1" role="dialog" *ngIf="isModalOpen">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Employee Attendance</h5>
+
+        <div class="dropdown">
+          <button class="btn btn-primary dropdown-toggle" type="button" id="filterDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Filter: {{ selectedFilter }}
+          </button>
+          <div class="dropdown-menu" aria-labelledby="filterDropdown">
+            <a class="dropdown-item" (click)="setFilter('Today')">Today</a>
+            <a class="dropdown-item" (click)="setFilter('Month')">Month</a>
+            <a class="dropdown-item" (click)="setFilter('All')">All</a>
+            <a class="dropdown-item" (click)="setFilter('DateRange')">Date Range</a>
+            <a class="dropdown-item" (click)="setFilter('Year')">Year</a>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <!-- Month and Week filters -->
+        <div *ngIf="selectedFilter === 'Month'">
+          <label for="monthSelect">Select Month:</label>
+          <select class="form-control" id="monthSelect" [(ngModel)]="selectedMonth" (change)="applyFilter()">
+            <option value="All">All Months</option>
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+          </select>
+
+          <label for="weekSelect">Select Week:</label>
+          <select class="form-control" id="weekSelect" [(ngModel)]="selectedWeek" (change)="applyFilter()">
+            <option value="All">All Weeks</option>
+            <option value="1">Week 1</option>
+            <option value="2">Week 2</option>
+            <option value="3">Week 3</option>
+            <option value="4">Week 4</option>
+          </select>
+        </div>
+
+        <!-- Date Range Filter -->
+        <div *ngIf="selectedFilter === 'DateRange'">
+          <label for="startDate">Start Date:</label>
+          <input type="date" class="form-control" id="startDate" [(ngModel)]="startDate" (change)="applyFilter()" />
+
+          <label for="endDate">End Date:</label>
+          <input type="date" class="form-control" id="endDate" [(ngModel)]="endDate" (change)="applyFilter()" />
+        </div>
+
+        <!-- Year Filter -->
+        <div *ngIf="selectedFilter === 'Year'">
+          <label for="yearSelect">Select Year:</label>
+          <select class="form-control" id="yearSelect" [(ngModel)]="selectedYear" (change)="applyFilter()">
+            <option value="All">All Years</option>
+            <option *ngFor="let year of uniqueYears" [value]="year">{{ year }}</option>
+          </select>
+        </div>
+
+        <!-- Attendance status filters -->
+        <div class="status-filters">
+          <button class="btn btn-outline-primary" (click)="setStatusFilter('Present')">Present</button>
+          <button class="btn btn-outline-warning" (click)="setStatusFilter('Absent')">Absent</button>
+          <button class="btn btn-outline-danger" (click)="setStatusFilter('Late')">Late</button>
+          <button class="btn btn-outline-info" (click)="setStatusFilter('On Leave')">On Leave</button>
+          <button class="btn btn-success" (click)="printAttendance3()">Print</button>
+        </div>
+
+        <!-- Attendance Data Table -->
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Employee Name</th>
+              <th>Company</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Month</th>
+              <th>Week</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let record of filteredAttendanceData">
+              <td>{{ record.employee_name }}</td>
+              <td>{{ record.company }}</td>
+              <td>{{ record.date }}</td>
+              <td>{{ record.status }}</td>
+              <td>{{ record.month }}</td>
+              <td>{{ record.week }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal10()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

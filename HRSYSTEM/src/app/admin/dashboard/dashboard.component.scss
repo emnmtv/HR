@@ -728,3 +728,119 @@ button:hover {
     background-color: #45a049;
   }
 }
+
+.modal123 {
+  .modal-dialog {
+    max-width: 80%; /* Adjust modal width */
+    margin: 0 auto; /* Center the modal horizontally */
+    position: fixed; /* Ensure the modal stays fixed on screen */
+    top: 50%; /* Position the modal vertically at the center */
+    left: 50%; /* Position the modal horizontally at the center */
+    transform: translate(-50%, -50%); /* Correct positioning by offsetting by 50% */
+    z-index: 1050; /* Ensure it's on top of other elements */
+  }
+
+  .modal-content {
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #ffffff;
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e0e0e0;
+
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .dropdown {
+      .btn {
+        font-size: 1.2rem;
+        padding: 10px 20px;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+
+        &:hover {
+          background-color: #0056b3;
+        }
+      }
+
+      .dropdown-menu {
+        font-size: 1rem;
+        padding: 10px;
+      }
+    }
+  }
+
+  .modal-body {
+    padding: 20px;
+
+    .filter-section {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+
+      label {
+        font-size: 1.2rem;
+        margin-right: 10px;
+      }
+
+      select {
+        font-size: 1.1rem;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        width: 200px;
+      }
+    }
+
+    .table {
+      width: 100%;
+      margin-top: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+      th, td {
+        padding: 12px;
+        text-align: center;
+        vertical-align: middle;
+      }
+
+      th {
+        background-color: #f2f2f2;
+        font-size: 1.1rem;
+      }
+
+      td {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 20px;
+
+    .btn-secondary {
+      background-color: #6c757d;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+
+      &:hover {
+        background-color: #5a6268;
+      }
+    }
+  }
+}
+
+

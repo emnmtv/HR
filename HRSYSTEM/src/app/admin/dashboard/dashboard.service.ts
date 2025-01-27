@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -49,10 +49,10 @@ export class DashboardService {
       const body = { employee_id: employeeId }; // Send the employee_id as part of the request body
       return this.http.post<any>(apiUrl, body); // Use POST to send the payload
     }
-    // Add method for fetching  attendance
-    getAttendance(): Observable<any> {
-      return this.http.get(`${this.baseUrl}?route=getAllEmployeesAttendanceData`);
-    }
-    
+   // Modify the method to accept filter parameters
+   getAttendance(filters: any = {}): Observable<any> {
+    const params = new HttpParams({ fromObject: filters });
+    return this.http.get(`${this.baseUrl}?route=insertEmployeeAttendance`, { params });
+  }
 }
 
