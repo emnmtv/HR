@@ -29,9 +29,22 @@ export class RecordsComponent implements OnInit {
     barangay: '',
     province: '',
     vaccination_status: 'vaccinated',
-    company: ''
+    company: '',
+    date_of_birth:''
   };
-
+// Add this to your component's properties
+positions: string[] = [
+  'Bagger', 
+  'Cashier', 
+  'Salesperson', 
+  'Stock Clerk', 
+  'Customer Service Representative', 
+  'Store Manager', 
+  'Security Guard', 
+  'Inventory Specialist',
+  'Floor Supervisor',
+  'Technician'
+];
   constructor(private employeeRecordService: EmployeeRecordService) {}
 
   ngOnInit(): void {
@@ -100,48 +113,48 @@ export class RecordsComponent implements OnInit {
   }
     
 
-  registerEmployee(): void {
-    // Check for missing required fields
-    if (!this.formData.first_name || !this.formData.last_name || !this.formData.address) {
-      alert('First Name, Last Name, and Address are required!');
-      return;
-    }
-  
-    // Automatically generate username, email, and set password
-    this.formData.username = this.generateUsername();
-    this.formData.email = this.generateEmail(this.employees.length + 1);  // Example: generate email based on employee count
-    this.formData.password = '123456';  // Default password
-    
-    // If the company (position) field is empty, assign a random position
-    if (!this.formData.company) {
-      this.formData.company = this.getRandomPosition();
-    }
-    
-    // Log the formData to ensure everything is populated
-    console.log('Form Data:', this.formData);
-  
-    this.loading = true;
-  
-    // Make the API call to register the employee
-    this.employeeRecordService.registerEmployee(this.formData).subscribe({
-      next: (response) => {
-        if (response.status === 'success') {
-          alert('Employee registered successfully!');
-          this.getEmployeeRecords(); // Refresh the employee list
-          this.closeRegisterModal(); // Close the registration modal
-        } else {
-          alert('Error: ' + response.message);
-        }
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('Error registering employee', err);
-        alert('An error occurred while registering the employee.');
-        this.loading = false;
-      }
-    });
+  // Update the method to register the employee with birthday
+registerEmployee(): void {
+  // Check for missing required fields
+  if (!this.formData.first_name || !this.formData.last_name || !this.formData.address || !this.formData.date_of_birth) {
+    alert('First Name, Last Name, Address, and Birthday are required!');
+    return;
   }
-  
+
+  // Automatically generate username, email, and set password
+  this.formData.username = this.generateUsername();
+  this.formData.email = this.generateEmail(this.employees.length + 1);  // Example: generate email based on employee count
+  this.formData.password = '123456';  // Default password
+
+  // If the company (position) field is empty, assign a random position (from dropdown)
+  if (!this.formData.company) {
+    this.formData.company = this.formData.company || this.positions[0]; // Default to first position if no selection
+  }
+
+  // Log the formData to ensure everything is populated
+  console.log('Form Data:', this.formData);
+
+  this.loading = true;
+
+  // Make the API call to register the employee
+  this.employeeRecordService.registerEmployee(this.formData).subscribe({
+    next: (response) => {
+      if (response.status === 'success') {
+        alert('Employee registered successfully!');
+        this.getEmployeeRecords(); // Refresh the employee list
+        this.closeRegisterModal(); // Close the registration modal
+      } else {
+        alert('Error: ' + response.message);
+      }
+      this.loading = false;
+    },
+    error: (err) => {
+      console.error('Error registering employee', err);
+      alert('An error occurred while registering the employee.');
+      this.loading = false;
+    }
+  });
+}
   // Method to get a random position (role)
   getRandomPosition(): string {
     const positions = [
