@@ -22,7 +22,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   attendanceSummary = { present: 0, absent: 0, late: 0 };
   employeesByPosition: any[] = []; // This will hold the filtered employee data
   // Modal State
-  
+  dropdownOpen: boolean = false;  // Track dropdown state
   modalVisible: boolean = false;
   selectedCompany: string = '';
   employeeList: any[] = [];
@@ -84,7 +84,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     newlyHiredEmployees: any[] = [];
     recruitmentReport: { position: string; status: string; hiringNeeded: boolean; slots: number }[] = [];
 
-    
+    paginatedData: any[] = [];
+    currentPage: number = 1;
+    rowsPerPage: number = 12;
+    totalPages: number = 1;
   constructor(private dashboardService: DashboardService) {}
 
   ngOnInit() {
@@ -379,6 +382,8 @@ fetchAttendance() {
         this.filteredAttendanceData = [...this.attendanceData3]; // Initialize filtered data with original data
         this.isModalOpen = true; // Open the modal
            // Extract unique years from the date field
+           this.totalPages = Math.ceil(this.filteredAttendanceData.length / this.rowsPerPage);
+           this.updatePagination();
            this.uniqueYears = this.extractUniqueYears(this.attendanceData3);
            this.isModalOpen = true; // Open the modal
       } else {
@@ -391,6 +396,20 @@ fetchAttendance() {
   );
   
 }
+// Method to handle pagination updates
+updatePagination() {
+  const start = (this.currentPage - 1) * this.rowsPerPage;
+  const end = this.currentPage * this.rowsPerPage;
+  this.paginatedData = this.filteredAttendanceData.slice(start, end);
+}
+
+// Method to change page
+changePage(page: number) {
+  if (page < 1 || page > this.totalPages) return;
+  this.currentPage = page;
+  this.updatePagination();
+}
+
 extractUniqueYears(data: any[]): number[] {
   const years = data.map(record => new Date(record.date).getFullYear());
   return Array.from(new Set(years)); // Remove duplicates and return unique years
@@ -404,57 +423,80 @@ setStatusFilter(status: string) {
   this.selectedStatusFilter = status;
   this.applyFilter(); // Apply the status filter
 }
-
-applyFilter() {
-  // Apply filter by date (Today)
-  if (this.selectedFilter === 'Today') {
-    const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
-    this.filteredAttendanceData = this.attendanceData3.filter(record => record.date === today);
+  // Toggle the dropdown
+  toggleDropdown() {
+    this.dropdownOpen = !this.dropdownOpen;
   }
-  // Apply filter by month and selected week
-  else if (this.selectedFilter === 'Month') {
-    if (this.selectedMonth === 'All') {
-      this.filteredAttendanceData = this.attendanceData3.filter(record => record.month === parseInt(this.selectedMonth));
-    } else {
-      this.filteredAttendanceData = this.attendanceData3.filter(
-        record => record.month === parseInt(this.selectedMonth) && (this.selectedWeek === 'All' || record.week === parseInt(this.selectedWeek))
-      );
+  applyFilter() {
+    // Apply filter by date (Today)
+    if (this.selectedFilter === 'Today') {
+      const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+      this.filteredAttendanceData = this.attendanceData3.filter(record => record.date === today);
+      this.totalPages = Math.ceil(this.filteredAttendanceData.length / this.rowsPerPage);
+      this.updatePagination();
     }
-  }
-  // Apply date range filter if selected (start and end dates)
-  else if (this.selectedFilter === 'DateRange') {
-    if (this.startDate && this.endDate) {
+    // Apply filter by month and selected week
+    else if (this.selectedFilter === 'Month') {
+      if (this.selectedMonth === 'All') {
+        this.filteredAttendanceData = this.attendanceData3.filter(record => record.month === parseInt(this.selectedMonth));
+      } else {
+        this.filteredAttendanceData = this.attendanceData3.filter(
+          record => record.month === parseInt(this.selectedMonth) && (this.selectedWeek === 'All' || record.week === parseInt(this.selectedWeek))
+        );
+      }
+      this.totalPages = Math.ceil(this.filteredAttendanceData.length / this.rowsPerPage);
+      this.updatePagination();
+    }
+    // Apply date range filter if selected (start and end dates)
+    else if (this.selectedFilter === 'DateRange') {
+      if (this.startDate && this.endDate) {
+        this.filteredAttendanceData = this.attendanceData3.filter(record => {
+          const recordDate = new Date(record.date).getTime();
+          const start = new Date(this.startDate).getTime();
+          const end = new Date(this.endDate).getTime();
+          return recordDate >= start && recordDate <= end;
+        });
+        this.totalPages = Math.ceil(this.filteredAttendanceData.length / this.rowsPerPage);
+        this.updatePagination();
+      }
+    }
+    // Apply year filter if selected
+    else if (this.selectedFilter === 'Year' && this.selectedYear !== 'All') {
       this.filteredAttendanceData = this.attendanceData3.filter(record => {
-        const recordDate = new Date(record.date).getTime();
-        const start = new Date(this.startDate).getTime();
-        const end = new Date(this.endDate).getTime();
-        return recordDate >= start && recordDate <= end;
+        const recordYear = new Date(record.date).getFullYear();
+        return recordYear === parseInt(this.selectedYear);
       });
+      this.totalPages = Math.ceil(this.filteredAttendanceData.length / this.rowsPerPage);
+      this.updatePagination();
     }
+    // Show all records if no filter selected
+    else if (this.selectedFilter === 'All') {
+      this.filteredAttendanceData = [...this.attendanceData3];
+      this.totalPages = Math.ceil(this.filteredAttendanceData.length / this.rowsPerPage);
+      this.updatePagination();
+    }
+  
+    // Apply status filter if selected (Present, Absent, Late, On Leave, All)
+    if (this.selectedStatusFilter) {
+      if (this.selectedStatusFilter === 'All') {
+        // No filtering by status, show all records
+        this.filteredAttendanceData = this.filteredAttendanceData; // No action needed
+      } else {
+        this.filteredAttendanceData = this.filteredAttendanceData.filter(record => record.status === this.selectedStatusFilter);
+      }
+    }
+  
+    this.totalPages = Math.ceil(this.filteredAttendanceData.length / this.rowsPerPage);
+    this.updatePagination();
   }
-  // Apply year filter if selected
-  else if (this.selectedFilter === 'Year' && this.selectedYear !== 'All') {
-    this.filteredAttendanceData = this.attendanceData3.filter(record => {
-      const recordYear = new Date(record.date).getFullYear();
-      return recordYear === parseInt(this.selectedYear);
-    });
-  }
-  // Show all records if no filter selected
-  else if (this.selectedFilter === 'All') {
-    this.filteredAttendanceData = [...this.attendanceData3];
-  }
+  
 
-  // Apply status filter if selected (Present, Absent, Late, On Leave)
-  if (this.selectedStatusFilter) {
-    this.filteredAttendanceData = this.filteredAttendanceData.filter(record => record.status === this.selectedStatusFilter);
-  }
+closeModal10() {
+  this.isModalOpen = false;
+  this.attendanceData3 = [];
+  this.filteredAttendanceData = [];
+  this.paginatedData = [];
 }
-
-  closeModal10() {
-    this.isModalOpen = false; // Close the modal
-    this.attendanceData3 = [];  // Optionally reset the data when closing
-    this.filteredAttendanceData = []; // Reset filtered data
-  }
 
   printAttendance3() {
     const printContent = `

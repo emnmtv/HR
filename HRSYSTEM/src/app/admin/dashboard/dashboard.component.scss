@@ -759,27 +759,88 @@ button:hover {
       font-weight: bold;
     }
 
-    .dropdown {
-      .btn {
-        font-size: 1.2rem;
-        padding: 10px 20px;
-        border-radius: 5px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-
-        &:hover {
-          background-color: #0056b3;
-        }
+    
+    
+  }
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  
+    .btn {
+      font-size: 1.2rem;
+      padding: 10px 20px;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: down;
+      margin-right: 200px;
+      
+      &:hover {
+        background-color: #0056b3;
       }
-
-      .dropdown-menu {
-        font-size: 1rem;
-        padding: 10px;
+  
+      .dropdown-toggle::after {
+        content: '';
+        margin-left: 10px;
+        border-top: 5px solid white;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
       }
     }
+  
+    .dropdown-menu {
+      position: absolute;
+      top: 100%; /* Position the dropdown directly below the button */
+      left: 0;   /* Align the dropdown to the left of the button */
+      min-width: 200px;
+      padding: 10px 0;
+      background-color: #ffffff;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      display: none; /* Initially hidden */
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+  
+      &.show {
+        display: block;
+        opacity: 1;
+        visibility: visible;
+      }
+  
+      .dropdown-item {
+        padding: 10px 20px;
+        font-size: 1rem;
+        color: #333;
+        text-align: left;
+        cursor: pointer;
+        transition: background-color 0.2s;
+  
+        &:hover {
+          background-color: #f8f9fa;
+        }
+  
+        &:focus {
+          outline: none;
+        }
+  
+        &:active {
+          background-color: #e2e6ea;
+        }
+      }
+    }
+  
+    /* Adjust button appearance when dropdown is open */
+    .dropdown-toggle[aria-expanded="true"] {
+      background-color: #0056b3;
+    }
   }
-
+  
   .modal-body {
     padding: 20px;
 

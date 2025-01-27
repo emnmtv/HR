@@ -25,10 +25,10 @@
   <button (click)="openReportModal()">Open Automatic Reports</button>
   <button (click)="openModal1()" class="btn btn-primary">View Today's Attendance</button>
   <button (click)="openModal4()">Generate Report</button>
-  <button (click)="fetchAttendance()" class="btn btn-primary">Show Attendance Data</button>
+  <button (click)="fetchAttendance()" class="btn btn-primary"> Attendance Data</button>
 <!-- Trigger button for modal -->
-<button (click)="openModal5()">Monthly Payroll Summary Report</button>
-<button (click)="openRecruitmentReportModal()">Generate Recruitment Report</button>
+<button (click)="openModal5()">Compensation Report</button>
+<button (click)="openRecruitmentReportModal()">Recruitment Report</button>
   <div class="charts-section">
     <div class="chart">
       <h3>Attendance Summary</h3>
@@ -257,7 +257,7 @@
 
 
 
-<!-- Modal -->
+<!-- Modal --> 
 <div class="modal123" tabindex="-1" role="dialog" *ngIf="isModalOpen">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -265,10 +265,10 @@
         <h5 class="modal-title">Employee Attendance</h5>
 
         <div class="dropdown">
-          <button class="btn btn-primary dropdown-toggle" type="button" id="filterDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button class="btn btn-primary dropdown-toggle" type="button" (click)="toggleDropdown()">
             Filter: {{ selectedFilter }}
           </button>
-          <div class="dropdown-menu" aria-labelledby="filterDropdown">
+          <div class="dropdown-menu" [ngClass]="{'show': dropdownOpen}">
             <a class="dropdown-item" (click)="setFilter('Today')">Today</a>
             <a class="dropdown-item" (click)="setFilter('Month')">Month</a>
             <a class="dropdown-item" (click)="setFilter('All')">All</a>
@@ -276,6 +276,7 @@
             <a class="dropdown-item" (click)="setFilter('Year')">Year</a>
           </div>
         </div>
+        
       </div>
       <div class="modal-body">
         <!-- Month and Week filters -->
@@ -327,6 +328,9 @@
 
         <!-- Attendance status filters -->
         <div class="status-filters">
+<!-- Filter Button: All -->
+<button class="btn btn-outline-primary" (click)="setStatusFilter('All')">All</button>
+
           <button class="btn btn-outline-primary" (click)="setStatusFilter('Present')">Present</button>
           <button class="btn btn-outline-warning" (click)="setStatusFilter('Absent')">Absent</button>
           <button class="btn btn-outline-danger" (click)="setStatusFilter('Late')">Late</button>
@@ -339,7 +343,7 @@
           <thead>
             <tr>
               <th>Employee Name</th>
-              <th>position</th>
+              <th>Position</th>
               <th>Date</th>
               <th>Status</th>
               <th>Month</th>
@@ -347,7 +351,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let record of filteredAttendanceData">
+            <tr *ngFor="let record of paginatedData">
               <td>{{ record.employee_name }}</td>
               <td>{{ record.company }}</td>
               <td>{{ record.date }}</td>
@@ -357,14 +361,27 @@
             </tr>
           </tbody>
         </table>
-        
+
+        <!-- Pagination -->
+        <nav *ngIf="filteredAttendanceData.length > 12">
+          <ul class="pagination">
+            <li class="page-item" [class.disabled]="currentPage === 1">
+              <button class="page-link" (click)="changePage(currentPage - 1)">Previous</button>
+            </li>
+            <li class="page-item" [class.disabled]="currentPage === totalPages">
+              <button class="page-link" (click)="changePage(currentPage + 1)">Next</button>
+            </li>
+          </ul>
+        </nav>
       </div>
+
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="closeModal10()">Close</button>
       </div>
     </div>
   </div>
 </div>
+
 
 <!-- Popup modal -->
 <div class="popup-modal" *ngIf="isModalOpen5">
