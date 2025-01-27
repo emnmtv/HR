@@ -740,6 +740,7 @@ button:hover {
     z-index: 1050; /* Ensure it's on top of other elements */
   }
 
+  
   .modal-content {
     padding: 20px;
     border-radius: 5px;
@@ -843,4 +844,255 @@ button:hover {
   }
 }
 
+
+
+.popup-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  z-index: 1000;
+
+  .modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 90%; /* Adjust to take most of the screen */
+    max-height: 90%; /* Ensure the modal is not too tall */
+    width: auto;
+    height: auto;
+    overflow-y: auto;
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  h3 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  h4 {
+    margin: 10px 0;
+  }
+
+  button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+
+  button:hover {
+    background-color: #0056b3;
+  }
+
+  /* Styling for the table */
+  .payslip-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+
+    th, td {
+      text-align: left;
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f4f4f4;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    /* Make table responsive */
+    @media (max-width: 768px) {
+      th, td {
+        padding: 8px;
+        font-size: 14px;
+      }
+
+      .payslip-table {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+/* Ensures the modal is properly centered even on mobile devices */
+@media (max-width: 768px) {
+  .popup-modal {
+    padding: 10px;
+  }
+
+  .modal-content {
+    max-width: 100%;
+    padding: 15px;
+    border-radius: 6px;
+    height: auto;
+  }
+
+  .close-btn {
+    font-size: 20px;
+  }
+}
+
+
+
+
+
+// General modal styles
+.modal5 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); // Transparent background to dim the screen
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  visibility: hidden; // Hidden by default, will show when modal is triggered
+
+  &.show {
+    visibility: visible; // Show modal when the class 'show' is added
+  }
+
+  .modal-content {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 800px;
+    width: 90%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+
+    h4 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+
+    button.modal-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #333;
+      cursor: pointer;
+
+      &:hover {
+        color: #e74c3c;
+      }
+    }
+
+    p {
+      color: #333;
+      font-size: 1.1rem;
+    }
+
+    h5.toggle-section {
+      cursor: pointer;
+      color: #3498db;
+      font-size: 1.2rem;
+      margin-top: 20px;
+      text-decoration: underline;
+
+      &:hover {
+        color: #2980b9;
+      }
+    }
+
+    ul {
+      padding-left: 20px;
+      list-style-type: disc;
+
+      li {
+        font-size: 1rem;
+        color: #333;
+        margin-bottom: 8px;
+      }
+    }
+  }
+}
+
+// Table styles
+.recruitment-table,
+.newly-hired-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+
+  th {
+    background-color: #f4f4f4;
+    font-size: 1.1rem;
+    color: #333;
+  }
+
+  td {
+    font-size: 1rem;
+    color: #555;
+  }
+
+  tr:hover {
+    background-color: #f9f9f9;
+  }
+}
+
+// Conditional rendering of 'Yes' or 'No' in 'Hiring Needed' column
+.recruitment-table td {
+  &.hiring-needed-yes {
+    color: #27ae60;
+  }
+
+  &.hiring-needed-no {
+    color: #e74c3c;
+  }
+}
+
+// Newly hired employees section table styles
+.newly-hired-table {
+  th {
+    background-color: #eaf4fc;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+}
 

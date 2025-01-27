@@ -54,5 +54,8 @@ export class DashboardService {
     const params = new HttpParams({ fromObject: filters });
     return this.http.get(`${this.baseUrl}?route=insertEmployeeAttendance`, { params });
   }
+  getEmployeeDataWithPayslips(filters: any = {}): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}?route=getEmployeeDataWithPayslips`, { params: filters });
+  }
 }
 

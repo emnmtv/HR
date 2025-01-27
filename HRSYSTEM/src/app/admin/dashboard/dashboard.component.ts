@@ -64,7 +64,27 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   selectedWeek: string = 'All'; // Default to All Weeks
     isModalOpen: boolean = false; // Flag to control modal visibility
     selectedStatusFilter: string = '';  
-    uniqueYears: number[] = [];  // Array to store unique years from the data// This will store the selected status filter (Absent, Present, Late, On Leave)
+    uniqueYears: number[] = [];  
+    employeePayslipData: any;
+    isModalOpen5: boolean = false;  // Controls modal visibility// Array to store unique years from the data// This will store the selected status filter (Absent, Present, Late, On Leave)
+    employeeRequirements = {
+      Bagger: { min: 10, max: 20 },
+      Cashier: { min: 8, max: 15 },
+      Salesperson: { min: 12, max: 25 },
+      'Stock Clerk': { min: 5, max: 10 },
+      'Customer Service Representative': { min: 6, max: 12 },
+      'Store Manager': { min: 1, max: 2 },
+      'Security Guard': { min: 4, max: 8 },
+      'Inventory Specialist': { min: 3, max: 6 },
+      'Floor Supervisor': { min: 2, max: 4 },
+      Technician: { min: 3, max: 6 },
+    };
+    isNewlyHiredVisible: boolean = false;  // Added state for toggling visibility
+    insights: string[] = [];
+    newlyHiredEmployees: any[] = [];
+    recruitmentReport: { position: string; status: string; hiringNeeded: boolean; slots: number }[] = [];
+
+    
   constructor(private dashboardService: DashboardService) {}
 
   ngOnInit() {
@@ -72,8 +92,284 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.fetchEmployeeData(); // Fetch employee data on init'
     this.fetchAttendanceData();
     this.currentDate = new Date().toLocaleDateString(); // Format as per user's locale
+
+      // When the component initializes, fetch the report and new employees
+      this.getNewlyHiredEmployees();
+      this.generateRecruitmentReport();
     
   }
+  toggleNewlyHired() {
+    this.isNewlyHiredVisible = !this.isNewlyHiredVisible;
+  }
+  // Function to generate the recruitment report
+  generateRecruitmentReport() {
+    this.recruitmentReport = this.employeesByPosition.map((entry) => {
+      const position = entry.company || 'Unknown';
+      const employeeCount = entry.employee_count;
+
+      const requirements = this.employeeRequirements[position as keyof typeof this.employeeRequirements] || { min: 0, max: Infinity };
+      const { min, max } = requirements;
+
+      let status = 'Adequately Staffed';
+      let hiringNeeded = false;
+      let slots = 0;
+
+      if (employeeCount < min) {
+        status = 'Understaffed';
+        hiringNeeded = true;
+        slots = min - employeeCount;
+      } else if (employeeCount > max) {
+        status = 'Overstaffed';
+      }
+
+      return {
+        position,
+        status,
+        hiringNeeded,
+        slots,
+      };
+    });
+
+    // Generate insights based on the report
+    this.generateInsights();
+  }
+
+  // Function to generate insights based on the recruitment report
+  generateInsights() {
+    this.insights = [];
+
+    this.recruitmentReport.forEach((report) => {
+      if (report.hiringNeeded) {
+        this.insights.push(`Consider hiring ${report.slots} more employees for the ${report.position} position.`);
+      } else if (report.status === 'Overstaffed') {
+        this.insights.push(`The ${report.position} position is overstaffed.`);
+      }
+    });
+  }
+
+  // Function to fetch newly hired employees (this week)
+  getNewlyHiredEmployees() {
+    const filters = { created_at: 'this_week' };
+    this.dashboardService.getEmployeeData(filters).subscribe((response) => {
+      if (response.status === 'success') {
+        this.newlyHiredEmployees = response.data;
+      }
+    });
+  }
+
+// Function to close the modal
+closeRecruitmentReportModal() {
+  const modal = document.getElementById('recruitmentReportModal') as HTMLElement;
+  if (modal) {
+    modal.classList.remove('show'); // Use 'show' instead of 'active'
+  }
+}
+
+// Function to open the modal
+openRecruitmentReportModal() {
+  this.getNewlyHiredEmployees(); // Fetch data
+  this.generateRecruitmentReport(); // Generate the report
+  const modal = document.getElementById('recruitmentReportModal') as HTMLElement;
+  if (modal) {
+    modal.classList.add('show'); // Use 'show' instead of 'active'
+  }
+}
+// Function to print the modal content
+// Function to print the relevant content (not the entire modal)
+printModal123() {
+  // Fetch only the content to print (excluding modal structure like Close button)
+  const contentToPrint = document.querySelector('#recruitmentReportModal .modal-content') as HTMLElement;
+
+  // Create a new window for printing
+  const printWindow = window.open('', '', 'height=600, width=800');
+
+  // Prepare the content for printing
+  const printHtml = `
+    <html>
+      <head>
+        <title>Recruitment Report</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+          }
+
+          .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+          }
+
+          h4 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+          }
+
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+          }
+
+          th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+          }
+
+          th {
+            background-color: #f4f4f4;
+            font-size: 1.1rem;
+            color: #333;
+          }
+
+          td {
+            font-size: 1rem;
+            color: #555;
+          }
+
+          tr:nth-child(even) {
+            background-color: #f9f9f9;
+          }
+
+          tr:hover {
+            background-color: #f1f1f1;
+          }
+
+          .insights, .newly-hired {
+            margin-top: 30px;
+          }
+
+          .insights ul {
+            padding-left: 20px;
+            list-style-type: disc;
+          }
+
+          .insights li, .newly-hired li {
+            font-size: 1rem;
+            color: #333;
+            margin-bottom: 8px;
+          }
+
+          @media print {
+            body {
+              background-color: #fff;
+            }
+
+            .modal-content {
+              padding: 0;
+              box-shadow: none;
+            }
+
+            table {
+              border: 1px solid #ddd;
+            }
+
+            th, td {
+              padding: 10px;
+              border: 1px solid #ddd;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="modal-content">
+          <h4>Recruitment Report</h4>
+          ${contentToPrint?.innerHTML || ''} <!-- Only print the content inside the modal -->
+        </div>
+      </body>
+    </html>
+  `;
+
+  // Write the HTML to the print window
+  printWindow?.document.write(printHtml);
+  printWindow?.document.close(); // Close the document to load the content
+  printWindow?.focus(); // Focus on the print window
+
+  // Trigger print dialog
+  printWindow?.print();
+}
+
+
+ 
+
+  
+  print() {
+    const printContent = document.querySelector('.modal-content')?.innerHTML || '';
+    const printWindow = window.open('', '_blank', 'width=800,height=600');
+    if (printWindow) {
+      printWindow.document.open();
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Print Payroll Report</title>
+            <style>
+              body {
+                font-family: Arial, sans-serif;
+                padding: 20px;
+              }
+              .payslip-table {
+                width: 100%;
+                border-collapse: collapse;
+              }
+              th, td {
+                border: 1px solid #ddd;
+                padding: 8px;
+              }
+              th {
+                background-color: #f4f4f4;
+                text-align: left;
+              }
+              tr:nth-child(even) {
+                background-color: #f9f9f9;
+              }
+              tr:hover {
+                background-color: #f1f1f1;
+              }
+            </style>
+          </head>
+          <body>
+            ${printContent}
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
+      printWindow.print();
+    }
+  }
+// Open modal2 and fetch employee payslip data
+openModal5() {
+console.log("Fetching employee payslip data..."); // Debugging log
+
+this.dashboardService.getEmployeeDataWithPayslips().subscribe(
+  (data) => {
+    console.log('Payslip data fetched:', data); // Debugging log
+
+    if (data && data.data && data.data.length > 0) {
+      this.employeePayslipData = data.data; // Store all the employee payslip data in an array
+      this.isModalOpen5 = true;
+    } else {
+      console.log("No payslip data available");
+      this.isModalOpen5 = false;
+    }
+  },
+  (error) => {
+    console.error('Error fetching payslip data:', error);
+    this.isModalOpen5 = false;
+  }
+);
+}
+
+
+// Close the modal
+closeModal5() {
+  this.isModalOpen5 = false;
+}
 // Function to fetch attendance data 
 fetchAttendance() {
   this.dashboardService.getAttendance().subscribe(
