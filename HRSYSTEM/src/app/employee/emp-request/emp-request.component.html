@@ -7,6 +7,9 @@
     <h2>
       <button class="request-btn" (click)="openModal()">Create New Request</button>
       <button class="request-btn" (click)="fetchMessages()">Fetch Messages</button>
+     <!-- New Button for Medical Document Upload -->
+  <button class="request-btn" (click)="openUploadModal()">Upload Medical Document</button>
+
     </h2>
     
     <table>
@@ -100,4 +103,42 @@
   </div>
 </div>
 </div>
+
+ <!-- Modal for Uploading Medical Document -->
+  <!-- Upload Modal -->
+  <div class="upload-modal" *ngIf="isUploadModalOpen">
+    <div class="modal-content">
+      <button class="close-modal" (click)="closeUploadModal()">Close</button>
+      
+      <h2>Upload Medical Document</h2>
+
+      <!-- Upload Form -->
+      <input type="file" (change)="onFileSelected2($event)" />
+      <button (click)="onUploadSubmit()">Upload</button>
+
+      <!-- Display uploaded medical documents with status -->
+      <div class="medical-documents">
+        <h3>Uploaded Medical Documents</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Document</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let doc of medicalDocuments">
+              <td>{{ doc.document_path | slice: doc.document_path.lastIndexOf('/') + 1 }}</td> <!-- Show the document name -->
+              <td>{{ doc.status }}</td>
+              <td>
+                <a [href]="doc.document_path" target="_blank">View Document</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
 

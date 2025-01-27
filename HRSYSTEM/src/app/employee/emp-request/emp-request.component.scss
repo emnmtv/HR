@@ -362,3 +362,118 @@ h1 {
 .close-btn:hover {
   color: red;
 }
+/* Modal Styles */
+.upload-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+
+  .modal-content {
+    background: #fff;
+    padding: 40px;
+    width: 600px; /* Increased width */
+    max-width: 80%; /* Max width to adapt on smaller screens */
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    max-height: 90%;
+    overflow-y: auto;
+
+    h2 {
+      margin-bottom: 30px;
+      font-size: 2rem; /* Larger font size */
+      text-align: center;
+      color: #333;
+    }
+
+    /* Close button */
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      font-size: 2rem; /* Larger close button */
+      cursor: pointer;
+      color: #333;
+      &:hover {
+        color: #ff5c5c;
+      }
+    }
+
+    /* Upload form styles */
+    input[type="file"] {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 25px;
+      font-size: 1.2rem;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      transition: background-color 0.3s ease;
+      
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+
+    /* Display uploaded documents table */
+    .medical-documents {
+      h3 {
+        margin-bottom: 20px;
+        font-size: 1.5rem; /* Larger title */
+        text-align: center;
+        color: #333;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 25px;
+
+        th, td {
+          padding: 15px; /* More padding for larger cells */
+          text-align: left;
+          border-bottom: 1px solid #ddd;
+        }
+
+        th {
+          background-color: #f8f9fa;
+          color: #333;
+        }
+
+        td {
+          color: #555;
+        }
+
+        /* Action links styling */
+        a {
+          color: #007bff;
+          text-decoration: none;
+          font-size: 1.1rem;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+}

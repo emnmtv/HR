@@ -1,0 +1,44 @@
+<div class="employee-requests-container">
+    <h1>Employee Medical Requests</h1>
+  
+    <!-- Filters Section -->
+    <div class="filters">
+      <div class="filter-buttons">
+        <button class="filter-btn" (click)="filterRequests('all')">All</button>
+        <button class="filter-btn" (click)="filterRequests('pending')">Pending</button>
+        <button class="filter-btn" (click)="filterRequests('approved')">Approved</button>
+        <button class="filter-btn" (click)="filterRequests('rejected')">Rejected</button>
+      </div>
+    </div>
+  
+    <!-- Table to show Medical Requests -->
+    <table class="requests-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Position</th>
+          <th>Document</th>
+          <th>Request Date</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let request of filteredRequests">
+          <td>{{ request.first_name }} {{ request.last_name }}</td>
+          <td>{{ request.company }}</td>
+          <!-- Display the document name instead of the full URL -->
+          <td><a [href]="request.document_path" target="_blank">{{ request.document_name }}</a></td>
+          <td>{{ request.uploaded_at | date: 'short' }}</td>
+          <td class="status-cell">
+            <span [class]="getStatusClass(request.status)">{{ request.status }}</span>
+          </td>
+          <td>
+            <button class="edit-btn" (click)="updateMedicalStatus(request.id, 'Approved')">Approve</button>
+            <button class="edit-btn" (click)="updateMedicalStatus(request.id, 'Rejected')">Reject</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

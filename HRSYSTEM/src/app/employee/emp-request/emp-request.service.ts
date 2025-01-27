@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class EmpRequestService {
   private apiUrl = 'http://localhost/integapi/main/routes.php'; // API endpoint
-
+ 
   constructor(private http: HttpClient) {}
 
   getEmployeeRequests(employeeId: number): Observable<any> {
@@ -35,5 +35,21 @@ export class EmpRequestService {
     };
     return this.http.post<any>(this.apiUrl, body);
   }
-  
+   // Method to upload medical document
+   uploadMedicalDocument(employeeId: number, document: string): Observable<any> {
+    const body = {
+      route: 'uploadMedicalDocument',
+      employee_id: employeeId,
+      document: document, // Base64 encoded document
+    };
+    return this.http.post<any>(this.apiUrl, body);
+  }
+    // New method to fetch employee medical documents
+    fetchEmployeeMedical(employeeId: number): Observable<any> {
+      const body = {
+        route: 'fetchEmployeeMedical',
+        employee_id: employeeId,
+      };
+      return this.http.post<any>(this.apiUrl, body);
+    }
 }

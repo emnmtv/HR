@@ -25,6 +25,7 @@ import { RecordsComponent } from './admin/records/records.component';
 import { DtrSummaryComponent } from './employee/dtr-summary/dtr-summary.component';
 import { AttendanceComponent } from './admin/attendance/attendance.component';
 import { EmployeeDashboardComponent } from './employee/employee-dashboard/employee-dashboard.component';
+import { MedicalComponent } from './admin/medical/medical.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { EmployeeDashboardComponent } from './employee/employee-dashboard/employ
     DtrSummaryComponent,
     AttendanceComponent,
     EmployeeDashboardComponent,
+    MedicalComponent,
   ],
   imports: [
     BrowserModule,

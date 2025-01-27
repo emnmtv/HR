@@ -88,6 +88,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     currentPage: number = 1;
     rowsPerPage: number = 12;
     totalPages: number = 1;
+    isModalOpen300: boolean = false;
+    medicalDocuments: any[] = [];
+    searchText: string = '';
+    statusFilter: string = '';
   constructor(private dashboardService: DashboardService) {}
 
   ngOnInit() {
@@ -100,6 +104,89 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       this.getNewlyHiredEmployees();
       this.generateRecruitmentReport();
     
+  }
+  
+// Get filtered documents based on search and status filter
+get filteredDocuments() {
+  return this.medicalDocuments.filter(doc => {
+    const matchesSearch = doc.first_name.toLowerCase().includes(this.searchText.toLowerCase()) ||
+                          doc.last_name.toLowerCase().includes(this.searchText.toLowerCase()) ||
+                          doc.employee_id.toString().includes(this.searchText);  // Added search for employee_id
+    const matchesStatus = this.statusFilter ? doc.status === this.statusFilter : true;
+    return matchesSearch && matchesStatus;
+  });
+}
+
+  printReport300() {
+    const printWindow = window.open('', '', 'width=800,height=600');
+    
+    // Check if printWindow is null before proceeding
+    if (printWindow) {
+      printWindow.document.write(`
+        <html>
+          <head>
+            <style>
+              /* Print specific styles */
+              body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+              h2 { text-align: center; }
+              table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+              table th, table td { padding: 8px 12px; border: 1px solid #ddd; text-align: left; }
+              table th { background-color: #f4f4f4; }
+            </style>
+          </head>
+          <body>
+            <h2>Employee Medical Reports</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Employee Name</th>
+                  <th>Position</th>
+                  <th>Status</th>
+                  <th>Uploaded At</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${this.filteredDocuments.map(doc => `
+                  <tr>
+                    <td>${doc.employee_id}</td>
+                    <td>${doc.first_name} ${doc.last_name}</td>
+                    <td>${doc.company}</td>
+                    <td>${doc.status}</td>
+                    <td>${doc.uploaded_at}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
+      printWindow.print();
+    } else {
+      console.error('Failed to open print window');
+    }
+  }
+  
+  openModal300(): void {
+    this.dashboardService.getMedicalDocuments().subscribe({
+      next: (response) => {
+        if (response.status === 'success') {
+          this.medicalDocuments = response.data;
+        } else {
+          this.medicalDocuments = [];
+          console.error(response.message);
+        }
+        this.isModalOpen300 = true;
+      },
+      error: (err) => {
+        console.error('Error fetching medical documents:', err);
+      },
+    });
+  }
+
+  closeModal300(): void {
+    this.isModalOpen300 = false;
   }
   toggleNewlyHired() {
     this.isNewlyHiredVisible = !this.isNewlyHiredVisible;

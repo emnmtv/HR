@@ -29,6 +29,11 @@
 <!-- Trigger button for modal -->
 <button (click)="openModal5()">Compensation Report</button>
 <button (click)="openRecruitmentReportModal()">Recruitment Report</button>
+
+<!-- Button to open modal -->
+<button class="btn-open-modal" (click)="openModal300()">Medical Reports</button>
+
+
   <div class="charts-section">
     <div class="chart">
       <h3>Attendance Summary</h3>
@@ -489,4 +494,49 @@
 
 
 
+<!-- Modal -->
+<div class="modal300" [class.show]="isModalOpen300">
+  <div class="modal-content">
+    <h2>Employee Medical Reports</h2>
+    <button class="btn-close-modal" (click)="closeModal300()">Close</button>
+
+    <!-- Search and Filter Section -->
+    <div class="filter-container">
+      <input type="text" [(ngModel)]="searchText" placeholder="Search by Employee Name" class="search-box">
+      <select [(ngModel)]="statusFilter" class="status-filter">
+        <option value="">All Status</option>
+        <option value="approved">Approved</option>
+        <option value="rejected">Rejected</option>
+      </select>
+      <button (click)="printReport300()" class="btn-print">Print</button>
+    </div>
+
+    <!-- Medical documents table -->
+    <div *ngIf="filteredDocuments.length > 0; else noData">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Employee Name</th>
+            <th>Position</th>
+            <th>Status</th>
+            <th>Uploaded At</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let doc of filteredDocuments">
+            <td>{{ doc.employee_id }}</td>
+            <td>{{ doc.first_name }} {{ doc.last_name }}</td>
+            <td>{{ doc.company }}</td>
+            <td>{{ doc.status }}</td>
+            <td>{{ doc.uploaded_at }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ng-template #noData>
+      <p>No medical documents found.</p>
+    </ng-template>
+  </div>
+</div>
 

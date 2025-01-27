@@ -5,6 +5,7 @@ export const navbarDataAdmin = [
   { routeLink: '/day', icon: '../../assets/images/calendar.png', label: 'Attendance' },
   { routeLink: '/attendance', icon: '../../assets/images/calendar.png', label: 'Monitoring & DTR' },
   { routeLink: '/emp', icon: '../../assets/images/logocalendar2.png', label: 'Employee Request' },
+  { routeLink: '/med', icon: '../../assets/images/logocalendar2.png', label: 'Medical Request' },
   
 ];
 

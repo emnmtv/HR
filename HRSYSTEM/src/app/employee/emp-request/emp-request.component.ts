@@ -28,7 +28,10 @@ export class EmpRequestComponent implements OnInit {
   };
 
   requestRecords: EmployeeRequest[] = [];
-
+  isUploadModalOpen = false;
+ 
+  medicalDocumentBase64: string = ''; // To store the base64 string of the document
+  medicalDocuments: any[] = []; // To store fetched medical documents
   loggedInEmployeeId: number = 0;
   messages: Message[] = [];
   isMessagesModalOpen = false;
@@ -63,8 +66,75 @@ export class EmpRequestComponent implements OnInit {
     };
     reader.readAsDataURL(file);
   }
+  convertFileToBase642(file: File): void {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      this.medicalDocumentBase64 = reader.result as string;
+      console.log('Base64 Document:', this.medicalDocumentBase64);
+    };
+    reader.readAsDataURL(file);
+  }
+  // Handle file selection and convert it to base64
+  onFileSelected2(event: any): void {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.convertFileToBase642(file);
+    }
+  } // Fetch medical documents for the logged-in employee, including status
+  fetchMedicalDocuments(): void {
+    this.empRequestService.fetchEmployeeMedical(this.loggedInEmployeeId).subscribe(
+      response => {
+        if (response.status === 'success') {
+          // Prepend the correct base URL for each medical document's path
+          this.medicalDocuments = response.data.map((document: any) => {
+            document.document_path = document.document_path 
+              ? `http://localhost/integapi/main/${document.document_path}` 
+              : '';  // Handle the case where the document path might be empty
+            return document;
+          });
+        } else {
+          alert('No medical documents found.');
+        }
+      },
+      error => {
+        console.error('Error fetching documents:', error);
+        alert('An error occurred while fetching the documents.');
+      }
+    );
+  }
   
-
+  
+    // Open Upload Modal and automatically fetch medical documents
+  openUploadModal(): void {
+    this.isUploadModalOpen = true;
+    this.fetchMedicalDocuments();  // Fetch medical documents when the modal opens
+  }
+  
+    // Close Upload Modal
+    closeUploadModal(): void {
+      this.isUploadModalOpen = false;
+    }
+    // Submit the medical document for upload
+  onUploadSubmit(): void {
+    if (this.medicalDocumentBase64) {
+      this.empRequestService.uploadMedicalDocument(this.loggedInEmployeeId, this.medicalDocumentBase64).subscribe(
+        response => {
+          if (response.status === 'success') {
+            alert('Medical document uploaded successfully!');
+            this.closeUploadModal();
+          } else {
+            alert('Error: ' + response.message);
+          }
+        },
+        error => {
+          console.error('Error uploading document:', error);
+          alert('An error occurred while uploading the document.');
+        }
+      );
+    } else {
+      alert('Please select a document to upload.');
+    }
+  }
   getStatusClass(status: string): string {
     return {
       Approved: 'status-approved',

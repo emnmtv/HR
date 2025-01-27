@@ -57,5 +57,9 @@ export class DashboardService {
   getEmployeeDataWithPayslips(filters: any = {}): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}?route=getEmployeeDataWithPayslips`, { params: filters });
   }
+
+  getMedicalDocuments(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}?route=fetchAllMedicalDocuments`);
+  }
 }
 
