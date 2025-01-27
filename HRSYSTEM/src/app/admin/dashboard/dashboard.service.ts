@@ -49,7 +49,7 @@ export class DashboardService {
       const body = { employee_id: employeeId }; // Send the employee_id as part of the request body
       return this.http.post<any>(apiUrl, body); // Use POST to send the payload
     }
-    // Add method for fetching today's attendance
+    // Add method for fetching  attendance
     getAttendance(): Observable<any> {
       return this.http.get(`${this.baseUrl}?route=getAllEmployeesAttendanceData`);
     }
