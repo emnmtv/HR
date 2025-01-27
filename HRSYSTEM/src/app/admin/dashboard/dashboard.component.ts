@@ -52,12 +52,17 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     showAllAttendance: boolean = false;
     selectedReportType: string = 'summary'; // Default to summary
     isPrintModalVisible = false;
+
+    currentDate: string = '';
+    
+    
   constructor(private dashboardService: DashboardService) {}
 
   ngOnInit() {
     this.fetchDashboardData();
     this.fetchEmployeeData(); // Fetch employee data on init'
     this.fetchAttendanceData();
+    this.currentDate = new Date().toLocaleDateString(); // Format as per user's locale
     
   }
 
@@ -401,16 +406,84 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   
 
   printAttendance(): void {
-    const printContents = document.getElementById('attendanceModal')?.innerHTML;
+    const printContent = `
+      <html>
+        <head>
+          <title>Attendance</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              margin: 20px;
+            }
+            h1 {
+              text-align: center;
+            }
+            table {
+              width: 100%;
+              border-collapse: collapse;
+              margin-top: 20px;
+            }
+            th, td {
+              border: 1px solid #ddd;
+              text-align: left;
+              padding: 8px;
+            }
+            th {
+              background-color: #f4f4f4;
+            }
+            tr:nth-child(even) {
+              background-color: #f9f9f9;
+            }
+            tr:hover {
+              background-color: #f1f1f1;
+            }
+          </style>
+        </head>
+        <body>
+          <h1>Today's Attendance</h1>
+          <p>Date: ${new Date().toLocaleDateString()}</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Clock In</th>
+                <th>Clock Out</th>
+                <th>Hours Worked</th>
+                <th>Undertime</th>
+                <th>Overtime</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${this.filteredAttendance
+                .map(record => `
+                  <tr>
+                    <td>${record.first_name} ${record.last_name}</td>
+                    <td>${record.company}</td>
+                    <td>${record.clock_in_time || 'N/A'}</td>
+                    <td>${record.clock_out_time || 'N/A'}</td>
+                    <td>${record.hours_worked || '0'}</td>
+                    <td>${record.undertime || '0'}</td>
+                    <td>${record.overtime || '0'}</td>
+                    <td>${record.status}</td>
+                  </tr>
+                `)
+                .join('')}
+            </tbody>
+          </table>
+        </body>
+      </html>
+    `;
+  
     const printWindow = window.open('', '', 'height=600,width=800');
-    if (printWindow && printContents) {
-      printWindow.document.write('<html><head><title>Attendance</title></head><body>');
-      printWindow.document.write(printContents);
-      printWindow.document.write('</body></html>');
+    if (printWindow) {
+      printWindow.document.write(printContent);
       printWindow.document.close();
       printWindow.print();
     }
   }
+  
   openReportModal() {
     this.reportModalVisible = true;
   }
