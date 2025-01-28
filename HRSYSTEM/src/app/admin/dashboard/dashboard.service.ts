@@ -61,5 +61,10 @@ export class DashboardService {
   getMedicalDocuments(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}?route=fetchAllMedicalDocuments`);
   }
+
+    // Fetch all requests
+    fetchAllRequests(): Observable<any> {
+      return this.http.get(`${this.baseUrl}?route=fetchAllRequests`);
+    }
 }
 

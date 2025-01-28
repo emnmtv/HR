@@ -32,6 +32,8 @@
 
 <!-- Button to open modal -->
 <button class="btn-open-modal" (click)="openModal300()">Medical Reports</button>
+<!-- Button to open the modal -->
+<button (click)="openRequestsModal()" class="btn btn-primary">Request Report Summary</button>
 
 
   <div class="charts-section">
@@ -540,3 +542,56 @@
   </div>
 </div>
 
+<!-- Modal -->
+<div class="modal" tabindex="-1" [ngClass]="{'show': showRequestsModal}" [style.display]="showRequestsModal ? 'block' : 'none'">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">All Requests</h5>
+        <button type="button" class="btn-close" (click)="closeRequestsModal()"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Search Filter -->
+        <div class="mb-3">
+          <input type="text" class="form-control" [(ngModel)]="searchTerm" (input)="searchRequests()" placeholder="Search by Name or ID">
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="d-flex justify-content-around mb-3">
+          <button class="btn btn-outline-primary" (click)="filterRequests('Pending')">Pending</button>
+          <button class="btn btn-outline-success" (click)="filterRequests('Approved')">Approved</button>
+          <button class="btn btn-outline-danger" (click)="filterRequests('Rejected')">Rejected</button>
+          <button class="btn btn-outline-secondary" (click)="resetFilter()">All</button>
+        </div>
+
+        <!-- Requests Table -->
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Request ID</th>
+              <th>Employee Name</th>
+              <th>Position</th>
+              <th>Type</th>
+              <th>Reason</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let request of filteredRequests">
+              <td>{{ request.employee_id }}</td>
+              <td>{{ request.employee_name }}</td>
+              <td>{{ request.company }}</td>
+              <td>{{ request.type }}</td>
+              <td>{{ request.reason }}</td>
+              <td>{{ request.status }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeRequestsModal()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="printModal500()">Print</button>
+      </div>
+    </div>
+  </div>
+</div>

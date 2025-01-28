@@ -92,6 +92,15 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     medicalDocuments: any[] = [];
     searchText: string = '';
     statusFilter: string = '';
+
+
+    allRequests: any[] = []; // Holds all requests fetched from the API 
+    filteredRequests: any[] = []; // Holds filtered requests
+    showRequestsModal: boolean = false; // Modal visibility flag
+    searchTerm: string = ''; // Holds the search term
+
+
+    
   constructor(private dashboardService: DashboardService) {}
 
   ngOnInit() {
@@ -103,9 +112,156 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       // When the component initializes, fetch the report and new employees
       this.getNewlyHiredEmployees();
       this.generateRecruitmentReport();
+      this.fetchAllRequests();
     
   }
+  printModal500() {
+    const printContent = document.querySelector('.modal-content');
+    const printWindow = window.open('', '', 'height=600,width=800');
   
+    // Check if the print window is opened successfully
+    if (printWindow) {
+      // Define the HTML content for the print page
+      const htmlContent = `
+        <html>
+          <head>
+            <title>Print Modal</title>
+            <style>
+              /* Print-specific styles */
+              body {
+                font-family: Arial, sans-serif;
+                font-size: 12px;
+                margin: 0;
+                padding: 10px;
+              }
+              .modal-content {
+                max-width: 100%;
+                margin: 0;
+                padding: 10px;
+                border: 1px solid #dee2e6;
+              }
+              .modal-header,
+              .modal-footer {
+                display: none; /* Hide header and footer in print */
+              }
+              table {
+                width: 100%;
+                border-collapse: collapse;
+              }
+              thead {
+                background-color: #343a40;
+                color: white;
+              }
+              th, td {
+                padding: 8px;
+                border: 1px solid #dee2e6;
+                text-align: left;
+              }
+              th {
+                background-color: #f1f1f1;
+              }
+              tbody tr:nth-child(even) {
+                background-color: #f9f9f9;
+              }
+              tbody tr:hover {
+                background-color: #e9ecef;
+              }
+            </style>
+          </head>
+          <body>
+            <div class="modal-content">
+              <h5>All Requests</h5>
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Request ID</th>
+                    <th>Employee Name</th>
+                    <th>Position</th>
+                    <th>Type</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${this.filteredRequests.map(request => `
+                    <tr>
+                      <td>${request.employee_id}</td>
+                      <td>${request.employee_name}</td>
+                      <td>${request.company}</td>
+                      <td>${request.type}</td>
+                      <td>${request.reason}</td>
+                      <td>${request.status}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          </body>
+        </html>
+      `;
+  
+      // Write the HTML content to the print window
+      printWindow.document.write(htmlContent);
+  
+      // Wait for the content to load and then print
+      printWindow.document.close();
+      printWindow.focus();
+      printWindow.print();
+    } else {
+      console.error('Failed to open print window');
+    }
+  }
+  
+  // Fetch all requests from the API
+fetchAllRequests(): void {
+  this.dashboardService.fetchAllRequests().subscribe({
+    next: (response) => {
+      if (response.status === 'success') {
+        this.allRequests = response.data;
+        this.filteredRequests = [...this.allRequests]; // Initially show all
+      } else {
+        console.error(response.message);
+      }
+    },
+    error: (err) => {
+      console.error('Error fetching requests:', err);
+    },
+  });
+}
+
+
+// Open the modal
+openRequestsModal(): void {
+  this.showRequestsModal = true;
+}
+
+  // Close the modal
+  closeRequestsModal(): void {
+    this.showRequestsModal = false;
+  }
+
+// Filter requests by status
+filterRequests(status: string): void {
+  this.filteredRequests = this.allRequests.filter(
+    (request) => request.status === status
+  );
+}
+
+// Filter requests by search term (name or ID)
+searchRequests(): void {
+  if (this.searchTerm) {
+    this.filteredRequests = this.allRequests.filter((request) =>
+      request.employee_id.toString().includes(this.searchTerm) ||
+      request.employee_name.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+  } else {
+    this.filteredRequests = [...this.allRequests];
+  }
+}
+  // Reset the filter to show all requests
+  resetFilter(): void {
+    this.filteredRequests = [...this.allRequests];
+  }
 // Get filtered documents based on search and status filter
 get filteredDocuments() {
   return this.medicalDocuments.filter(doc => {
